@@ -28,181 +28,169 @@
             font-family: var(--fonte-ui); color: var(--texto-escuro);
             height: 100vh; height: 100dvh; width: 100vw; overflow: hidden;
             display: flex; flex-direction: column; align-items: center;
-            
-            /* BACKGROUND PASTEL */
             background: linear-gradient(-45deg, #ffd1dc, #c8e6c9, #ffcdd2, #b2dfdb, #f8bbd0);
             background-size: 300% 300%; animation: gradientBG 10s ease infinite;
-            
-            padding-top: var(--safe-top);
-            padding-bottom: 0; /* Remove padding inferior fixo para layout dinâmico */
+            padding-top: var(--safe-top); padding-bottom: 0; 
         }
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- ESTRUTURA FLEXÍVEL PRINCIPAL --- */
         #app-container {
             width: 100%; max-width: 600px; height: 100%;
-            display: flex; flex-direction: column; /* Pilha vertical */
-            position: relative;
+            display: flex; flex-direction: column; position: relative;
         }
 
-        /* 1. HEADER (Não é mais absolute) */
+        /* HEADER */
         header { 
-            padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
-            background: transparent;
+            padding: 5px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
+            background: transparent; height: auto;
         }
-        .logo-img { max-height: 80px; width: auto; display: block; margin: 0 auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
+        .logo-img { 
+            max-height: 55px; 
+            width: auto; display: block; margin: 0 auto; 
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
+        }
 
-        /* 2. ÁREA DA CÂMERA (Cresce para ocupar espaço) */
+        /* ÁREA DA CÂMERA */
         #container-palco { 
-            flex: 1; /* O segredo: ocupa todo o espaço sobrando */
+            flex: 1; 
             display: flex; justify-content: center; align-items: center; 
-            padding: 10px 20px; /* Margem lateral para não colar na borda */
+            padding: 5px 10px; 
             position: relative; overflow: hidden;
-            transition: all 0.4s ease; /* Animação suave ao redimensionar */
         }
         
         #palco {
-            /* Tamanho responsivo mantendo proporção */
-            height: 100%; 
-            max-width: 100%;
-            aspect-ratio: 3/4; /* Formato Retrato Fixo */
-            
-            background: #000; border-radius: 25px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 4px solid rgba(255,255,255,0.9); 
+            height: 100%; max-height: 100%;
+            aspect-ratio: 3/4; 
+            background: #000; border-radius: 18px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.9); 
             position: relative; touch-action: none; user-select: none;
-            transition: all 0.4s ease;
         }
+        @media (min-aspect-ratio: 3/4) { #palco { height: auto; width: 100%; } }
 
         video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         #previewImage { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; background: #000; }
         .mirrored { transform: scaleX(-1); }
 
         .sticker-joia {
-            position: absolute; width: 120px; top: 50%; left: 50%;
-            transform-origin: center center; cursor: grab;
+            position: absolute; width: 100px; 
+            top: 50%; left: 50%; transform-origin: center center; cursor: grab;
             filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15;
         }
-        .sticker-joia.selected { border: 2px dashed rgba(255,255,255,0.9); }
+        .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* CONTROLES DA CÂMERA (Flutuantes dentro do palco ou sobre ele) */
+        /* CONTROLES CÂMERA */
         .ios-controls {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 320px; 
+            width: 80%; max-width: 300px; 
             background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 12px 20px; border-radius: 40px; 
+            padding: 8px 20px; border-radius: 40px; 
             display: grid; grid-template-columns: 1fr auto 1fr;
             align-items: center; justify-items: center; z-index: 30;
         }
-        .shutter-button { width: 65px; height: 65px; border-radius: 50%; border: 4px solid white; background: transparent; padding: 3px; cursor: pointer; }
+        .shutter-button { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; padding: 2px; cursor: pointer; }
         .shutter-button::after { content: ''; display: block; width: 100%; height: 100%; background: white; border-radius: 50%; }
-        .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; text-transform: uppercase; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
-        .mini-btn i { font-size: 28px; margin-bottom: 2px; }
+        .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
+        .mini-btn i { font-size: 24px; margin-bottom: 2px; }
 
-        /* 3. PAINEL DE EDIÇÃO (Rodapé Dinâmico) */
+        /* PAINEL DE EDIÇÃO COMPACTO */
         #painel-edicao {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px);
             border-top: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 30px 30px 0 0; 
+            border-radius: 25px 25px 0 0; 
             
-            /* Layout Flex Column */
-            display: none; /* Começa oculto */
-            flex-direction: column; 
-            z-index: 50; 
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
+            padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; 
             
-            /* Transição de Altura */
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            overflow: hidden; /* Esconde o conteúdo ao minimizar */
-            
-            /* Padding inferior seguro para iPhones */
-            padding-bottom: calc(15px + var(--safe-bottom));
-            flex-shrink: 0; /* Não encolhe além do definido */
-        }
-
-        /* Classes de Estado do Painel */
-        #painel-edicao.expanded {
-            height: auto;
-            padding-top: 15px; padding-left: 20px; padding-right: 20px;
+            display: none; flex-direction: column; gap: 8px; z-index: 50; 
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         #painel-edicao.minimized {
-            height: 60px; /* Altura apenas do cabeçalho */
-            padding-top: 10px; padding-left: 20px; padding-right: 20px;
-            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(85%); 
+            background: rgba(255, 255, 255, 0.9);
         }
+        #painel-edicao.minimized .conteudo-ocultavel { opacity: 0; pointer-events: none; }
+        .conteudo-ocultavel { opacity: 1; transition: opacity 0.2s; display: flex; flex-direction: column; gap: 8px; }
 
-        /* Conteúdo que some ao minimizar */
-        #painel-edicao.minimized .conteudo-ocultavel {
-            opacity: 0; pointer-events: none; height: 0; margin: 0;
-        }
-        
-        .conteudo-ocultavel {
-            opacity: 1; transition: opacity 0.2s;
-            display: flex; flex-direction: column; gap: 12px;
-        }
-
-        /* Cabeçalho do Painel (Sempre visível) */
         .header-edicao { 
             display: flex; justify-content: space-between; align-items: center; 
-            height: 40px; cursor: pointer;
+            height: 35px; cursor: pointer; margin-bottom: 0;
         }
-        
-        .titulo-wrapper { display: flex; align-items: center; gap: 10px; }
-        .titulo-edicao { font-weight: 800; color: var(--texto-escuro); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .titulo-wrapper { display: flex; align-items: center; gap: 5px; }
+        .titulo-edicao { font-weight: 800; color: var(--texto-escuro); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-toggle { background: transparent; border: none; color: #555; cursor: pointer; display: flex; align-items: center; }
-        
-        .carrossel { display: flex; overflow-x: auto; gap: 10px; padding: 5px; min-height: 75px; -webkit-overflow-scrolling: touch; }
+        .btn-voltar-edicao { background: rgba(0,0,0,0.05); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Carrossel */
+        .carrossel { display: flex; overflow-x: auto; gap: 8px; padding: 2px; min-height: 60px; -webkit-overflow-scrolling: touch; }
         .thumb-joia {
-            flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.8);
-            border: 2px solid #fff; padding: 5px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; display: none; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex-shrink: 0; width: 55px; height: 55px; 
+            border-radius: 50%; background: rgba(255,255,255,0.8);
+            border: 2px solid #fff; padding: 4px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; display: none; transition: transform 0.2s; box-shadow: 0 3px 8px rgba(0,0,0,0.05);
         }
         .thumb-joia.loaded { display: flex; }
         .thumb-joia.active { border-color: var(--menta-forte); transform: scale(1.1); background: #fff; }
         .thumb-joia img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 
-        .ferramentas-ajuste { display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 15px; }
-        .slider-row { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .slider-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; color: #555; }
-        input[type=range] { width: 100%; accent-color: #333; height: 4px; cursor: pointer; }
+        /* Ferramentas */
+        .ferramentas-ajuste { 
+            display: flex; gap: 8px; align-items: center; 
+            background: rgba(255,255,255,0.4); padding: 10px; border-radius: 12px; 
+        }
+        .slider-row { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; 
+            gap: 12px; 
+        }
+        .slider-label { 
+            font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #555; 
+            margin-bottom: 0;
+        }
+        input[type=range] { width: 100%; accent-color: #333; height: 3px; cursor: pointer; }
 
         .btn-trash {
-            width: 35px; height: 35px; border-radius: 50%; border: none;
+            width: 32px; height: 32px; border-radius: 50%; border: none;
             background: #ff5252; color: white; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(255, 82, 82, 0.3); cursor: pointer;
+            box-shadow: 0 3px 8px rgba(255, 82, 82, 0.3); cursor: pointer;
         }
+        .btn-trash i { font-size: 18px; }
 
-        .acoes-finais { display: flex; gap: 10px; width: 100%; margin-top: 5px; }
+        /* Botões Finais */
+        .acoes-finais { display: flex; gap: 8px; width: 100%; margin-top: 2px; }
         
         .btn-final {
-            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8);
-            color: var(--texto-escuro); border-radius: 50px; flex: 1; padding: 14px;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.75rem;
-            display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: background 0.2s;
+            background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9);
+            color: var(--texto-escuro); border-radius: 50px; flex: 1; 
+            padding: 10px; 
+            font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; 
+            font-size: 0.7rem; 
+            display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.2s;
         }
-        .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.9); }
-        .btn-final.loading::after { content: ""; width: 15px; height: 15px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        .btn-final i { font-size: 18px; }
+        .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.95); }
+        .btn-final.loading::after { content: ""; width: 12px; height: 12px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .btn-voltar-edicao { background: rgba(0,0,0,0.05); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         #fileInput { display: none; }
 
-        /* Menu Principal (Só aparece no modo câmera) */
+        /* Menu Inferior */
         .menu-footer { 
-            padding: 10px 15px calc(20px + var(--safe-bottom)) 15px; width: 100%;
-            display: flex; justify-content: center; gap: 10px; z-index: 40; 
+            padding: 5px 10px calc(15px + var(--safe-bottom)) 10px; width: 100%;
+            display: flex; justify-content: center; gap: 6px; z-index: 40; 
             background: transparent; flex-shrink: 0;
         }
         .btn-menu-glow {
             background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px; padding: 14px 2px; flex: 1; min-width: 0;
-            color: #333; text-align: center; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; 
+            border-radius: 15px; padding: 10px 2px; flex: 1; min-width: 0;
+            color: #333; text-align: center; 
+            font-size: 0.55rem; font-weight: 800; text-transform: uppercase; 
             text-decoration: none; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
+        .btn-menu-glow:active { transform: scale(0.95); background: rgba(255,255,255,0.4); }
 
     </style>
 </head>
@@ -234,7 +222,7 @@
             </div>
         </div>
 
-        <div id="painel-edicao" class="expanded">
+        <div id="painel-edicao">
             <div class="header-edicao">
                 <div class="titulo-wrapper" onclick="togglePainel()">
                     <button class="btn-toggle"><i class="material-icons" id="iconToggle">expand_more</i></button>
@@ -265,7 +253,7 @@
                         <span>Baixar</span> <i class="material-icons">download</i>
                     </button>
                     <button class="btn-final" id="btnShare" onclick="gerarPolaroideFinal()">
-                        <span>Postar</span> <i class="material-icons">ios_share</i>
+                        <span>Compartilhar</span> <i class="material-icons">ios_share</i>
                     </button>
                 </div>
             </div>
@@ -296,8 +284,10 @@
         let currentFacingMode = 'user'; 
         let currentStream = null;
 
+        // URLS ATUALIZADAS
         const backupJoias = [
-            "https://i.imgur.com/4q6kL6A.png", "https://i.imgur.com/Hze2y0j.png", "https://i.imgur.com/Pk7fW9M.png"
+            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
+            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"
         ];
 
         window.onload = () => { startCamera(); carregarCatalogoHibrido(); }
@@ -327,23 +317,16 @@
             const canvas = document.createElement('canvas');
             const vW = video.videoWidth; const vH = video.videoHeight;
             const pW = palco.clientWidth; const pH = palco.clientHeight;
-            
-            // Alta resolução 3:4
-            canvas.width = 1080;
-            canvas.height = 1080 * (pH / pW); 
-
+            canvas.width = 1080; canvas.height = 1080 * (pH / pW); 
             const ctx = canvas.getContext('2d');
             const rVid = vW / vH; const rCan = canvas.width / canvas.height;
             let sW, sH, sX, sY;
-
             if (rVid > rCan) { sH = vH; sW = vH * rCan; sX = (vW - sW) / 2; sY = 0; } 
             else { sW = vW; sH = vW / rCan; sX = 0; sY = (vH - sH) / 2; }
-
             ctx.save();
             if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
             ctx.drawImage(video, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
             ctx.restore();
-
             preview.src = canvas.toDataURL('image/png');
             abrirEdicao();
         }
@@ -377,12 +360,11 @@
             video.style.display = 'none'; preview.style.display = 'block';
             document.getElementById('ios-controls').style.display = 'none';
             document.getElementById('menu-footer').style.display = 'none';
-            
             painel.style.display = 'flex';
-            // Garante que comece expandido
-            painel.classList.remove('minimized');
-            painel.classList.add('expanded');
-            iconToggle.innerText = 'expand_more';
+            setTimeout(() => { 
+                painel.classList.remove('minimized');
+                iconToggle.innerText = 'expand_more';
+            }, 50);
         }
 
         function resetar() {
@@ -390,7 +372,6 @@
             document.querySelectorAll('.sticker-joia').forEach(el => el.remove()); stickerAtivo = null;
             document.getElementById('ios-controls').style.display = 'grid';
             document.getElementById('menu-footer').style.display = 'flex';
-            
             painel.style.display = 'none';
             document.getElementById('fileInput').value = "";
             btnShare.classList.remove('loading'); btnSave.classList.remove('loading');
@@ -399,10 +380,8 @@
         function togglePainel() {
             if (painel.classList.contains('minimized')) {
                 painel.classList.remove('minimized');
-                painel.classList.add('expanded');
                 iconToggle.innerText = 'expand_more';
             } else {
-                painel.classList.remove('expanded');
                 painel.classList.add('minimized');
                 iconToggle.innerText = 'expand_less';
             }
@@ -536,6 +515,7 @@
                         try { await navigator.share({ files: [file], title: 'Orelha dos Sonhos' }); } catch (err) {}
                     } else {
                         const link = document.createElement('a'); link.download = 'orelha-polaroid.png'; link.href = canvas.toDataURL(); link.click();
+                        alert("Salvo na galeria!");
                     }
                     btnShare.classList.remove('loading');
                 }, 'image/png');
