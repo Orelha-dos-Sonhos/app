@@ -7,12 +7,12 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://orelha-dos-sonhos.github.io/app/">
-    <meta property="og:title" content="Orelha dos Sonhos - Provador Virtual">
+    
+    <meta property="og:title" content="Orelha dos Sonhos">
     <meta property="og:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual e veja nossa coleção exclusiva!">
     
     <meta property="og:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
     <meta property="og:image:type" content="image/webp">
-    
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -86,7 +86,7 @@
 
         video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         
-        /* CORREÇÃO DE BORDA PRETA: object-fit: cover obriga a imagem a preencher tudo */
+        /* CORREÇÃO DE BORDA PRETA */
         #previewImage { 
             width: 100%; height: 100%; 
             object-fit: cover; 
@@ -120,7 +120,7 @@
         /* 3. PAINEL DE EDIÇÃO (TRANSPARENTE E AJUSTADO) */
         #painel-edicao {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            /* Fundo mais transparente (0.5) */
+            /* Fundo transparente (0.5) */
             background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px);
             border-top: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 25px 25px 0 0; 
@@ -133,7 +133,7 @@
         }
 
         #painel-edicao.minimized {
-            /* Recolhe para 78% conforme pedido */
+            /* Recolhe 78% */
             transform: translateY(78%); 
             background: rgba(255, 255, 255, 0.8);
         }
@@ -309,6 +309,7 @@
         let currentFacingMode = 'user'; 
         let currentStream = null;
 
+        // URLS ATUALIZADAS
         const backupJoias = [
             "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
             "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"
@@ -341,7 +342,8 @@
             const canvas = document.createElement('canvas');
             const vW = video.videoWidth; const vH = video.videoHeight;
             const pW = palco.clientWidth; const pH = palco.clientHeight;
-            canvas.width = 1080; canvas.height = 1080 * (pH / pW); 
+            // 3:4 High Res
+            canvas.width = 1080; canvas.height = 1440; 
             const ctx = canvas.getContext('2d');
             const rVid = vW / vH; const rCan = canvas.width / canvas.height;
             let sW, sH, sX, sY;
@@ -512,7 +514,7 @@
                     const paperBottom = ((CH - 1600)/2 - 50) + 1600;
                     
                     const lX = paperRight - lW - 30; 
-                    const lY = paperBottom - lH - 50; // Sobe um pouco para caber o texto
+                    const lY = paperBottom - lH - 50; 
 
                     ctx.shadowColor = "#333"; ctx.shadowBlur = 5; ctx.filter = "brightness(0.3)";
                     ctx.drawImage(logo, lX, lY, lW, lH); 
@@ -521,8 +523,7 @@
                     // Texto do Instagram (Menor e Centralizado abaixo da logo)
                     ctx.font = "bold 20px Raleway"; 
                     ctx.fillStyle = "#666"; 
-                    ctx.textAlign = "center"; // Centraliza
-                    // lX + lW/2 = Centro horizontal da logo
+                    ctx.textAlign = "center"; 
                     ctx.fillText("@orelhadossonhosrp", lX + (lW/2), lY + lH + 25);
                     
                 } catch(e) {}
