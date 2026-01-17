@@ -7,20 +7,13 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://orelha-dos-sonhos.github.io/app/">
-    
     <meta property="og:title" content="Orelha dos Sonhos">
-    <meta property="og:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual e veja nossa coleção exclusiva!">
-    
+    <meta property="og:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual.">
     <meta property="og:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
     <meta property="og:image:type" content="image/webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://orelha-dos-sonhos.github.io/app/">
-    <meta property="twitter:title" content="Orelha dos Sonhos">
-    <meta property="twitter:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual.">
-    <meta property="twitter:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
+    
     <link rel="icon" type="image/png" href="icon-web.png">
     <link rel="apple-touch-icon" href="icon-web.png">
 
@@ -62,43 +55,43 @@
             background: transparent; height: auto;
         }
         .logo-img { 
-            max-height: 55px; 
-            width: auto; display: block; margin: 0 auto; 
+            max-height: 55px; width: auto; display: block; margin: 0 auto; 
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
         }
 
         /* 2. ÁREA DA CÂMERA */
         #container-palco { 
-            flex: 1; 
-            display: flex; justify-content: center; align-items: center; 
-            padding: 5px 10px; 
-            position: relative; overflow: hidden;
+            flex: 1; display: flex; justify-content: center; align-items: center; 
+            padding: 5px 10px; position: relative; overflow: hidden;
         }
         
         #palco {
             height: 100%; max-height: 100%;
-            aspect-ratio: 3/4; 
+            aspect-ratio: 3/4; /* Mantém proporção fixa 3:4 */
             background: #000; border-radius: 18px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.9); 
             position: relative; touch-action: none; user-select: none;
         }
+        /* Limite para telas muito largas */
         @media (min-aspect-ratio: 3/4) { #palco { height: auto; width: 100%; } }
 
-        video { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-        
-        /* CORREÇÃO DE BORDA PRETA */
-        #previewImage { 
+        /* O vídeo e o preview ocupam tudo com object-fit: cover */
+        video, #previewImage { 
             width: 100%; height: 100%; 
             object-fit: cover; 
-            position: absolute; top: 0; left: 0; background: #000; 
+            position: absolute; top: 0; left: 0; 
         }
-        
+        #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
 
         .sticker-joia {
             position: absolute; width: 100px; 
-            top: 50%; left: 50%; transform-origin: center center; cursor: grab;
+            /* Centralizado inicialmente */
+            top: 50%; left: 50%; 
+            /* O transform será controlado via JS para não conflitar */
+            cursor: grab;
             filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15;
+            touch-action: none;
         }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
@@ -117,23 +110,19 @@
         .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
         .mini-btn i { font-size: 24px; margin-bottom: 2px; }
 
-        /* 3. PAINEL DE EDIÇÃO (TRANSPARENTE E AJUSTADO) */
+        /* 3. PAINEL DE EDIÇÃO */
         #painel-edicao {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            /* Fundo transparente (0.5) */
             background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px);
             border-top: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 25px 25px 0 0; 
-            
             padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; 
-            
             display: none; flex-direction: column; gap: 8px; z-index: 50; 
             box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         #painel-edicao.minimized {
-            /* Recolhe 78% */
             transform: translateY(78%); 
             background: rgba(255, 255, 255, 0.8);
         }
@@ -166,14 +155,8 @@
             display: flex; gap: 8px; align-items: center; 
             background: rgba(255,255,255,0.4); padding: 10px; border-radius: 12px; 
         }
-        .slider-row { 
-            flex: 1; display: flex; flex-direction: column; align-items: center; 
-            gap: 12px; 
-        }
-        .slider-label { 
-            font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #555; 
-            margin-bottom: 0;
-        }
+        .slider-row { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .slider-label { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #555; margin-bottom: 0; }
         input[type=range] { width: 100%; accent-color: #333; height: 3px; cursor: pointer; }
 
         .btn-trash {
@@ -183,16 +166,14 @@
         }
         .btn-trash i { font-size: 18px; }
 
-        /* Botões Finais Pequenos */
+        /* Botões Finais */
         .acoes-finais { display: flex; gap: 8px; width: 100%; margin-top: 2px; }
         
         .btn-final {
             background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9);
             color: var(--texto-escuro); border-radius: 50px; flex: 1; 
-            padding: 10px; 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; 
-            font-size: 0.7rem; 
-            display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer;
+            padding: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; 
+            font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.2s;
         }
         .btn-final i { font-size: 18px; }
@@ -211,8 +192,7 @@
         .btn-menu-glow {
             background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 15px; padding: 10px 2px; flex: 1; min-width: 0;
-            color: #333; text-align: center; 
-            font-size: 0.55rem; font-weight: 800; text-transform: uppercase; 
+            color: #333; text-align: center; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; 
             text-decoration: none; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .btn-menu-glow:active { transform: scale(0.95); background: rgba(255,255,255,0.4); }
@@ -309,7 +289,6 @@
         let currentFacingMode = 'user'; 
         let currentStream = null;
 
-        // URLS ATUALIZADAS
         const backupJoias = [
             "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
             "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"
@@ -339,20 +318,54 @@
         }
 
         function capturarFoto() {
+            // Cria um canvas intermediário para fazer o crop exato
             const canvas = document.createElement('canvas');
-            const vW = video.videoWidth; const vH = video.videoHeight;
-            const pW = palco.clientWidth; const pH = palco.clientHeight;
-            // 3:4 High Res
-            canvas.width = 1080; canvas.height = 1440; 
+            
+            // Dimensões do vídeo bruto
+            const vW = video.videoWidth; 
+            const vH = video.videoHeight;
+            
+            // Dimensões da tela (Palco)
+            const pW = palco.clientWidth; 
+            const pH = palco.clientHeight;
+            
+            // Define o canvas com alta resolução (ex: 1080 de largura) mantendo proporção do palco
+            const targetW = 1080;
+            const targetH = 1080 * (pH / pW);
+            
+            canvas.width = targetW; 
+            canvas.height = targetH;
+
             const ctx = canvas.getContext('2d');
-            const rVid = vW / vH; const rCan = canvas.width / canvas.height;
-            let sW, sH, sX, sY;
-            if (rVid > rCan) { sH = vH; sW = vH * rCan; sX = (vW - sW) / 2; sY = 0; } 
-            else { sW = vW; sH = vW / rCan; sX = 0; sY = (vH - sH) / 2; }
+
+            // Lógica "Object-Fit: Cover" Manual
+            // Calcula qual dimensão precisa ser cortada para preencher o canvas
+            const rVid = vW / vH;
+            const rCan = targetW / targetH;
+            
+            let sW, sH, sX, sY; // Source Crop (x, y, w, h)
+
+            if (rVid > rCan) { 
+                // Vídeo mais largo que o palco (corta laterais)
+                sH = vH;
+                sW = vH * rCan;
+                sX = (vW - sW) / 2;
+                sY = 0;
+            } else {
+                // Vídeo mais alto que o palco (corta topo/baixo)
+                sW = vW;
+                sH = vW / rCan;
+                sX = 0;
+                sY = (vH - sH) / 2;
+            }
+
             ctx.save();
             if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
-            ctx.drawImage(video, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
+            
+            // Desenha apenas a fatia cortada do vídeo
+            ctx.drawImage(video, sX, sY, sW, sH, 0, 0, targetW, targetH);
             ctx.restore();
+
             preview.src = canvas.toDataURL('image/png');
             abrirEdicao();
         }
@@ -413,10 +426,26 @@
             }
         }
 
+        // --- Lógica de Posicionamento e Drag ---
         function adicionarSticker(url) {
             const img = document.createElement('img'); img.src = url; img.className = 'sticker-joia'; img.crossOrigin = "anonymous";
-            img.dataset.scale = 120; img.dataset.rotation = 0; img.dataset.x = 0; img.dataset.y = 0;
-            img.style.width = '120px'; img.style.transform = `translate(-50%, -50%)`;
+            
+            // Valores Iniciais
+            img.dataset.scale = 120; 
+            img.dataset.rotation = 0;
+            
+            // Posição inicial: Centro do Palco
+            // Usaremos porcentagem para ser responsivo
+            const startX = palco.clientWidth / 2;
+            const startY = palco.clientHeight / 2;
+            
+            img.style.left = startX + 'px';
+            img.style.top = startY + 'px';
+            
+            // Transform centraliza o ponto de ancora
+            img.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+            img.style.width = '120px';
+
             img.addEventListener('touchstart', dragStart, {passive: false}); img.addEventListener('mousedown', dragStart);
             img.addEventListener('click', (e) => { e.stopPropagation(); definirAtivo(img); });
             palco.appendChild(img); definirAtivo(img);
@@ -435,96 +464,159 @@
         function ajustarStickerAtivo() {
             if(!stickerAtivo) return;
             const scale = rangeSize.value; const rotation = rangeRotate.value;
-            const x = parseFloat(stickerAtivo.dataset.x); const y = parseFloat(stickerAtivo.dataset.y);
             stickerAtivo.dataset.scale = scale; stickerAtivo.dataset.rotation = rotation;
             stickerAtivo.style.width = `${scale}px`;
-            stickerAtivo.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${rotation}deg)`;
+            stickerAtivo.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
         }
 
-        let isDragging = false; let startX, startY, initialObjX, initialObjY;
+        // --- Dragging Logic Refined ---
+        let isDragging = false; 
+        let dragOffsetX, dragOffsetY;
+
         function dragStart(e) {
             if(!e.target.classList.contains('sticker-joia')) return;
             e.preventDefault(); isDragging = true; definirAtivo(e.target);
+            
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            startX = clientX; startY = clientY;
-            initialObjX = parseFloat(stickerAtivo.dataset.x); initialObjY = parseFloat(stickerAtivo.dataset.y);
+            
+            // Pega retângulo do palco para referência
+            const rect = palco.getBoundingClientRect();
+            
+            // Pega posição atual do elemento (left/top)
+            // Como usamos translate(-50%, -50%), o left/top é o centro do objeto
+            const currentLeft = parseFloat(stickerAtivo.style.left || 0);
+            const currentTop = parseFloat(stickerAtivo.style.top || 0);
+            
+            // Calcula onde clicou relativo ao centro do objeto
+            // MouseX - (PalcoX + LeftObjeto)
+            dragOffsetX = clientX - (rect.left + currentLeft);
+            dragOffsetY = clientY - (rect.top + currentTop);
         }
+
         function dragMove(e) {
             if (!isDragging || !stickerAtivo) return; e.preventDefault();
+            
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            const deltaX = clientX - startX; const deltaY = clientY - startY;
-            stickerAtivo.dataset.x = initialObjX + deltaX; stickerAtivo.dataset.y = initialObjY + deltaY;
-            ajustarStickerAtivo();
+            const rect = palco.getBoundingClientRect();
+
+            // Nova posição
+            let newLeft = clientX - rect.left - dragOffsetX;
+            let newTop = clientY - rect.top - dragOffsetY;
+
+            stickerAtivo.style.left = newLeft + 'px';
+            stickerAtivo.style.top = newTop + 'px';
         }
+
         function dragEnd() { isDragging = false; }
         window.addEventListener('touchmove', dragMove, {passive: false}); window.addEventListener('mousemove', dragMove);
         window.addEventListener('touchend', dragEnd); window.addEventListener('mouseup', dragEnd);
 
+        // --- RENDERIZAÇÃO FINAL ---
         async function desenharCenaNoCanvas(canvas, comMoldura) {
             const ctx = canvas.getContext('2d'); const CW = canvas.width; const CH = canvas.height;
             let photoX, photoY, photoW, photoH;
 
+            // Define área da foto no canvas final
             if (comMoldura) {
                 const gradient = ctx.createLinearGradient(0, 0, CW, CH);
                 gradient.addColorStop(0, "#ffd1dc"); gradient.addColorStop(0.5, "#c8e6c9"); gradient.addColorStop(1, "#b2dfdb");
                 ctx.fillStyle = gradient; ctx.fillRect(0, 0, CW, CH);
-                const margin = 80; const paperW = CW - margin*2; const paperH = 1600; const paperX = margin; const paperY = (CH - paperH)/2 - 50;
+                
+                // Papel Branco
+                const margin = 80; 
+                const paperW = CW - margin*2; 
+                const paperH = 1600; 
+                const paperX = margin; 
+                const paperY = (CH - paperH)/2 - 50;
+                
                 ctx.fillStyle = "#fff"; ctx.shadowColor = "rgba(0,0,0,0.2)"; ctx.shadowBlur = 30;
                 ctx.fillRect(paperX, paperY, paperW, paperH); ctx.shadowColor = "transparent";
+                
+                // Área da Foto (Dentro do papel)
                 const photoMargin = 50;
-                photoX = paperX + photoMargin; photoY = paperY + photoMargin;
-                photoW = paperW - photoMargin*2; photoH = photoW * 1.33; 
+                photoX = paperX + photoMargin; 
+                photoY = paperY + photoMargin;
+                photoW = paperW - photoMargin*2; 
+                photoH = photoW * 1.33; // 3:4 Aspect Ratio
             } else {
                 photoX = 0; photoY = 0; photoW = CW; photoH = CH;
             }
 
+            // 1. Desenha a foto base
             const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
-            ctx.save(); ctx.beginPath(); ctx.rect(photoX, photoY, photoW, photoH); ctx.clip();
-            const rImg = imgBase.width/imgBase.height; const rArea = photoW/photoH; let dw, dh, dx, dy;
-            if(rImg > rArea) { dh = photoH; dw = imgBase.width*(photoH/imgBase.height); dx = photoX-(dw-photoW)/2; dy = photoY; }
-            else { dw = photoW; dh = imgBase.height*(photoW/imgBase.width); dx = photoX; dy = photoY-(dh-photoH)/2; }
-            ctx.drawImage(imgBase, dx, dy, dw, dh);
-
-            const stickers = document.querySelectorAll('.sticker-joia');
-            const palcoRect = palco.getBoundingClientRect(); const scaleFactor = photoW / palcoRect.width;
-            const centerX = photoX + photoW/2; const centerY = photoY + photoH/2;
-            for(let s of stickers) {
-                const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
-                const sX = parseFloat(s.dataset.x); const sY = parseFloat(s.dataset.y);
-                const sScale = parseFloat(s.dataset.scale); const sRot = parseFloat(s.dataset.rotation);
-                const finalX = centerX + (sX * scaleFactor); const finalY = centerY + (sY * scaleFactor);
-                const finalW = sScale * scaleFactor; const ratio = imgS.height / imgS.width;
-                ctx.save(); ctx.translate(finalX, finalY); ctx.rotate(sRot * Math.PI / 180);
-                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); ctx.restore();
-            }
+            
+            ctx.save();
+            ctx.beginPath(); ctx.rect(photoX, photoY, photoW, photoH); ctx.clip();
+            // A foto já vem cortada (crop) da função capturarFoto, então é só esticar
+            ctx.drawImage(imgBase, photoX, photoY, photoW, photoH);
             ctx.restore();
 
+            // 2. Desenha os Stickers (Mapeamento de Coordenadas)
+            const stickers = document.querySelectorAll('.sticker-joia');
+            // Dimensões do palco na tela
+            const palcoW = palco.clientWidth;
+            const palcoH = palco.clientHeight;
+
+            for(let s of stickers) {
+                const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
+                
+                // Posição no palco (pixels)
+                const left = parseFloat(s.style.left);
+                const top = parseFloat(s.style.top);
+                
+                // Converte para porcentagem (0.0 a 1.0)
+                const percX = left / palcoW;
+                const percY = top / palcoH;
+                
+                // Aplica porcentagem na área da foto do canvas
+                const canvasX = photoX + (percX * photoW);
+                const canvasY = photoY + (percY * photoH);
+                
+                // Escala do tamanho
+                // Tamanho original (px na tela) / largura palco = proporção
+                // Proporção * largura foto canvas = tamanho final
+                const sScale = parseFloat(s.dataset.scale);
+                const sRot = parseFloat(s.dataset.rotation);
+                const finalW = (sScale / palcoW) * photoW;
+                const ratio = imgS.height / imgS.width;
+
+                ctx.save();
+                ctx.translate(canvasX, canvasY); // Move para o centro
+                ctx.rotate(sRot * Math.PI / 180);
+                // Desenha centralizado
+                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio);
+                ctx.restore();
+            }
+
+            // 3. Logo e Instagram (Só na moldura)
             if (comMoldura) {
                 try {
                     const logo = new Image(); logo.src = "logo-branco-brilho.png"; await imgLoad(logo);
                     
-                    // --- AJUSTES DA LOGO E TEXTO NA POLAROID ---
-                    const lW = 220; // Logo Maior
+                    const lW = 280; // LOGO MAIOR
                     const lH = lW*(logo.height/logo.width); 
                     
-                    // Posicionamento no canto inferior direito
+                    // Canto inferior direito do papel
                     const paperRight = (80 + (CW - 160)); 
                     const paperBottom = ((CH - 1600)/2 - 50) + 1600;
                     
-                    const lX = paperRight - lW - 30; 
-                    const lY = paperBottom - lH - 50; 
+                    // Posição Logo
+                    const lX = paperRight - lW - 40; 
+                    const lY = paperBottom - lH - 60;
 
+                    // Desenha Logo com contraste
                     ctx.shadowColor = "#333"; ctx.shadowBlur = 5; ctx.filter = "brightness(0.3)";
                     ctx.drawImage(logo, lX, lY, lW, lH); 
                     ctx.filter = "none"; ctx.shadowColor = "transparent";
                     
-                    // Texto do Instagram (Menor e Centralizado abaixo da logo)
-                    ctx.font = "bold 20px Raleway"; 
+                    // Texto do Instagram (Centralizado abaixo da logo)
+                    ctx.font = "bold 22px Raleway"; 
                     ctx.fillStyle = "#666"; 
                     ctx.textAlign = "center"; 
-                    ctx.fillText("@orelhadossonhosrp", lX + (lW/2), lY + lH + 25);
+                    // X = Centro da logo
+                    ctx.fillText("@orelhadossonhosrp", lX + (lW/2), lY + lH + 30);
                     
                 } catch(e) {}
             }
@@ -534,6 +626,7 @@
             if(stickerAtivo) stickerAtivo.classList.remove('selected');
             btnSave.classList.add('loading');
             try {
+                // 3:4 High Res
                 const canvas = document.createElement('canvas');
                 canvas.width = 1080; canvas.height = 1440; 
                 await desenharCenaNoCanvas(canvas, false);
