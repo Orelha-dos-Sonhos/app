@@ -49,7 +49,6 @@
             display: flex; flex-direction: column; position: relative;
         }
 
-        /* HEADER */
         header { 
             padding: 5px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
             background: transparent; height: auto;
@@ -59,14 +58,14 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
         }
 
-        /* ÁREA DA CÂMERA/PALCO */
         #container-palco { 
             flex: 1; display: flex; justify-content: center; align-items: center; 
             padding: 5px 10px; position: relative; overflow: hidden;
         }
         
         #palco {
-            height: 100%; max-height: 100%; aspect-ratio: 3/4;
+            height: 100%; max-height: 100%;
+            aspect-ratio: 3/4; 
             background: #000; border-radius: 18px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.9); 
             position: relative; touch-action: none; user-select: none;
@@ -75,21 +74,18 @@
 
         video, #previewImage { 
             width: 100%; height: 100%; 
-            object-fit: cover; /* Padrão para câmera */
+            object-fit: cover; 
             position: absolute; top: 0; left: 0; 
+            transform-origin: center center;
         }
         #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
 
-        /* Classe especial para quando estiver ajustando a imagem da galeria */
+        /* CORREÇÃO CRUCIAL: No modo crop, mantemos 100% do tamanho para alinhar com o Canvas */
         #previewImage.cropping-mode {
-            object-fit: contain; /* Mostra inteira inicialmente */
+            object-fit: contain; /* Encaixa a imagem inteira na tela */
             cursor: move;
-            /* O posicionamento será via transform no JS */
-            top: 50%; left: 50%;
-            transform-origin: center center;
-            width: auto; height: auto; /* Deixa o tamanho real fluir */
-            max-width: none; max-height: none;
+            /* Removemos width auto/height auto que causava o bug */
         }
 
         .sticker-joia {
@@ -99,7 +95,6 @@
         }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* CONTROLES CÂMERA */
         .ios-controls {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 80%; max-width: 300px; 
@@ -114,26 +109,21 @@
         .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
         .mini-btn i { font-size: 24px; margin-bottom: 2px; }
 
-        /* NOVO: CONTROLES DE AJUSTE (CROP) */
+        /* CROP CONTROLS */
         #crop-controls {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 350px;
             background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
             border-radius: 20px; padding: 15px; z-index: 35;
-            display: none; /* Flex quando ativo */
-            flex-direction: column; gap: 15px;
+            display: none; flex-direction: column; gap: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .crop-header { text-align: center; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; color: #333; }
         .crop-actions { display: flex; gap: 10px; }
-        .btn-crop { 
-            flex: 1; padding: 12px; border: none; border-radius: 50px; 
-            font-weight: 800; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; 
-        }
+        .btn-crop { flex: 1; padding: 12px; border: none; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; }
         .btn-cancel { background: #ff5252; color: white; }
         .btn-confirm { background: var(--texto-escuro); color: white; }
         
-        /* PAINEL DE EDIÇÃO */
         #painel-edicao {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px);
@@ -209,7 +199,6 @@
                         <button class="btn-crop btn-confirm" onclick="confirmarCrop()">Confirmar</button>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -262,7 +251,6 @@
         const btnSave = document.getElementById('btnSave');
         const painel = document.getElementById('painel-edicao');
         const iconToggle = document.getElementById('iconToggle');
-        // Novos elementos
         const iosControls = document.getElementById('ios-controls');
         const cropControls = document.getElementById('crop-controls');
         const cropZoomSlider = document.getElementById('cropZoomSlider');
@@ -270,7 +258,6 @@
         let stickerAtivo = null;
         let currentFacingMode = 'user'; 
         let currentStream = null;
-        // Variáveis de estado para o Crop
         let isCroppingMode = false;
         let cropScale = 1;
         let cropTranslateX = 0;
@@ -306,7 +293,6 @@
             startCamera();
         }
 
-        // --- Captura da Câmera (Já sai cortada) ---
         function capturarFoto() {
             const canvas = document.createElement('canvas');
             const vW = video.videoWidth; const vH = video.videoHeight;
@@ -322,25 +308,21 @@
             ctx.drawImage(video, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
             ctx.restore();
             preview.src = canvas.toDataURL('image/png');
-            // Câmera vai direto para edição, pois já está no formato certo
             abrirEdicao();
         }
 
-        // --- Upload da Galeria (Inicia modo de ajuste) ---
         function uploadGaleria(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => { 
                     preview.src = e.target.result;
-                    // Em vez de abrir edição, abre o modo de ajuste (crop)
                     iniciarModoCrop();
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        // --- Lógica do Modo de Ajuste (Crop) ---
         function iniciarModoCrop() {
             isCroppingMode = true;
             video.style.display = 'none';
@@ -348,15 +330,13 @@
             iosControls.style.display = 'none';
             cropControls.style.display = 'flex';
             document.getElementById('menu-footer').style.display = 'none';
-
-            // Prepara a imagem para ser arrastada
             preview.classList.add('cropping-mode');
-            // Reseta transformações
+            
+            // Reseta para 100% (encaixado)
             cropScale = 1; cropTranslateX = 0; cropTranslateY = 0;
             cropZoomSlider.value = 1;
             aplicarTransformCrop();
 
-            // Adiciona eventos de arrastar na imagem de preview
             preview.addEventListener('mousedown', dragCropStart);
             preview.addEventListener('touchstart', dragCropStart, {passive: false});
         }
@@ -367,8 +347,7 @@
         }
 
         function aplicarTransformCrop() {
-            // Centraliza e aplica escala e translação
-            preview.style.transform = `translate(calc(-50% + ${cropTranslateX}px), calc(-50% + ${cropTranslateY}px)) scale(${cropScale})`;
+            preview.style.transform = `translate(calc(0px + ${cropTranslateX}px), calc(0px + ${cropTranslateY}px)) scale(${cropScale})`;
         }
 
         function dragCropStart(e) {
@@ -386,19 +365,13 @@
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
             const deltaX = clientX - startDragCropX;
             const deltaY = clientY - startDragCropY;
-            
-            cropTranslateX += deltaX;
-            cropTranslateY += deltaY;
-            
-            startDragCropX = clientX;
-            startDragCropY = clientY;
-            
+            cropTranslateX += deltaX; cropTranslateY += deltaY;
+            startDragCropX = clientX; startDragCropY = clientY;
             aplicarTransformCrop();
         }
 
         function dragCropEnd() { isDraggingCrop = false; }
 
-        // Adiciona listeners globais para o drag do crop
         window.addEventListener('mousemove', dragCropMove);
         window.addEventListener('touchmove', dragCropMove, {passive: false});
         window.addEventListener('mouseup', dragCropEnd);
@@ -408,16 +381,15 @@
             isCroppingMode = false;
             preview.classList.remove('cropping-mode');
             preview.style.transform = '';
-            resetar(); // Volta para a câmera
+            resetar();
         }
 
         async function confirmarCrop() {
-            // O "Pulo do Gato": Renderiza o que está visível no palco em um canvas
+            // Desenha a imagem exatamente como está na tela
             const canvas = document.createElement('canvas');
             const pW = palco.clientWidth;
             const pH = palco.clientHeight;
             
-            // Define alta resolução 3:4
             canvas.width = 1080;
             canvas.height = 1080 * (pH / pW);
             const ctx = canvas.getContext('2d');
@@ -426,23 +398,19 @@
             img.src = preview.src;
             await imgLoad(img);
 
-            // Calcula a proporção entre o canvas final e o palco na tela
+            // Fator de escala: Canvas / Tela
             const scaleFactor = canvas.width / pW;
-
-            // Centro do canvas
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
 
             ctx.save();
-            // 1. Move para o centro do canvas
+            // 1. Move para o centro
             ctx.translate(centerX, centerY);
-            // 2. Aplica o deslocamento que o usuário fez (escalonado)
+            // 2. Aplica deslocamento e zoom do usuário
             ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor);
-            // 3. Aplica o zoom que o usuário definiu
             ctx.scale(cropScale, cropScale);
             
-            // 4. Desenha a imagem centralizada no ponto de origem atual.
-            // Calcula o tamanho que ela deve ter no canvas baseada na sua exibição inicial 'contain'
+            // 3. Desenha a imagem no modo "CONTAIN" (encaixada)
             const ratioImg = img.width / img.height;
             const ratioCanvas = canvas.width / canvas.height;
             let drawW, drawH;
@@ -452,26 +420,20 @@
             } else {
                 drawH = canvas.height; drawW = drawH * ratioImg;
             }
+            
+            // Desenha centralizada no ponto de origem atual
             ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH);
             ctx.restore();
 
-            // Atualiza o preview com a imagem cortada final
             preview.src = canvas.toDataURL('image/png');
-            
-            // Limpa modo crop
             isCroppingMode = false;
             preview.classList.remove('cropping-mode');
-            preview.style.transform = ''; // Remove o transform manual
+            preview.style.transform = '';
             cropControls.style.display = 'none';
-            
-            // Remove listeners de drag do crop para não conflitar com as joias
             preview.removeEventListener('mousedown', dragCropStart);
             preview.removeEventListener('touchstart', dragCropStart);
-
-            // Vai para a edição
             abrirEdicao();
         }
-        // --- Fim da Lógica de Crop ---
 
         function carregarCatalogoHibrido() {
             listaJoias.innerHTML = '';
@@ -491,28 +453,19 @@
 
         function abrirEdicao() {
             video.style.display = 'none'; preview.style.display = 'block';
-            iosControls.style.display = 'none';
-            cropControls.style.display = 'none'; // Garante que sumiu
+            iosControls.style.display = 'none'; cropControls.style.display = 'none';
             document.getElementById('menu-footer').style.display = 'none';
-            
-            // Garante que o preview volte ao modo "cover" normal
             preview.classList.remove('cropping-mode');
-            
             painel.style.display = 'flex';
-            setTimeout(() => { 
-                painel.classList.remove('minimized');
-                iconToggle.innerText = 'expand_more';
-            }, 50);
+            setTimeout(() => { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; }, 50);
         }
 
         function resetar() {
             isCroppingMode = false;
             video.style.display = 'block'; preview.style.display = 'none';
             preview.classList.remove('cropping-mode'); preview.style.transform = '';
-            
             document.querySelectorAll('.sticker-joia').forEach(el => el.remove()); stickerAtivo = null;
-            iosControls.style.display = 'grid';
-            cropControls.style.display = 'none';
+            iosControls.style.display = 'grid'; cropControls.style.display = 'none';
             document.getElementById('menu-footer').style.display = 'flex';
             painel.style.display = 'none';
             document.getElementById('fileInput').value = "";
@@ -520,26 +473,17 @@
         }
 
         function togglePainel() {
-            if (painel.classList.contains('minimized')) {
-                painel.classList.remove('minimized');
-                iconToggle.innerText = 'expand_more';
-            } else {
-                painel.classList.add('minimized');
-                iconToggle.innerText = 'expand_less';
-            }
+            if (painel.classList.contains('minimized')) { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; } 
+            else { painel.classList.add('minimized'); iconToggle.innerText = 'expand_less'; }
         }
 
-        // --- Lógica das Joias (Stickers) ---
         function adicionarSticker(url) {
             const img = document.createElement('img'); img.src = url; img.className = 'sticker-joia'; img.crossOrigin = "anonymous";
             img.dataset.scale = 120; img.dataset.rotation = 0;
-            // Posição inicial usando porcentagem relativa ao palco
-            const startX = palco.clientWidth / 2;
-            const startY = palco.clientHeight / 2;
+            const startX = palco.clientWidth / 2; const startY = palco.clientHeight / 2;
             img.style.left = startX + 'px'; img.style.top = startY + 'px';
             img.style.transform = `translate(-50%, -50%) rotate(0deg)`;
             img.style.width = '120px';
-
             img.addEventListener('touchstart', dragStickerStart, {passive: false}); img.addEventListener('mousedown', dragStickerStart);
             img.addEventListener('click', (e) => { e.stopPropagation(); definirAtivo(img); });
             palco.appendChild(img); definirAtivo(img);
@@ -551,9 +495,7 @@
             rangeSize.value = stickerAtivo.dataset.scale; rangeRotate.value = stickerAtivo.dataset.rotation;
         }
 
-        function removerStickerAtivo() {
-            if(stickerAtivo) { stickerAtivo.remove(); stickerAtivo = null; }
-        }
+        function removerStickerAtivo() { if(stickerAtivo) { stickerAtivo.remove(); stickerAtivo = null; } }
 
         function ajustarStickerAtivo() {
             if(!stickerAtivo) return;
@@ -585,11 +527,10 @@
             stickerAtivo.style.left = newLeft + 'px'; stickerAtivo.style.top = newTop + 'px';
         }
         function dragStickerEnd() { isDraggingSticker = false; }
-        // Usando os mesmos listeners globais, mas com flags diferentes
+        
         window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove);
         window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
 
-        // --- Renderização Final ---
         async function desenharCenaNoCanvas(canvas, comMoldura) {
             const ctx = canvas.getContext('2d'); const CW = canvas.width; const CH = canvas.height;
             let photoX, photoY, photoW, photoH;
@@ -601,8 +542,7 @@
                 const margin = 80; const paperW = CW - margin*2; const paperH = 1600; const paperX = margin; const paperY = (CH - paperH)/2 - 50;
                 ctx.fillStyle = "#fff"; ctx.shadowColor = "rgba(0,0,0,0.2)"; ctx.shadowBlur = 30;
                 ctx.fillRect(paperX, paperY, paperW, paperH); ctx.shadowColor = "transparent";
-                const photoMargin = 50;
-                photoX = paperX + photoMargin; photoY = paperY + photoMargin;
+                const photoMargin = 50; photoX = paperX + photoMargin; photoY = paperY + photoMargin;
                 photoW = paperW - photoMargin*2; photoH = photoW * 1.33; 
             } else {
                 photoX = 0; photoY = 0; photoW = CW; photoH = CH;
@@ -610,11 +550,9 @@
 
             const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
             ctx.save(); ctx.beginPath(); ctx.rect(photoX, photoY, photoW, photoH); ctx.clip();
-            // A foto já está cortada, então desenha ela preenchendo a área
             ctx.drawImage(imgBase, photoX, photoY, photoW, photoH);
             ctx.restore();
 
-            // Desenha os Stickers (Mapeamento de Coordenadas)
             const stickers = document.querySelectorAll('.sticker-joia');
             const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
             for(let s of stickers) {
@@ -647,11 +585,9 @@
             if(stickerAtivo) stickerAtivo.classList.remove('selected');
             btnSave.classList.add('loading');
             try {
-                const canvas = document.createElement('canvas');
-                canvas.width = 1080; canvas.height = 1440; 
+                const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1440; 
                 await desenharCenaNoCanvas(canvas, false);
-                const link = document.createElement('a'); link.download = 'minha-orelha.png';
-                link.href = canvas.toDataURL(); link.click();
+                const link = document.createElement('a'); link.download = 'minha-orelha.png'; link.href = canvas.toDataURL(); link.click();
                 btnSave.classList.remove('loading');
             } catch (e) { alert("Erro ao salvar"); btnSave.classList.remove('loading'); }
         }
