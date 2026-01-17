@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Orelha dos Sonhos</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://orelha-dos-sonhos.github.io/app/">
+    <meta property="og:title" content="Orelha dos Sonhos - Provador Virtual">
+    <meta property="og:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual e veja nossa coleção exclusiva!">
     
+    <meta property="og:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
+    <meta property="og:image:type" content="image/webp">
+    
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://orelha-dos-sonhos.github.io/app/">
+    <meta property="twitter:title" content="Orelha dos Sonhos">
+    <meta property="twitter:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual.">
+    <meta property="twitter:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
     <link rel="icon" type="image/png" href="icon-web.png">
     <link rel="apple-touch-icon" href="icon-web.png">
 
@@ -46,7 +62,7 @@
             background: transparent; height: auto;
         }
         .logo-img { 
-            max-height: 55px; /* Tamanho 20% menor */
+            max-height: 55px; 
             width: auto; display: block; margin: 0 auto; 
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
         }
@@ -325,8 +341,7 @@
             const canvas = document.createElement('canvas');
             const vW = video.videoWidth; const vH = video.videoHeight;
             const pW = palco.clientWidth; const pH = palco.clientHeight;
-            // 3:4 High Res
-            canvas.width = 1080; canvas.height = 1440; 
+            canvas.width = 1080; canvas.height = 1080 * (pH / pW); 
             const ctx = canvas.getContext('2d');
             const rVid = vW / vH; const rCan = canvas.width / canvas.height;
             let sW, sH, sX, sY;
