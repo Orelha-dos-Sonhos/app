@@ -25,6 +25,8 @@
     <style>
         :root {
             --texto-escuro: #333333;
+            --fonte-titulo: 'Playfair Display', serif;
+            --fonte-ui: 'Raleway', sans-serif;
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
@@ -32,7 +34,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Raleway', sans-serif; color: var(--texto-escuro);
+            font-family: var(--fonte-ui); color: var(--texto-escuro);
             height: 100vh; height: 100dvh; width: 100vw; overflow: hidden;
             display: flex; flex-direction: column; align-items: center;
             background: linear-gradient(-45deg, #ffd1dc, #c8e6c9, #ffcdd2, #b2dfdb, #f8bbd0);
@@ -56,46 +58,33 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
         }
 
-        /* CONTAINER DO PALCO */
         #container-palco { 
             flex: 1; display: flex; justify-content: center; align-items: center; 
             padding: 5px 10px; position: relative; overflow: hidden;
         }
         
-        /* O Palco é a referência absoluta. Tudo acontece aqui dentro */
         #palco {
-            /* AQUI ESTÁ A MÁGICA: Fixamos a proporção 3:4 via CSS */
-            aspect-ratio: 3/4; 
-            width: auto; height: 100%; max-width: 100%;
+            height: 100%; max-height: 100%;
+            /* NOVO FORMATO: 1080 / 1626 */
+            aspect-ratio: 1080 / 1626; 
             
             background: #000; border-radius: 18px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.9); 
             position: relative; touch-action: none; user-select: none;
         }
         /* Ajuste para telas onde a altura sobra */
-        @media (max-aspect-ratio: 3/4) { #palco { width: 100%; height: auto; } }
+        @media (min-aspect-ratio: 1080/1626) { #palco { height: auto; width: 100%; } }
 
-        /* Vídeo da Câmera (Preenche o palco para o usuário se ver) */
-        video { 
+        video, #previewImage { 
             width: 100%; height: 100%; 
-            object-fit: cover; /* Cobre o palco visualmente */
+            object-fit: cover; 
             position: absolute; top: 0; left: 0; 
         }
-        
-        /* Imagem Capturada/Editada */
-        #previewImage { 
-            width: 100%; height: 100%; 
-            /* Como vamos gerar a imagem JÁ no formato 3:4, 'contain' ou 'fill' dão no mesmo */
-            object-fit: fill; 
-            position: absolute; top: 0; left: 0; background: #000; 
-        }
-        
+        #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
 
-        /* No modo crop, a imagem flutua livremente */
         #previewImage.cropping-mode {
-            object-fit: contain; width: 100%; height: 100%;
-            transform-origin: center center;
+            object-fit: contain; cursor: move;
         }
 
         .sticker-joia {
@@ -105,7 +94,6 @@
         }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* CONTROLES */
         .ios-controls {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 80%; max-width: 300px; 
@@ -120,7 +108,6 @@
         .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
         .mini-btn i { font-size: 24px; margin-bottom: 2px; }
 
-        /* CROP CONTROLS */
         #crop-controls {
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 350px;
@@ -135,7 +122,6 @@
         .btn-cancel { background: #ff5252; color: white; }
         .btn-confirm { background: var(--texto-escuro); color: white; }
         
-        /* PAINEL */
         #painel-edicao {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px);
@@ -277,9 +263,9 @@
         let isDraggingCrop = false;
         let startDragCropX, startDragCropY;
 
-        // RESOLUÇÃO DE TRABALHO FIXA (3:4)
+        // RESOLUÇÃO DE TRABALHO FIXA (1080x1626)
         const BASE_WIDTH = 1080;
-        const BASE_HEIGHT = 1440;
+        const BASE_HEIGHT = 1626;
 
         const backupJoias = [
             "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
@@ -309,45 +295,26 @@
             startCamera();
         }
 
-        // --- MÁGICA: Captura SEMPRE em 1080x1440 ---
         function capturarFoto() {
             const canvas = document.createElement('canvas');
             canvas.width = BASE_WIDTH;
             canvas.height = BASE_HEIGHT;
             const ctx = canvas.getContext('2d');
-
-            // Dimensões do vídeo
             const vW = video.videoWidth;
             const vH = video.videoHeight;
-            // Proporções
             const rVid = vW / vH;
             const rBase = BASE_WIDTH / BASE_HEIGHT;
-
             let sW, sH, sX, sY;
-
-            // Lógica cover manual (Corta o vídeo para caber no 3:4)
-            if (rVid > rBase) { // Vídeo mais largo (corta laterais)
-                sH = vH;
-                sW = vH * rBase;
-                sX = (vW - sW) / 2;
-                sY = 0;
-            } else { // Vídeo mais alto (corta topo/baixo)
-                sW = vW;
-                sH = vW / rBase;
-                sX = 0;
-                sY = (vH - sH) / 2;
-            }
-
+            if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } 
+            else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; }
             ctx.save();
             if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
             ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT);
             ctx.restore();
-
             preview.src = canvas.toDataURL('image/png');
             abrirEdicao();
         }
 
-        // --- CROP PARA UPLOAD ---
         function uploadGaleria(event) {
             const file = event.target.files[0];
             if (file) {
@@ -367,12 +334,10 @@
             iosControls.style.display = 'none';
             cropControls.style.display = 'flex';
             document.getElementById('menu-footer').style.display = 'none';
-            
             preview.classList.add('cropping-mode');
             cropScale = 1; cropTranslateX = 0; cropTranslateY = 0;
             cropZoomSlider.value = 1;
             aplicarTransformCrop();
-
             preview.addEventListener('mousedown', dragCropStart);
             preview.addEventListener('touchstart', dragCropStart, {passive: false});
         }
@@ -420,44 +385,28 @@
         }
 
         async function confirmarCrop() {
-            // Gera uma imagem 3:4 (1080x1440) baseado no que o usuário vê na tela
             const canvas = document.createElement('canvas');
             canvas.width = BASE_WIDTH;
             canvas.height = BASE_HEIGHT;
             const ctx = canvas.getContext('2d');
-
             const img = new Image();
             img.src = preview.src;
             await imgLoad(img);
-
-            // Proporção Tela vs Canvas Final
             const pW = palco.clientWidth;
-            const scaleFactor = canvas.width / pW; // Quanto a tela é menor que 1080
-
+            const scaleFactor = canvas.width / pW;
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-
             ctx.save();
             ctx.translate(centerX, centerY);
-            // Aplica os movimentos feitos na tela, multiplicados pelo fator de escala
             ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor);
             ctx.scale(cropScale, cropScale);
-            
-            // Desenha a imagem para caber (contain) inicialmente
             const ratioImg = img.width / img.height;
             const ratioCanvas = canvas.width / canvas.height;
             let drawW, drawH;
-
-            // Lógica CONTAIN (igual ao CSS inicial no modo crop)
-            if (ratioImg > ratioCanvas) {
-                drawW = canvas.width; drawH = drawW / ratioImg;
-            } else {
-                drawH = canvas.height; drawW = drawH * ratioImg;
-            }
-            
+            if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } 
+            else { drawH = canvas.height; drawW = drawH * ratioImg; }
             ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH);
             ctx.restore();
-
             preview.src = canvas.toDataURL('image/png');
             isCroppingMode = false;
             preview.classList.remove('cropping-mode');
@@ -513,7 +462,6 @@
         function adicionarSticker(url) {
             const img = document.createElement('img'); img.src = url; img.className = 'sticker-joia'; img.crossOrigin = "anonymous";
             img.dataset.scale = 120; img.dataset.rotation = 0;
-            // Posição inicial no meio do palco
             img.style.left = (palco.clientWidth / 2) + 'px'; 
             img.style.top = (palco.clientHeight / 2) + 'px';
             img.style.transform = `translate(-50%, -50%) rotate(0deg)`;
@@ -565,13 +513,11 @@
         window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove);
         window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
 
-        // --- DESENHO FINAL ---
         async function desenharCenaNoCanvas(canvas, comMoldura) {
             const ctx = canvas.getContext('2d'); 
             const CW = canvas.width; const CH = canvas.height;
             let photoX, photoY, photoW, photoH;
 
-            // Define área da foto no canvas final
             if (comMoldura) {
                 const gradient = ctx.createLinearGradient(0, 0, CW, CH);
                 gradient.addColorStop(0, "#ffd1dc"); gradient.addColorStop(0.5, "#c8e6c9"); gradient.addColorStop(1, "#b2dfdb");
@@ -585,7 +531,9 @@
                 
                 const photoMargin = 50;
                 photoX = paperX + photoMargin; photoY = paperY + photoMargin;
-                photoW = paperW - photoMargin*2; photoH = photoW * 1.33; // 3:4 Aspect Ratio
+                photoW = paperW - photoMargin*2; 
+                // Adapta a altura da foto à proporção base
+                photoH = photoW * (BASE_HEIGHT / BASE_WIDTH);
             } else {
                 photoX = 0; photoY = 0; photoW = CW; photoH = CH;
             }
@@ -593,16 +541,13 @@
             const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
             ctx.save();
             ctx.beginPath(); ctx.rect(photoX, photoY, photoW, photoH); ctx.clip();
-            // A imagem já está em 1080x1440, desenha ela exata
             ctx.drawImage(imgBase, photoX, photoY, photoW, photoH);
             ctx.restore();
 
-            // Stickers
             const stickers = document.querySelectorAll('.sticker-joia');
             const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
             for(let s of stickers) {
                 const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
-                // Converte posição da tela para posição do canvas
                 const left = parseFloat(s.style.left); const top = parseFloat(s.style.top);
                 const percX = left / palcoW; const percY = top / palcoH;
                 const canvasX = photoX + (percX * photoW); const canvasY = photoY + (percY * photoH);
@@ -632,7 +577,6 @@
             btnSave.classList.add('loading');
             try {
                 const canvas = document.createElement('canvas');
-                // Salva em resolução nativa 3:4
                 canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; 
                 await desenharCenaNoCanvas(canvas, false);
                 const link = document.createElement('a'); link.download = 'minha-orelha.png';
