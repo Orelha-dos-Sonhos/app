@@ -33,6 +33,7 @@
             --glass-shadow: rgba(0, 0, 0, 0.5);
         }
 
+        /* RESET GLOBAL REFORÇADO */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
@@ -41,9 +42,9 @@
             display: flex; flex-direction: column; align-items: center;
             background-color: var(--bg-body);
             transition: background-color 0.8s ease, color 0.5s ease;
-            position: relative; overflow-x: hidden;
-            /* Garante rolagem suave no mobile */
-            -webkit-overflow-scrolling: touch; 
+            position: relative; 
+            overflow-x: hidden; /* Bloqueia rolagem horizontal no corpo */
+            width: 100%;
         }
 
         /* 1. BACKGROUND DINÂMICO */
@@ -99,12 +100,13 @@
             100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; }
         }
 
-        /* LAYOUT PRINCIPAL RESPONSIVO */
+        /* LAYOUT PRINCIPAL */
         #app-container {
             width: 100%; 
-            max-width: 500px; /* Limita largura em tablets/desktop */
-            padding: 20px 15px; /* Padding lateral menor em mobile */
+            max-width: 500px; 
+            padding: 20px 15px; /* Padding seguro */
             display: flex; flex-direction: column; align-items: center; z-index: 10;
+            overflow-x: hidden; /* Garante que nada saia deste container */
         }
 
         header { width: 100%; text-align: center; margin-bottom: 15px; position: relative; }
@@ -139,12 +141,12 @@
         .nome-texto { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
         .desc-servico { font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9; margin-top: 8px; text-align: center; color: var(--text-color); }
 
-        /* BOTÕES RESPONSIVOS */
+        /* BOTÕES */
         .menu-links { width: 100%; display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
 
         .btn-link {
             display: flex; align-items: center; justify-content: center;
-            width: 100%; padding: 18px 20px; /* Padding confortável para o dedo */
+            width: 100%; padding: 18px 20px;
             text-decoration: none; color: var(--text-color);
             text-align: center;
             font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
@@ -161,9 +163,10 @@
         .btn-link:active { transform: scale(0.98); }
         .btn-link i { font-size: 1.4rem; line-height: 0; }
 
-        /* MINI MAPA */
+        /* --- MINI MAPA (CORREÇÃO MOBILE REFORÇADA) --- */
         .card-mapa {
-            margin-top: 15px; width: 100%;
+            margin-top: 15px; 
+            width: 100%; /* Ocupa 100% do pai */
             background: var(--glass-bg-end);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
@@ -171,8 +174,22 @@
             padding: 15px;
             display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 4px 10px var(--glass-shadow);
+            
+            /* Ajustes cruciais para não vazar a tela no iPhone */
+            box-sizing: border-box; 
+            overflow: hidden; 
         }
-        .mapa-frame { width: 100%; height: 180px; border: none; border-radius: 12px; background: #eee; }
+
+        .mapa-frame { 
+            width: 100%; 
+            max-width: 100%; /* Força o limite máximo */
+            height: 180px; 
+            border: none; 
+            border-radius: 12px; 
+            background: #eee;
+            display: block; /* Remove espaços inline extras */
+        }
+        
         .endereco-texto { text-align: center; font-size: 0.85rem; color: var(--text-color); line-height: 1.4; font-weight: 500; }
         .endereco-titulo { font-weight: 800; font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
 
@@ -196,17 +213,11 @@
         .theme-toggle-btn:active { transform: scale(0.9); }
         .theme-toggle-btn i { font-size: 26px; line-height: 0; }
 
-        /* --- MEDIA QUERIES (Ajustes para Telas Pequenas) --- */
+        /* Media Queries para telas muito pequenas */
         @media (max-width: 380px) {
-            #app-container { padding: 15px 10px; } /* Menos padding lateral */
-            .foto-vic { width: 110px; height: 110px; } /* Foto um pouco menor */
-            .logo-img { max-height: 60px; }
-            .btn-link { 
-                padding: 15px; 
-                font-size: 0.8rem; /* Fonte levemente menor para não quebrar linha */
-                gap: 8px;
-            }
-            .nome-texto { font-size: 1.1rem; }
+            #app-container { padding: 15px 10px; }
+            .btn-link { padding: 15px; font-size: 0.8rem; gap: 8px; }
+            .card-mapa { padding: 10px; } /* Reduz padding interno do mapa em telas minusculas */
         }
 
     </style>
@@ -349,12 +360,10 @@
             let cor;
 
             if (!isDark) {
-                // LIGHT
                 if (hora >= 5 && hora < 12) cor = 'linear-gradient(to top, #81d4fa, #f0f2f5 80%)';
                 else if (hora >= 12 && hora < 18) cor = 'linear-gradient(to top, #ffcc80, #f48fb1, #f0f2f5 80%)';
                 else cor = 'linear-gradient(to top, #1a237e, #4a148c, #f0f2f5 80%)';
             } else {
-                // DARK
                 if (hora >= 5 && hora < 12) cor = 'linear-gradient(to top, #311b92, #000000 80%)'; 
                 else if (hora >= 12 && hora < 18) cor = 'linear-gradient(to top, #880e4f, #1a237e, #000000 80%)';
                 else cor = 'linear-gradient(to top, #000000, #1a237e, #000000 80%)';
