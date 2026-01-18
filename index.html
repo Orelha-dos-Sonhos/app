@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#f0f2f5" id="meta-theme-color">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
+    
     <title>Orelha dos Sonhos | Victória Serrano</title>
     
     <link rel="icon" type="image/png" href="icon-web.png">
@@ -15,118 +14,53 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        /* --- TEMA DINÂMICO --- */
+        /* --- VARIÁVEIS DE CORES --- */
         :root {
-            --bg-body: #f0f2f5;
             --text-color: #333;
-            --glass-bg-start: rgba(255, 255, 255, 0.55);
-            --glass-bg-end: rgba(255, 255, 255, 0.85);
+            /* Degradê Light: Cinza Claro Sutil */
+            --bg-gradient: linear-gradient(180deg, #f0f2f5 0%, #e2e4e8 100%);
+            
+            --glass-bg-start: rgba(255, 255, 255, 0.6);
+            --glass-bg-end: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(255, 255, 255, 0.9);
             --glass-shadow: rgba(0, 0, 0, 0.05);
         }
 
         body.dark-theme {
-            --bg-body: #121212;
             --text-color: #f0f0f0;
-            --glass-bg-start: rgba(40, 40, 40, 0.65);
-            --glass-bg-end: rgba(60, 60, 60, 0.85);
+            /* Degradê Dark: Cor solicitada #1F454B descendo para um tom mais fechado */
+            --bg-gradient: linear-gradient(180deg, #1F454B 0%, #0d1f22 100%);
+            
+            --glass-bg-start: rgba(31, 69, 75, 0.6); /* Ajustado para combinar com o fundo */
+            --glass-bg-end: rgba(20, 40, 45, 0.85);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: rgba(0, 0, 0, 0.5);
         }
 
-        /* RESET GLOBAL */
+        /* RESET GERAL */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        html {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            /* A cor de fundo do HTML será injetada via JS para evitar partes brancas no scroll */
-            background-color: var(--bg-body); 
-            transition: background-color 0.8s ease;
-        }
+        html { width: 100%; height: 100%; }
 
         body {
-            font-family: 'Raleway', sans-serif; color: var(--text-color);
+            font-family: 'Raleway', sans-serif; 
+            color: var(--text-color);
             min-height: 100vh;
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            background-color: transparent; /* Deixa transparente para mostrar o #dynamic-bg */
+            
+            /* BACKGROUND DEFINITIVO AQUI */
+            background: var(--bg-gradient);
+            background-attachment: fixed; /* Fixo para não rolar com a tela */
+            background-size: cover;
+            
+            transition: background 0.5s ease, color 0.5s ease;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* --- ELEMENTOS DE FUNDO (FIXOS) --- */
-        
-        /* 1. Gradiente Base (-4) */
-        .dynamic-glow {
-            position: fixed; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; height: 100%;
-            /* Tenta usar a altura dinâmica do viewport mobile se disponível */
-            height: 100dvh; 
-            z-index: -4; 
-            pointer-events: none;
-            transition: background 1.5s ease;
-            /* Garante que o gradiente cubra tudo sem repetir */
-            background-size: cover; 
-            background-attachment: fixed;
-        }
-
-        /* 2. Sol (-2) */
-        .sun-glow {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; height: 30vh;
-            background: radial-gradient(ellipse at top center, rgba(255, 215, 0, 0.65) 0%, rgba(255, 230, 80, 0.45) 40%, rgba(255, 255, 255, 0.2) 70%, transparent 90%);
-            filter: blur(70px);
-            z-index: -2; opacity: 1; pointer-events: none;
-            transition: opacity 1s ease;
-            animation: sunPulse 2s infinite alternate ease-in-out;
-        }
-        @keyframes sunPulse {
-            0% { opacity: 0.85; transform: translateX(-50%) scale(1); }
-            100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
-        }
-        body.dark-theme .sun-glow { opacity: 0; animation: none; }
-
-        /* 3. Estrelas Fixas (-3) */
-        .stars-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: -3; overflow: hidden;
-            opacity: 0; transition: opacity 1s ease;
-        }
-        body.dark-theme .stars-container { opacity: 1; }
-        
-        .star {
-            position: absolute; background: white; border-radius: 50%;
-            box-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
-            animation: twinkle 4s infinite ease-in-out;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* 4. Estrelas Cadentes (-2) */
-        #shooting-star-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: -2; overflow: hidden;
-        }
-        .shooting-star {
-            position: absolute; height: 2px;
-            background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%);
-            border-radius: 999px; filter: drop-shadow(0 0 6px white);
-            animation: shoot 0.8s ease-out forwards; opacity: 0;
-        }
-        @keyframes shoot {
-            0% { transform: translate(0, 0) rotate(-45deg) scaleX(0); opacity: 1; width: 0; }
-            30% { width: 150px; }
-            100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; }
-        }
-
-        /* --- LAYOUT PRINCIPAL (10) --- */
+        /* LAYOUT PRINCIPAL */
         #app-container {
-            position: relative;
             width: 100%; max-width: 500px; 
             padding: 20px 15px;
             display: flex; flex-direction: column; align-items: center; 
@@ -134,19 +68,19 @@
             z-index: 10;
         }
 
-        header { width: 100%; text-align: center; margin-bottom: 15px; position: relative; }
+        header { width: 100%; text-align: center; margin-bottom: 15px; }
         
-        .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; position: relative; z-index: 2; }
+        .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
         .logo-link:active { transform: scale(0.95); }
         .logo-img { 
             max-height: 70px; display: block; 
-            filter: drop-shadow(0 4px 6px var(--glass-shadow));
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
             transition: opacity 0.3s ease; 
         }
 
         /* PERFIL */
         .perfil-wrapper {
-            display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 25px; position: relative; z-index: 2;
+            display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 25px;
         }
         .foto-vic {
             width: 130px; height: 130px;
@@ -167,7 +101,7 @@
         .desc-servico { font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9; margin-top: 8px; text-align: center; color: var(--text-color); }
 
         /* BOTÕES */
-        .menu-links { width: 100%; display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
+        .menu-links { width: 100%; display: flex; flex-direction: column; gap: 15px; }
 
         .btn-link {
             display: flex; align-items: center; justify-content: center;
@@ -175,13 +109,16 @@
             text-decoration: none; color: var(--text-color);
             text-align: center;
             font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
+            
+            /* Fundo Glass Simples */
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
+            
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 18px;
             font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
             box-shadow: 0 4px 10px var(--glass-shadow);
-            transition: transform 0.2s ease, background 0.2s ease;
+            transition: transform 0.2s ease, background 0.3s ease;
             gap: 12px;
         }
         .btn-link:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--glass-shadow); }
@@ -232,11 +169,6 @@
     </style>
 </head>
 <body>
-
-    <div id="dynamic-bg" class="dynamic-glow"></div>
-    <div id="sun-glow" class="sun-glow"></div>
-    <div id="stars-container" class="stars-container"></div>
-    <div id="shooting-star-container"></div>
 
     <div id="app-container">
         
@@ -310,15 +242,11 @@
         const themeBtn = document.getElementById('themeToggle');
         const themeIcon = themeBtn.querySelector('i');
         const body = document.body;
-        const html = document.documentElement; // Referência ao HTML
         const logoImg = document.getElementById('logo-img');
-        const starsContainer = document.getElementById('stars-container');
-        const shootingStarContainer = document.getElementById('shooting-star-container');
         const metaThemeColor = document.getElementById('meta-theme-color');
 
         const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
         let savedTheme = localStorage.getItem('selectedTheme');
-        let shootingStarInterval;
 
         function initTheme() {
             if (savedTheme) {
@@ -351,102 +279,14 @@
             body.classList.add('dark-theme');
             themeIcon.textContent = 'light_mode';
             logoImg.src = 'logo-branco-light.png';
-            
-            // Meta cor do navegador para mobile
-            metaThemeColor.setAttribute('content', '#121212');
-            
-            atualizarFundo();
-            criarEstrelasFixas(); 
-            iniciarEstrelaCadente();
+            metaThemeColor.setAttribute('content', '#1F454B'); // Ajusta a barra do navegador para o verde
         }
 
         function aplicarTemaLight() {
             body.classList.remove('dark-theme');
             themeIcon.textContent = 'dark_mode';
             logoImg.src = 'logo-preto-dark.png';
-            
-            // Meta cor do navegador para mobile
             metaThemeColor.setAttribute('content', '#f0f2f5');
-            
-            atualizarFundo();
-            pararEstrelaCadente();
-        }
-
-        function atualizarFundo() {
-            const hora = new Date().getHours();
-            const bg = document.getElementById('dynamic-bg');
-            const isDark = body.classList.contains('dark-theme');
-            let corGradiente;
-            let corSolida; // Cor para preencher o fundo do HTML e evitar partes brancas
-
-            if (!isDark) {
-                // LIGHT MODE
-                if (hora >= 5 && hora < 12) {
-                    corGradiente = 'linear-gradient(to top, #81d4fa, #f0f2f5 80%)';
-                    corSolida = '#f0f2f5';
-                } else if (hora >= 12 && hora < 18) {
-                    corGradiente = 'linear-gradient(to top, #ffcc80, #f48fb1, #f0f2f5 80%)';
-                    corSolida = '#f0f2f5';
-                } else {
-                    corGradiente = 'linear-gradient(to top, #1a237e, #4a148c, #f0f2f5 80%)';
-                    corSolida = '#f0f2f5';
-                }
-            } else {
-                // DARK MODE
-                if (hora >= 5 && hora < 12) {
-                    corGradiente = 'linear-gradient(to top, #311b92, #000000 80%)'; 
-                    corSolida = '#000000';
-                } else if (hora >= 12 && hora < 18) {
-                    corGradiente = 'linear-gradient(to top, #880e4f, #1a237e, #000000 80%)';
-                    corSolida = '#000000';
-                } else {
-                    corGradiente = 'linear-gradient(to top, #000000, #1a237e, #000000 80%)';
-                    corSolida = '#000000';
-                }
-            }
-            
-            // Aplica o gradiente na div fixa
-            bg.style.background = corGradiente;
-            
-            // Aplica a cor sólida no HTML (fundo base) para evitar cortes brancos
-            html.style.backgroundColor = corSolida;
-        }
-
-        function criarEstrelasFixas() {
-            if(starsContainer.children.length > 0) return; 
-            for (let i = 0; i < 150; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                const size = Math.random() * 1.5 + 1 + 'px';
-                star.style.width = size;
-                star.style.height = size;
-                star.style.animationDelay = Math.random() * 5 + 's';
-                starsContainer.appendChild(star);
-            }
-        }
-
-        function iniciarEstrelaCadente() {
-            if(shootingStarInterval) clearInterval(shootingStarInterval);
-            criarEstrelaCadente(); 
-            shootingStarInterval = setInterval(criarEstrelaCadente, 10000); 
-        }
-
-        function pararEstrelaCadente() {
-            if(shootingStarInterval) clearInterval(shootingStarInterval);
-            shootingStarContainer.innerHTML = '';
-        }
-
-        function criarEstrelaCadente() {
-            const sStar = document.createElement('div');
-            sStar.className = 'shooting-star';
-            const startX = Math.random() * (window.innerWidth - 100); 
-            const startY = Math.random() * 200; 
-            sStar.style.left = startX + 'px';
-            sStar.style.top = startY + 'px';
-            shootingStarContainer.appendChild(sStar);
-            setTimeout(() => { sStar.remove(); }, 1200);
         }
 
         initTheme();
