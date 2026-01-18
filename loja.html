@@ -3,258 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Coleção - Orelha dos Sonhos</title>
-    
+    <meta name="theme-color" content="#f0f2f5" id="meta-theme-color">
+    <title>Loja | Orelha dos Sonhos</title>
     <link rel="icon" type="image/png" href="icon-web.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        :root { --texto-escuro: #333; --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+        /* Copie aqui o mesmo CSS do index.html */
+        :root { --bg-body: #f0f2f5; --text-color: #333; --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(255,255,255,0.9); }
+        body.dark-theme { --bg-body: #121212; --text-color: #f0f0f0; --glass-bg: rgba(60,60,60,0.85); --glass-border: rgba(255,255,255,0.1); }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { font-family: 'Raleway', sans-serif; color: var(--texto-escuro); min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: linear-gradient(-45deg, #ffd1dc, #c8e6c9, #ffcdd2, #b2dfdb, #f8bbd0); background-size: 300% 300%; animation: gradientBG 10s ease infinite; padding-top: var(--safe-top); padding-bottom: calc(20px + var(--safe-bottom)); }
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        
-        header { padding: 15px; text-align: center; width: 100%; }
-        .logo-img { max-height: 80px; display: block; margin: 0 auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
-        h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 10px 0; color: #333; }
+        html { width: 100%; overflow-x: hidden; }
+        body { font-family: 'Raleway', sans-serif; color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-color: transparent; position: relative; overflow-x: hidden; }
 
-        /* GRID OTIMIZADO */
-        .container-loja { width: 100%; max-width: 1000px; padding: 10px 15px 80px 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media(min-width: 768px) { .container-loja { grid-template-columns: repeat(4, 1fr); } }
+        /* BACKGROUND */
+        .dynamic-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -4; pointer-events: none; transition: background 1.5s ease; }
+        .sun-glow { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 30vh; background: radial-gradient(ellipse at top center, rgba(255, 215, 0, 0.65) 0%, rgba(255, 230, 80, 0.45) 40%, rgba(255, 255, 255, 0.2) 70%, transparent 90%); filter: blur(70px); z-index: -2; opacity: 1; pointer-events: none; transition: opacity 1s ease; animation: sunPulse 2s infinite alternate; }
+        @keyframes sunPulse { 0% { opacity: 0.85; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+        body.dark-theme .sun-glow { opacity: 0; animation: none; }
+        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -3; overflow: hidden; opacity: 0; transition: opacity 1s ease; }
+        body.dark-theme .stars-container { opacity: 1; }
+        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 3px rgba(255, 255, 255, 0.9); animation: twinkle 4s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+        #shooting-star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; overflow: hidden; }
+        .shooting-star { position: absolute; height: 2px; background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%); border-radius: 999px; filter: drop-shadow(0 0 6px white); animation: shoot 0.8s ease-out forwards; opacity: 0; }
+        @keyframes shoot { 0% { transform: translate(0, 0) rotate(-45deg) scaleX(0); opacity: 1; width: 0; } 30% { width: 150px; } 100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; } }
 
-        .card-produto { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; position: relative; will-change: transform; }
-        .card-produto:active { transform: scale(0.98); }
+        /* LAYOUT LOJA */
+        #app-container { width: 100%; max-width: 600px; padding: 20px; display: flex; flex-direction: column; align-items: center; z-index: 10; margin: 0 auto; }
+        header { width: 100%; text-align: center; margin-bottom: 20px; }
+        .logo-img { max-height: 70px; display: block; margin: 0 auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
         
-        .img-capa { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.5); margin-bottom: 8px; position: relative; }
-        .img-capa img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
-        
-        .info-mini { text-align: center; width: 100%; }
-        .nome-mini { font-weight: 700; font-size: 0.85rem; margin-bottom: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .ver-detalhes { font-size: 0.7rem; color: #666; text-decoration: underline; }
+        .btn-back { display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: var(--text-color); font-weight: 600; margin-bottom: 20px; align-self: flex-start; }
 
-        /* MODAL */
-        #modal-produto { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 9999; flex-direction: column; overflow-y: auto; padding-top: var(--safe-top); }
-        #modal-produto.ativo { display: flex; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .modal-header { padding: 15px; display: flex; justify-content: flex-end; }
-        .btn-fechar { background: #eee; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        
-        .slider-container { width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 10px; padding: 0 15px 20px 15px; -webkit-overflow-scrolling: touch; }
-        .slide-item { flex: 0 0 85%; aspect-ratio: 3/4; scroll-snap-align: center; border-radius: 15px; overflow: hidden; position: relative; background: #f0f0f0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
-        .indicador-fotos { text-align: center; font-size: 0.7rem; color: #888; margin-top: -15px; margin-bottom: 10px; }
+        .produto-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 20px;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-        .detalhes-container { padding: 0 20px 40px 20px; }
-        .modal-titulo { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 10px; }
-        .modal-desc { font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 20px; }
-        
-        .tabela-specs { width: 100%; margin-bottom: 25px; border-collapse: collapse; }
-        .tabela-specs td { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 0.85rem; }
-        .spec-label { font-weight: 700; color: #333; width: 30%; }
-        .spec-valor { color: #666; text-align: right; }
-
-        .btn-compra-grande { background: linear-gradient(45deg, #333, #555); color: white; text-decoration: none; display: block; text-align: center; padding: 18px; border-radius: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.2s; }
-        .btn-compra-grande:active { transform: scale(0.95); }
-
-        .loading { text-align: center; margin-top: 50px; font-weight: 600; color: #555; transition: opacity 0.3s; }
-        .btn-carregar-mais { background: rgba(255,255,255,0.5); border: 2px solid #fff; color: #333; padding: 12px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase; margin: 20px auto; display: none; cursor: pointer; }
-        
-        .btn-voltar-home { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.6); color: #333; text-decoration: none; padding: 10px 25px; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.7rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 50; }
+        .theme-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; }
     </style>
 </head>
 <body>
 
-    <header>
-        <img src="logo-branco-brilho.png" alt="Orelha dos Sonhos" class="logo-img">
-        <h1>Coleção</h1>
-    </header>
+    <div id="dynamic-bg" class="dynamic-glow"></div>
+    <div id="sun-glow" class="sun-glow"></div>
+    <div id="stars-container" class="stars-container"></div>
+    <div id="shooting-star-container"></div>
 
-    <div id="loading" class="loading">Atualizando vitrine...</div>
-    <div id="container-loja" class="container-loja"></div>
-    <button id="btnVerMais" class="btn-carregar-mais" onclick="carregarMaisNaTela()">Ver Mais</button>
-    <a href="index.html" class="btn-voltar-home">Voltar</a>
+    <div id="app-container">
+        <a href="index.html" class="btn-back"><span class="material-icons">arrow_back</span> Voltar</a>
+        
+        <header>
+            <img src="logo-preto-dark.png" alt="Orelha dos Sonhos" class="logo-img" id="logo-img">
+        </header>
 
-    <div id="modal-produto">
-        <div class="modal-header">
-            <button class="btn-fechar" onclick="fecharModal()"><i class="material-icons">close</i></button>
-        </div>
-        <div class="slider-container" id="modal-slider"></div>
-        <div class="indicador-fotos">Deslize para ver mais</div>
-        <div class="detalhes-container">
-            <h2 class="modal-titulo" id="modal-titulo"></h2>
-            <table class="tabela-specs">
-                <tr><td class="spec-label">Material</td><td class="spec-valor" id="modal-material"></td></tr>
-                <tr><td class="spec-label">Cor</td><td class="spec-valor" id="modal-cor"></td></tr>
-                <tr><td class="spec-label">Tamanho</td><td class="spec-valor" id="modal-tamanho"></td></tr>
-            </table>
-            <p class="modal-desc" id="modal-desc"></p>
-            <a href="#" id="modal-btn" target="_blank" class="btn-compra-grande">Eu Quero</a>
+        <div class="produto-card">
+            <h3>Em breve</h3>
+            <p>Nossa loja está sendo preparada com muito carinho.</p>
         </div>
     </div>
 
+    <button class="theme-toggle-btn" id="themeToggle"><i class="material-icons">dark_mode</i></button>
+
     <script>
-        // LINK DIRETO DO GOOGLE (SEM PROXY)
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLq67Umu54XmI0sjdWS6gUzmTsofpBjlVZSc2wMHoawdFZHsOtK4Sun6NrAVK9dXaNFSByiccftn9n/pub?output=csv';
-        const CACHE_KEY = 'orelha_cache_v2'; // Chave para salvar no celular
-
-        const container = document.getElementById('container-loja');
-        const loading = document.getElementById('loading');
-        const btnVerMais = document.getElementById('btnVerMais');
-        const modal = document.getElementById('modal-produto');
-
-        let todosProdutos = [];
-        let produtosExibidos = 0;
-        const QTD_POR_VEZ = 12;
-
-        async function iniciarSistema() {
-            // 1. ESTRATÉGIA DE VELOCIDADE:
-            // Tenta mostrar o que já tem salvo no celular do cliente IMEDIATAMENTE
-            const cacheData = localStorage.getItem(CACHE_KEY);
-            if (cacheData) {
-                try {
-                    todosProdutos = JSON.parse(cacheData);
-                    renderizarInicial();
-                    console.log("⚡ Carregado da memória (Instantâneo)");
-                } catch(e) {}
-            }
-
-            // 2. Busca dados novos direto do Google (Background)
-            await buscarDadosNovos();
-        }
-
-        async function buscarDadosNovos() {
-            // Adiciona timestamp para o Google não entregar cache velho
-            const urlDireta = SHEET_URL + '&t=' + new Date().getTime();
-
-            Papa.parse(urlDireta, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    const dadosNovos = results.data.filter(p => p.nome && p.nome.trim() !== "");
-                    
-                    if (dadosNovos.length > 0) {
-                        // Salva no celular para a próxima vez ser rápido
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(dadosNovos));
-                        todosProdutos = dadosNovos;
-                        
-                        // Se a tela estava vazia, mostra agora. Se já tinha cache, atualiza silenciosamente.
-                        if (container.innerHTML === '') {
-                            renderizarInicial();
-                        }
-                        loading.style.display = 'none';
-                    }
-                },
-                error: function(err) {
-                    console.warn("Sem internet ou erro Google. Usando cache se existir.");
-                    if (todosProdutos.length === 0) {
-                        loading.innerHTML = "Não foi possível carregar as joias.";
-                    } else {
-                        loading.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        function renderizarInicial() {
-            loading.style.display = 'none';
-            container.innerHTML = ''; 
-            produtosExibidos = 0;
-            carregarMaisNaTela();
-        }
-
-        function tratarImagem(imgString) {
-            if (!imgString) return '';
-            let src = imgString.trim();
-
-            // Lógica para Google Drive
-            if (src.includes('drive.google.com')) {
-                try {
-                    const id = src.split('/d/')[1].split('/')[0];
-                    return `https://drive.google.com/uc?export=view&id=${id}`;
-                } catch (e) { return src; }
-            }
-            // Link Web Direto
-            if (src.startsWith('http')) return src;
-            // Arquivo Local (GitHub)
-            return 'joias/' + src;
-        }
-
-        function carregarMaisNaTela() {
-            const total = todosProdutos.length;
-            const proximos = todosProdutos.slice(produtosExibidos, produtosExibidos + QTD_POR_VEZ);
-
-            proximos.forEach((produto, index) => {
-                const listaImagens = produto.imagens ? produto.imagens.split(',') : [];
-                const capa = tratarImagem(listaImagens[0]);
-                const realIndex = produtosExibidos + index;
-
-                const card = document.createElement('div');
-                card.className = 'card-produto';
-                card.onclick = () => abrirModal(realIndex);
-                
-                card.innerHTML = `
-                    <div class="img-capa">
-                        <img src="${capa}" alt="${produto.nome}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=Sem+Foto'">
-                    </div>
-                    <div class="info-mini">
-                        <div class="nome-mini">${produto.nome}</div>
-                        <div class="ver-detalhes">Ver detalhes +</div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            produtosExibidos += proximos.length;
-            btnVerMais.style.display = (produtosExibidos < total) ? 'block' : 'none';
-        }
-
-        function abrirModal(index) {
-            const produto = todosProdutos[index];
-            const listaImagens = produto.imagens ? produto.imagens.split(',') : [];
-            const slider = document.getElementById('modal-slider');
-            slider.innerHTML = '';
-            
-            if(listaImagens.length > 0) {
-                listaImagens.forEach(imgName => {
-                    const src = tratarImagem(imgName);
-                    const slide = document.createElement('div');
-                    slide.className = 'slide-item';
-                    slide.innerHTML = `<img src="${src}" alt="Detalhe">`;
-                    slider.appendChild(slide);
-                });
-            } else {
-                slider.innerHTML = `<div class="slide-item"><img src="https://via.placeholder.com/300?text=Sem+Foto"></div>`;
-            }
-
-            document.getElementById('modal-titulo').innerText = produto.nome;
-            document.getElementById('modal-desc').innerText = produto.descricao || "";
-            document.getElementById('modal-material').innerText = produto.material || '-';
-            document.getElementById('modal-cor').innerText = produto.cor || '-';
-            document.getElementById('modal-tamanho').innerText = produto.tamanho || '-';
-
-            const btn = document.getElementById('modal-btn');
-            btn.href = produto.link_pagamento;
-            btn.innerText = produto.texto_botao || 'Comprar Agora';
-
-            modal.classList.add('ativo');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function fecharModal() {
-            modal.classList.remove('ativo');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Inicia
-        iniciarSistema();
+        const themeBtn=document.getElementById('themeToggle'),themeIcon=themeBtn.querySelector('i'),body=document.body,html=document.documentElement,logoImg=document.getElementById('logo-img'),starsContainer=document.getElementById('stars-container'),shootingStarContainer=document.getElementById('shooting-star-container'),metaThemeColor=document.getElementById('meta-theme-color'),systemDarkMode=window.matchMedia('(prefers-color-scheme: dark)');let savedTheme=localStorage.getItem('selectedTheme'),shootingStarInterval;function initTheme(){savedTheme?savedTheme==='dark'?aplicarTemaDark():aplicarTemaLight():systemDarkMode.matches?aplicarTemaDark():aplicarTemaLight()}systemDarkMode.addEventListener('change',e=>{localStorage.getItem('selectedTheme')||(e.matches?aplicarTemaDark():aplicarTemaLight())});themeBtn.addEventListener('click',()=>{body.classList.contains('dark-theme')?(aplicarTemaLight(),localStorage.setItem('selectedTheme','light')):(aplicarTemaDark(),localStorage.setItem('selectedTheme','dark'))});function aplicarTemaDark(){body.classList.add('dark-theme');themeIcon.textContent='light_mode';logoImg.src='logo-branco-light.png';metaThemeColor.setAttribute('content','#121212');atualizarFundo();criarEstrelasFixas();iniciarEstrelaCadente()}function aplicarTemaLight(){body.classList.remove('dark-theme');themeIcon.textContent='dark_mode';logoImg.src='logo-preto-dark.png';metaThemeColor.setAttribute('content','#f0f2f5');atualizarFundo();pararEstrelaCadente()}function atualizarFundo(){const e=new Date().getHours(),t=document.getElementById('dynamic-bg'),a=body.classList.contains('dark-theme');let o,r;a?e>=5&&e<12?(o='linear-gradient(to top, #311b92, #000000 80%)',r='#000000'):e>=12&&e<18?(o='linear-gradient(to top, #880e4f, #1a237e, #000000 80%)',r='#000000'):(o='linear-gradient(to top, #000000, #1a237e, #000000 80%)',r='#000000'):e>=5&&e<12?(o='linear-gradient(to top, #81d4fa, #f0f2f5 80%)',r='#f0f2f5'):e>=12&&e<18?(o='linear-gradient(to top, #ffcc80, #f48fb1, #f0f2f5 80%)',r='#f0f2f5'):(o='linear-gradient(to top, #1a237e, #4a148c, #f0f2f5 80%)',r='#f0f2f5');t.style.background=o,html.style.backgroundColor=r}function criarEstrelasFixas(){if(!(starsContainer.children.length>0))for(let e=0;e<150;e++){const t=document.createElement('div');t.className='star',t.style.left=100*Math.random()+'%',t.style.top=100*Math.random()+'%';const a=1.5*Math.random()+1+'px';t.style.width=a,t.style.height=a,t.style.animationDelay=5*Math.random()+'s',starsContainer.appendChild(t)}}function iniciarEstrelaCadente(){shootingStarInterval&&clearInterval(shootingStarInterval),criarEstrelaCadente(),shootingStarInterval=setInterval(criarEstrelaCadente,1e4)}function pararEstrelaCadente(){shootingStarInterval&&clearInterval(shootingStarInterval),shootingStarContainer.innerHTML=''}function criarEstrelaCadente(){const e=document.createElement('div');e.className='shooting-star';const t=Math.random()*(window.innerWidth-100),a=200*Math.random();e.style.left=t+'px',e.style.top=a+'px',shootingStarContainer.appendChild(e),setTimeout(()=>{e.remove()},1200)}initTheme();
     </script>
-
 </body>
 </html>
