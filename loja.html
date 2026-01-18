@@ -15,20 +15,24 @@
     <style>
         :root { --texto-escuro: #333; --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body { font-family: 'Raleway', sans-serif; color: var(--texto-escuro); min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: linear-gradient(-45deg, #ffd1dc, #c8e6c9, #ffcdd2, #b2dfdb, #f8bbd0); background-size: 300% 300%; animation: gradientBG 10s ease infinite; padding-top: var(--safe-top); padding-bottom: calc(20px + var(--safe-bottom)); }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
         header { padding: 15px; text-align: center; width: 100%; }
         .logo-img { max-height: 80px; display: block; margin: 0 auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
         h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 10px 0; color: #333; }
 
-        /* GRID */
+        /* GRID OTIMIZADO */
         .container-loja { width: 100%; max-width: 1000px; padding: 10px 15px 80px 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media(min-width: 768px) { .container-loja { grid-template-columns: repeat(4, 1fr); } }
 
-        .card-produto { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; }
+        .card-produto { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; position: relative; will-change: transform; }
         .card-produto:active { transform: scale(0.98); }
+        
         .img-capa { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.5); margin-bottom: 8px; position: relative; }
-        .img-capa img { width: 100%; height: 100%; object-fit: cover; }
+        .img-capa img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
+        
         .info-mini { text-align: center; width: 100%; }
         .nome-mini { font-weight: 700; font-size: 0.85rem; margin-bottom: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ver-detalhes { font-size: 0.7rem; color: #666; text-decoration: underline; }
@@ -37,6 +41,7 @@
         #modal-produto { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 9999; flex-direction: column; overflow-y: auto; padding-top: var(--safe-top); }
         #modal-produto.ativo { display: flex; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
         .modal-header { padding: 15px; display: flex; justify-content: flex-end; }
         .btn-fechar { background: #eee; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         
@@ -48,6 +53,7 @@
         .detalhes-container { padding: 0 20px 40px 20px; }
         .modal-titulo { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 10px; }
         .modal-desc { font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 20px; }
+        
         .tabela-specs { width: 100%; margin-bottom: 25px; border-collapse: collapse; }
         .tabela-specs td { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1); font-size: 0.85rem; }
         .spec-label { font-weight: 700; color: #333; width: 30%; }
@@ -56,7 +62,7 @@
         .btn-compra-grande { background: linear-gradient(45deg, #333, #555); color: white; text-decoration: none; display: block; text-align: center; padding: 18px; border-radius: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.2s; }
         .btn-compra-grande:active { transform: scale(0.95); }
 
-        .loading { text-align: center; margin-top: 50px; font-weight: 600; color: #555; }
+        .loading { text-align: center; margin-top: 50px; font-weight: 600; color: #555; transition: opacity 0.3s; }
         .btn-carregar-mais { background: rgba(255,255,255,0.5); border: 2px solid #fff; color: #333; padding: 12px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase; margin: 20px auto; display: none; cursor: pointer; }
         
         .btn-voltar-home { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.6); color: #333; text-decoration: none; padding: 10px 25px; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.7rem; box-shadow: 0 5px 20px rgba(0,0,0,0.1); z-index: 50; }
@@ -69,9 +75,9 @@
         <h1>Coleção</h1>
     </header>
 
-    <div id="loading" class="loading">Buscando joias...</div>
+    <div id="loading" class="loading">Atualizando vitrine...</div>
     <div id="container-loja" class="container-loja"></div>
-    <button id="btnVerMais" class="btn-carregar-mais" onclick="mostrarMaisProdutos()">Ver Mais</button>
+    <button id="btnVerMais" class="btn-carregar-mais" onclick="carregarMaisNaTela()">Ver Mais</button>
     <a href="index.html" class="btn-voltar-home">Voltar</a>
 
     <div id="modal-produto">
@@ -93,7 +99,9 @@
     </div>
 
     <script>
+        // LINK DIRETO DO GOOGLE (SEM PROXY)
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRLq67Umu54XmI0sjdWS6gUzmTsofpBjlVZSc2wMHoawdFZHsOtK4Sun6NrAVK9dXaNFSByiccftn9n/pub?output=csv';
+        const CACHE_KEY = 'orelha_cache_v2'; // Chave para salvar no celular
 
         const container = document.getElementById('container-loja');
         const loading = document.getElementById('loading');
@@ -104,64 +112,91 @@
         let produtosExibidos = 0;
         const QTD_POR_VEZ = 12;
 
-        function carregarLoja() {
-            // Usando Proxy AllOrigins para garantir carregamento
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_URL);
+        async function iniciarSistema() {
+            // 1. ESTRATÉGIA DE VELOCIDADE:
+            // Tenta mostrar o que já tem salvo no celular do cliente IMEDIATAMENTE
+            const cacheData = localStorage.getItem(CACHE_KEY);
+            if (cacheData) {
+                try {
+                    todosProdutos = JSON.parse(cacheData);
+                    renderizarInicial();
+                    console.log("⚡ Carregado da memória (Instantâneo)");
+                } catch(e) {}
+            }
 
-            Papa.parse(proxyUrl, {
-                download: true, header: true, skipEmptyLines: true,
+            // 2. Busca dados novos direto do Google (Background)
+            await buscarDadosNovos();
+        }
+
+        async function buscarDadosNovos() {
+            // Adiciona timestamp para o Google não entregar cache velho
+            const urlDireta = SHEET_URL + '&t=' + new Date().getTime();
+
+            Papa.parse(urlDireta, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
                 complete: function(results) {
-                    todosProdutos = results.data.filter(p => p.nome && p.nome.trim() !== "");
-                    loading.style.display = 'none';
-                    if(todosProdutos.length === 0) loading.innerHTML = "Nenhum produto encontrado.";
-                    else mostrarMaisProdutos();
+                    const dadosNovos = results.data.filter(p => p.nome && p.nome.trim() !== "");
+                    
+                    if (dadosNovos.length > 0) {
+                        // Salva no celular para a próxima vez ser rápido
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(dadosNovos));
+                        todosProdutos = dadosNovos;
+                        
+                        // Se a tela estava vazia, mostra agora. Se já tinha cache, atualiza silenciosamente.
+                        if (container.innerHTML === '') {
+                            renderizarInicial();
+                        }
+                        loading.style.display = 'none';
+                    }
                 },
                 error: function(err) {
-                    loading.innerHTML = "Erro ao carregar. Verifique a planilha.";
+                    console.warn("Sem internet ou erro Google. Usando cache se existir.");
+                    if (todosProdutos.length === 0) {
+                        loading.innerHTML = "Não foi possível carregar as joias.";
+                    } else {
+                        loading.style.display = 'none';
+                    }
                 }
             });
         }
 
-        // --- FUNÇÃO MÁGICA: CONVERTE LINKS DO DRIVE ---
+        function renderizarInicial() {
+            loading.style.display = 'none';
+            container.innerHTML = ''; 
+            produtosExibidos = 0;
+            carregarMaisNaTela();
+        }
+
         function tratarImagem(imgString) {
             if (!imgString) return '';
             let src = imgString.trim();
 
-            // 1. Se for link do Google Drive
+            // Lógica para Google Drive
             if (src.includes('drive.google.com')) {
-                // Tenta extrair o ID do arquivo
                 try {
-                    // Padrão: /d/FILE_ID/view
                     const id = src.split('/d/')[1].split('/')[0];
-                    // Retorna link direto de visualização
                     return `https://drive.google.com/uc?export=view&id=${id}`;
-                } catch (e) {
-                    console.error("Erro ao converter link do Drive", e);
-                    return src; // Retorna original se falhar
-                }
+                } catch (e) { return src; }
             }
-
-            // 2. Se for outro link da web (Imgur, etc)
-            if (src.startsWith('http')) {
-                return src;
-            }
-
-            // 3. Se for arquivo local (na pasta do GitHub)
+            // Link Web Direto
+            if (src.startsWith('http')) return src;
+            // Arquivo Local (GitHub)
             return 'joias/' + src;
         }
 
-        function mostrarMaisProdutos() {
+        function carregarMaisNaTela() {
             const total = todosProdutos.length;
             const proximos = todosProdutos.slice(produtosExibidos, produtosExibidos + QTD_POR_VEZ);
 
             proximos.forEach((produto, index) => {
                 const listaImagens = produto.imagens ? produto.imagens.split(',') : [];
-                // Usa a função tratarImagem para corrigir o link do Drive/Imgur/GitHub
                 const capa = tratarImagem(listaImagens[0]);
+                const realIndex = produtosExibidos + index;
 
                 const card = document.createElement('div');
                 card.className = 'card-produto';
-                const realIndex = produtosExibidos + index;
                 card.onclick = () => abrirModal(realIndex);
                 
                 card.innerHTML = `
@@ -177,8 +212,7 @@
             });
 
             produtosExibidos += proximos.length;
-            if (produtosExibidos < total) btnVerMais.style.display = 'block';
-            else btnVerMais.style.display = 'none';
+            btnVerMais.style.display = (produtosExibidos < total) ? 'block' : 'none';
         }
 
         function abrirModal(index) {
@@ -218,7 +252,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        carregarLoja();
+        // Inicia
+        iniciarSistema();
     </script>
 
 </body>
