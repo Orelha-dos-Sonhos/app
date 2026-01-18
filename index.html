@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f0f2f5" id="theme-color-meta">
+    
     <title>Orelha dos Sonhos | Victória Serrano</title>
     
     <link rel="icon" type="image/png" href="icon-web.png">
@@ -10,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
@@ -33,38 +34,41 @@
             --glass-shadow: rgba(0, 0, 0, 0.5);
         }
 
-        /* RESET GLOBAL REFORÇADO */
-        html, body {
-            margin: 0; padding: 0; 
-            width: 100%; max-width: 100%;
-            overflow-x: hidden; /* Trava rolagem horizontal na raiz */
-        }
+        /* RESET GLOBAL */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html {
+            width: 100%;
+            overflow-x: hidden; /* Evita rolagem lateral */
+        }
 
         body {
             font-family: 'Raleway', sans-serif; color: var(--text-color);
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            background-color: var(--bg-body);
-            transition: background-color 0.8s ease, color 0.5s ease;
-            position: relative; 
+            min-height: 100vh; /* Permite crescer com o conteúdo */
+            width: 100%;
+            display: flex; flex-direction: column; align-items: center; /* Centraliza tudo */
+            background-color: transparent; /* Transparente para ver o gradiente fixo */
+            transition: color 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* 1. BACKGROUND DINÂMICO */
+        /* --- ELEMENTOS DE FUNDO (FIXOS) --- */
+        
+        /* 1. Gradiente Base (-4) */
         .dynamic-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -3; pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -4; pointer-events: none;
             transition: background 1.5s ease;
         }
 
-        /* 2. SOL (GLOW) */
+        /* 2. Sol (-2) */
         .sun-glow {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
             width: 100%; height: 30vh;
             background: radial-gradient(ellipse at top center, rgba(255, 215, 0, 0.65) 0%, rgba(255, 230, 80, 0.45) 40%, rgba(255, 255, 255, 0.2) 70%, transparent 90%);
             filter: blur(70px);
-            z-index: -1; opacity: 1; pointer-events: none;
+            z-index: -2; opacity: 1; pointer-events: none;
             transition: opacity 1s ease;
             animation: sunPulse 2s infinite alternate ease-in-out;
         }
@@ -74,13 +78,10 @@
         }
         body.dark-theme .sun-glow { opacity: 0; animation: none; }
 
-        /* 3. ESTRELAS (CORRIGIDO: FIXED E 100%) */
+        /* 3. Estrelas Fixas (-3) */
         .stars-container {
-            position: fixed; /* Mudado de absolute para fixed para não esticar a página */
-            top: 0; left: 0; 
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: -2; 
-            overflow: hidden; /* Corta qualquer estrela que sair da borda */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -3; overflow: hidden;
             opacity: 0; transition: opacity 1s ease;
         }
         body.dark-theme .stars-container { opacity: 1; }
@@ -95,19 +96,16 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* 4. ESTRELA CADENTE (CORRIGIDO) */
+        /* 4. Estrelas Cadentes (-2) */
         #shooting-star-container {
-            position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            pointer-events: none; z-index: -2;
-            overflow: hidden; /* Garante que a animação não vaze */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -2; overflow: hidden;
         }
-        
         .shooting-star {
             position: absolute; height: 2px;
             background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%);
             border-radius: 999px; filter: drop-shadow(0 0 6px white);
-            animation: shoot 0.8s ease-out forwards; opacity: 0; z-index: -2;
+            animation: shoot 0.8s ease-out forwards; opacity: 0;
         }
         @keyframes shoot {
             0% { transform: translate(0, 0) rotate(-45deg) scaleX(0); opacity: 1; width: 0; }
@@ -115,11 +113,14 @@
             100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; }
         }
 
-        /* LAYOUT PRINCIPAL */
+        /* --- LAYOUT PRINCIPAL (10) --- */
         #app-container {
-            width: 100%; max-width: 500px; 
-            padding: 20px 15px;
-            display: flex; flex-direction: column; align-items: center; z-index: 10;
+            position: relative;
+            width: 100%; max-width: 500px; /* Limite em Desktop */
+            padding: 20px 15px; /* Espaçamento interno */
+            display: flex; flex-direction: column; align-items: center; 
+            margin: 0 auto; /* Garante centralização extra */
+            z-index: 10;
         }
 
         header { width: 100%; text-align: center; margin-bottom: 15px; position: relative; }
@@ -188,7 +189,7 @@
             box-shadow: 0 4px 10px var(--glass-shadow);
             box-sizing: border-box; overflow: hidden;
         }
-        .mapa-frame { width: 100%; max-width: 100%; height: 180px; border: none; border-radius: 12px; background: #eee; display: block; }
+        .mapa-frame { width: 100%; height: 180px; border: none; border-radius: 12px; background: #eee; display: block; }
         .endereco-texto { text-align: center; font-size: 0.85rem; color: var(--text-color); line-height: 1.4; font-weight: 500; }
         .endereco-titulo { font-weight: 800; font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
 
@@ -215,7 +216,6 @@
         @media (max-width: 380px) {
             #app-container { padding: 15px 10px; }
             .btn-link { padding: 15px; font-size: 0.8rem; gap: 8px; }
-            .card-mapa { padding: 10px; }
         }
 
     </style>
@@ -302,6 +302,7 @@
         const logoImg = document.getElementById('logo-img');
         const starsContainer = document.getElementById('stars-container');
         const shootingStarContainer = document.getElementById('shooting-star-container');
+        const metaThemeColor = document.getElementById('theme-color-meta');
 
         const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
         let savedTheme = localStorage.getItem('selectedTheme');
@@ -338,6 +339,7 @@
             body.classList.add('dark-theme');
             themeIcon.textContent = 'light_mode';
             logoImg.src = 'logo-branco-light.png';
+            metaThemeColor.setAttribute('content', '#121212');
             atualizarFundo();
             criarEstrelasFixas(); 
             iniciarEstrelaCadente();
@@ -347,6 +349,7 @@
             body.classList.remove('dark-theme');
             themeIcon.textContent = 'dark_mode';
             logoImg.src = 'logo-preto-dark.png';
+            metaThemeColor.setAttribute('content', '#f0f2f5');
             atualizarFundo();
             pararEstrelaCadente();
         }
