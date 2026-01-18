@@ -34,7 +34,13 @@
         }
 
         /* RESET GLOBAL REFORÇADO */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body {
+            margin: 0; padding: 0; 
+            width: 100%; max-width: 100%;
+            overflow-x: hidden; /* Trava rolagem horizontal na raiz */
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Raleway', sans-serif; color: var(--text-color);
@@ -43,8 +49,6 @@
             background-color: var(--bg-body);
             transition: background-color 0.8s ease, color 0.5s ease;
             position: relative; 
-            overflow-x: hidden; /* Bloqueia rolagem horizontal no corpo */
-            width: 100%;
         }
 
         /* 1. BACKGROUND DINÂMICO */
@@ -70,13 +74,17 @@
         }
         body.dark-theme .sun-glow { opacity: 0; animation: none; }
 
-        /* 3. ESTRELAS */
+        /* 3. ESTRELAS (CORRIGIDO: FIXED E 100%) */
         .stars-container {
-            position: absolute; top: -50px; left: -10%; width: 120%; height: 120vh;
-            pointer-events: none; z-index: -2; overflow: hidden;
+            position: fixed; /* Mudado de absolute para fixed para não esticar a página */
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: -2; 
+            overflow: hidden; /* Corta qualquer estrela que sair da borda */
             opacity: 0; transition: opacity 1s ease;
         }
         body.dark-theme .stars-container { opacity: 1; }
+        
         .star {
             position: absolute; background: white; border-radius: 50%;
             box-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
@@ -87,7 +95,14 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* 4. ESTRELA CADENTE */
+        /* 4. ESTRELA CADENTE (CORRIGIDO) */
+        #shooting-star-container {
+            position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; z-index: -2;
+            overflow: hidden; /* Garante que a animação não vaze */
+        }
+        
         .shooting-star {
             position: absolute; height: 2px;
             background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%);
@@ -102,11 +117,9 @@
 
         /* LAYOUT PRINCIPAL */
         #app-container {
-            width: 100%; 
-            max-width: 500px; 
-            padding: 20px 15px; /* Padding seguro */
+            width: 100%; max-width: 500px; 
+            padding: 20px 15px;
             display: flex; flex-direction: column; align-items: center; z-index: 10;
-            overflow-x: hidden; /* Garante que nada saia deste container */
         }
 
         header { width: 100%; text-align: center; margin-bottom: 15px; position: relative; }
@@ -163,10 +176,9 @@
         .btn-link:active { transform: scale(0.98); }
         .btn-link i { font-size: 1.4rem; line-height: 0; }
 
-        /* --- MINI MAPA (CORREÇÃO MOBILE REFORÇADA) --- */
+        /* MINI MAPA */
         .card-mapa {
-            margin-top: 15px; 
-            width: 100%; /* Ocupa 100% do pai */
+            margin-top: 15px; width: 100%;
             background: var(--glass-bg-end);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
@@ -174,22 +186,9 @@
             padding: 15px;
             display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 4px 10px var(--glass-shadow);
-            
-            /* Ajustes cruciais para não vazar a tela no iPhone */
-            box-sizing: border-box; 
-            overflow: hidden; 
+            box-sizing: border-box; overflow: hidden;
         }
-
-        .mapa-frame { 
-            width: 100%; 
-            max-width: 100%; /* Força o limite máximo */
-            height: 180px; 
-            border: none; 
-            border-radius: 12px; 
-            background: #eee;
-            display: block; /* Remove espaços inline extras */
-        }
-        
+        .mapa-frame { width: 100%; max-width: 100%; height: 180px; border: none; border-radius: 12px; background: #eee; display: block; }
         .endereco-texto { text-align: center; font-size: 0.85rem; color: var(--text-color); line-height: 1.4; font-weight: 500; }
         .endereco-titulo { font-weight: 800; font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
 
@@ -213,11 +212,10 @@
         .theme-toggle-btn:active { transform: scale(0.9); }
         .theme-toggle-btn i { font-size: 26px; line-height: 0; }
 
-        /* Media Queries para telas muito pequenas */
         @media (max-width: 380px) {
             #app-container { padding: 15px 10px; }
             .btn-link { padding: 15px; font-size: 0.8rem; gap: 8px; }
-            .card-mapa { padding: 10px; } /* Reduz padding interno do mapa em telas minusculas */
+            .card-mapa { padding: 10px; }
         }
 
     </style>
@@ -227,7 +225,7 @@
     <div id="dynamic-bg" class="dynamic-glow"></div>
     <div id="sun-glow" class="sun-glow"></div>
     <div id="stars-container" class="stars-container"></div>
-    <div id="shooting-star-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2;"></div>
+    <div id="shooting-star-container"></div>
 
     <div id="app-container">
         
