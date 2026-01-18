@@ -2,609 +2,417 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Orelha dos Sonhos</title>
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://orelha-dos-sonhos.github.io/app/">
-    <meta property="og:title" content="Orelha dos Sonhos">
-    <meta property="og:description" content="Experimente joias incríveis na sua própria orelha com nosso provador virtual.">
-    <meta property="og:image" content="https://orelha-dos-sonhos.github.io/app/banner-orelha.webp">
-    <meta property="og:image:type" content="image/webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Orelha dos Sonhos | Victória Serrano</title>
     
     <link rel="icon" type="image/png" href="icon-web.png">
-    <link rel="apple-touch-icon" href="icon-web.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
+        /* --- TEMA DINÂMICO --- */
         :root {
-            --texto-escuro: #333333;
-            --fonte-titulo: 'Playfair Display', serif;
-            --fonte-ui: 'Raleway', sans-serif;
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
+            --bg-body: #f0f2f5;
+            --text-color: #333;
+            --glass-bg-start: rgba(255, 255, 255, 0.55);
+            --glass-bg-end: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-theme {
+            --bg-body: #121212;
+            --text-color: #f0f0f0;
+            --glass-bg-start: rgba(40, 40, 40, 0.65);
+            --glass-bg-end: rgba(60, 60, 60, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: var(--fonte-ui); color: var(--texto-escuro);
-            height: 100vh; height: 100dvh; width: 100vw; overflow: hidden;
+            font-family: 'Raleway', sans-serif; color: var(--text-color);
+            min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            background: linear-gradient(-45deg, #ffd1dc, #c8e6c9, #ffcdd2, #b2dfdb, #f8bbd0);
-            background-size: 300% 300%; animation: gradientBG 10s ease infinite;
-            padding-top: var(--safe-top); padding-bottom: 0; 
+            background-color: var(--bg-body);
+            transition: background-color 0.8s ease, color 0.5s ease;
+            position: relative; overflow-x: hidden;
         }
 
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        #app-container {
-            width: 100%; max-width: 600px; height: 100%;
-            display: flex; flex-direction: column; position: relative;
+        /* 1. BACKGROUND DINÂMICO */
+        .dynamic-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -3; pointer-events: none;
+            transition: background 1.5s ease;
         }
 
-        header { 
-            padding: 5px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
-            background: transparent; height: auto;
-        }
-        .logo-img { 
-            max-height: 55px; width: auto; display: block; margin: 0 auto; 
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); 
-        }
-
-        #container-palco { 
-            flex: 1; display: flex; justify-content: center; align-items: center; 
-            padding: 5px 10px; position: relative; overflow: hidden;
-        }
-        
-        #palco {
-            height: 100%; max-height: 100%;
-            /* NOVO FORMATO: 1080 / 1626 */
-            aspect-ratio: 1080 / 1626; 
+        /* 2. SOL (GLOW) */
+        .sun-glow {
+            position: fixed; 
+            top: 0; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 100%; 
+            height: 30vh;
             
-            background: #000; border-radius: 18px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 3px solid rgba(255,255,255,0.9); 
-            position: relative; touch-action: none; user-select: none;
+            background: radial-gradient(ellipse at top center, 
+                rgba(255, 215, 0, 0.65) 0%,   
+                rgba(255, 230, 80, 0.45) 40%, 
+                rgba(255, 255, 255, 0.2) 70%,
+                transparent 90%);
+                
+            filter: blur(70px);
+            z-index: -1;
+            opacity: 1; 
+            pointer-events: none;
+            transition: opacity 1s ease;
+            animation: sunPulse 2s infinite alternate ease-in-out;
         }
-        /* Ajuste para telas onde a altura sobra */
-        @media (min-aspect-ratio: 1080/1626) { #palco { height: auto; width: 100%; } }
-
-        video, #previewImage { 
-            width: 100%; height: 100%; 
-            object-fit: cover; 
-            position: absolute; top: 0; left: 0; 
-        }
-        #previewImage { background: #000; }
-        .mirrored { transform: scaleX(-1); }
-
-        #previewImage.cropping-mode {
-            object-fit: contain; cursor: move;
-        }
-
-        .sticker-joia {
-            position: absolute; width: 100px; top: 50%; left: 50%; 
-            cursor: grab; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15;
-            touch-action: none;
-        }
-        .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
-
-        .ios-controls {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 300px; 
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 20px; border-radius: 40px; 
-            display: grid; grid-template-columns: 1fr auto 1fr;
-            align-items: center; justify-items: center; z-index: 30;
-        }
-        .shutter-button { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; padding: 2px; cursor: pointer; }
-        .shutter-button::after { content: ''; display: block; width: 100%; height: 100%; background: white; border-radius: 50%; }
-        .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
-        .mini-btn i { font-size: 24px; margin-bottom: 2px; }
-
-        #crop-controls {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 350px;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
-            border-radius: 20px; padding: 15px; z-index: 35;
-            display: none; flex-direction: column; gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .crop-header { text-align: center; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; color: #333; }
-        .crop-actions { display: flex; gap: 10px; }
-        .btn-crop { flex: 1; padding: 12px; border: none; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; }
-        .btn-cancel { background: #ff5252; color: white; }
-        .btn-confirm { background: var(--texto-escuro); color: white; }
         
-        #painel-edicao {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px);
-            border-top: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 25px 25px 0 0; 
-            padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; 
-            display: none; flex-direction: column; gap: 8px; z-index: 50; 
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        @keyframes sunPulse {
+            0% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
         }
-        #painel-edicao.minimized { transform: translateY(78%); background: rgba(255, 255, 255, 0.8); }
-        #painel-edicao.minimized .conteudo-ocultavel { opacity: 0; pointer-events: none; }
-        .conteudo-ocultavel { opacity: 1; transition: opacity 0.2s; display: flex; flex-direction: column; gap: 8px; }
-        .header-edicao { display: flex; justify-content: space-between; align-items: center; height: 35px; cursor: pointer; margin-bottom: 0; }
-        .titulo-wrapper { display: flex; align-items: center; gap: 5px; }
-        .titulo-edicao { font-weight: 800; color: var(--texto-escuro); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-toggle { background: transparent; border: none; color: #555; cursor: pointer; display: flex; align-items: center; }
-        .btn-voltar-edicao { background: rgba(0,0,0,0.05); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .carrossel { display: flex; overflow-x: auto; gap: 8px; padding: 2px; min-height: 60px; -webkit-overflow-scrolling: touch; }
-        .thumb-joia { flex-shrink: 0; width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.8); border: 2px solid #fff; padding: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; display: none; transition: transform 0.2s; box-shadow: 0 3px 8px rgba(0,0,0,0.05); }
-        .thumb-joia.loaded { display: flex; }
-        .thumb-joia.active { border-color: var(--menta-forte); transform: scale(1.1); background: #fff; }
-        .thumb-joia img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-        .ferramentas-ajuste { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.4); padding: 10px; border-radius: 12px; }
-        .slider-row { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .slider-label { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #555; margin-bottom: 0; }
-        input[type=range] { width: 100%; accent-color: #333; height: 3px; cursor: pointer; }
-        .btn-trash { width: 32px; height: 32px; border-radius: 50%; border: none; background: #ff5252; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(255, 82, 82, 0.3); cursor: pointer; }
-        .btn-trash i { font-size: 18px; }
-        .acoes-finais { display: flex; gap: 8px; width: 100%; margin-top: 2px; }
-        .btn-final { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9); color: var(--texto-escuro); border-radius: 50px; flex: 1; padding: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.2s; }
-        .btn-final i { font-size: 18px; }
-        .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.95); }
-        .btn-final.loading::after { content: ""; width: 12px; height: 12px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        #fileInput { display: none; }
-        .menu-footer { padding: 5px 10px calc(15px + var(--safe-bottom)) 10px; width: 100%; display: flex; justify-content: center; gap: 6px; z-index: 40; background: transparent; flex-shrink: 0; }
-        .btn-menu-glow { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 15px; padding: 10px 2px; flex: 1; min-width: 0; color: #333; text-align: center; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; text-decoration: none; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .btn-menu-glow:active { transform: scale(0.95); background: rgba(255,255,255,0.4); }
+
+        body.dark-theme .sun-glow { opacity: 0; animation: none; }
+
+        /* 3. ESTRELAS */
+        .stars-container {
+            position: absolute; top: -50px; left: -10%; width: 120%; height: 120vh;
+            pointer-events: none; z-index: -2; overflow: hidden;
+            opacity: 0; transition: opacity 1s ease;
+        }
+        body.dark-theme .stars-container { opacity: 1; }
+        
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.9);
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 4. ESTRELA CADENTE */
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%);
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px white);
+            animation: shoot 0.8s ease-out forwards;
+            opacity: 0; z-index: -2;
+        }
+
+        @keyframes shoot {
+            0% { transform: translate(0, 0) rotate(-45deg) scaleX(0); opacity: 1; width: 0; }
+            30% { width: 150px; }
+            100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; }
+        }
+
+        /* LAYOUT PRINCIPAL */
+        #app-container {
+            width: 100%; max-width: 500px; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; z-index: 10;
+        }
+
+        header { width: 100%; text-align: center; margin-bottom: 15px; position: relative; }
+        
+        .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; position: relative; z-index: 2; }
+        .logo-link:active { transform: scale(0.95); }
+        .logo-img { 
+            max-height: 70px; display: block; 
+            filter: drop-shadow(0 4px 6px var(--glass-shadow));
+            transition: opacity 0.3s ease; 
+        }
+
+        /* PERFIL */
+        .perfil-wrapper {
+            display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 25px; position: relative; z-index: 2;
+        }
+        
+        .foto-vic {
+            width: 130px; height: 130px;
+            border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--glass-border);
+            box-shadow: 0 8px 20px var(--glass-shadow);
+            background: #ddd;
+        }
+
+        .nome-box {
+            background: var(--glass-bg-end);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 8px 25px; border-radius: 50px;
+            box-shadow: 0 4px 15px var(--glass-shadow);
+            text-align: center;
+        }
+        .nome-texto { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
+        .desc-servico { font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9; margin-top: 8px; text-align: center; color: var(--text-color); }
+
+        /* BOTÕES */
+        .menu-links { width: 100%; display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
+
+        .btn-link {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; padding: 18px;
+            text-decoration: none; color: var(--text-color);
+            text-align: center;
+            font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
+            background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+            box-shadow: 0 4px 10px var(--glass-shadow);
+            transition: transform 0.2s ease, background 0.2s ease;
+            gap: 12px; /* Espaço entre ícone e texto */
+        }
+        .btn-link:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--glass-shadow); }
+        .btn-link:active { transform: scale(0.98); }
+        
+        /* Ícones dentro dos botões */
+        .btn-link i {
+            font-size: 1.4rem;
+            line-height: 0;
+        }
+
+        /* MINI MAPA */
+        .card-mapa {
+            margin-top: 15px; width: 100%;
+            background: var(--glass-bg-end);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 15px;
+            display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 4px 10px var(--glass-shadow);
+        }
+        .mapa-frame { width: 100%; height: 180px; border: none; border-radius: 12px; background: #eee; }
+        .endereco-texto { text-align: center; font-size: 0.85rem; color: var(--text-color); line-height: 1.4; font-weight: 500; }
+        .endereco-titulo { font-weight: 800; font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
+
+        footer { 
+            margin-top: 50px; font-size: 0.7rem; opacity: 0.6; padding-bottom: 80px; 
+            text-align: center; width: 100%;
+        }
+
+        /* BOTÃO TEMA */
+        .theme-toggle-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg-end);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: var(--text-color);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 15px var(--glass-shadow);
+            z-index: 100; transition: transform 0.2s;
+        }
+        .theme-toggle-btn:active { transform: scale(0.9); }
+        .theme-toggle-btn i { font-size: 26px; line-height: 0; }
+
     </style>
 </head>
 <body>
 
+    <div id="dynamic-bg" class="dynamic-glow"></div>
+    
+    <div id="sun-glow" class="sun-glow"></div>
+
+    <div id="stars-container" class="stars-container"></div>
+    
+    <div id="shooting-star-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2;"></div>
+
     <div id="app-container">
+        
         <header>
-            <img src="logo-branco-brilho.png" alt="Orelha dos Sonhos" class="logo-img">
+            <a href="index.html" class="logo-link">
+                <img src="logo-preto-dark.png" alt="Orelha dos Sonhos" class="logo-img" id="logo-img">
+            </a>
         </header>
 
-        <div id="container-palco">
-            <div id="palco">
-                <video id="videoElement" autoplay playsinline class="mirrored"></video>
-                <img id="previewImage" style="display:none;" crossorigin="anonymous">
-                
-                <div id="ios-controls" class="ios-controls">
-                    <button class="mini-btn" onclick="document.getElementById('fileInput').click()" title="Galeria">
-                        <i class="material-icons">photo_library</i>
-                    </button>
-                    <input type="file" id="fileInput" accept="image/*" onchange="uploadGaleria(event)">
-                    <button class="shutter-button" onclick="capturarFoto()"></button>
-                    <button class="mini-btn" onclick="alternarCamera()" title="Trocar Câmera">
-                        <i class="material-icons">flip_camera_ios</i>
-                    </button>
-                </div>
+        <main class="perfil-wrapper">
+            <img src="foto-vic.png" alt="Victória Serrano" class="foto-vic" onerror="this.src='https://via.placeholder.com/150?text=Vic'">
+            <div class="nome-box"><span class="nome-texto">Victória Serrano</span></div>
+            <div class="desc-servico">Furo de Orelha Humanizado</div>
+        </main>
 
-                <div id="crop-controls">
-                    <div class="crop-header">Ajuste a imagem</div>
-                     <div class="slider-row">
-                        <div class="slider-label">Zoom</div>
-                        <input type="range" min="0.5" max="3" step="0.01" value="1" id="cropZoomSlider" oninput="atualizarZoomCrop(this.value)">
-                    </div>
-                    <div class="crop-actions">
-                        <button class="btn-crop btn-cancel" onclick="cancelarCrop()">Cancelar</button>
-                        <button class="btn-crop btn-confirm" onclick="confirmarCrop()">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <nav class="menu-links">
+            <a href="https://wa.me/5517997928051" target="_blank" class="btn-link">
+                <i class='bx bxl-whatsapp'></i> WhatsApp - Agendamento
+            </a>
+            
+            <a href="https://instagram.com/orelhadossonhosrp" target="_blank" class="btn-link">
+                <i class='bx bxl-instagram'></i> Instagram
+            </a>
 
-        <div id="painel-edicao">
-            <div class="header-edicao">
-                <div class="titulo-wrapper" onclick="togglePainel()">
-                    <button class="btn-toggle"><i class="material-icons" id="iconToggle">expand_more</i></button>
-                    <span class="titulo-edicao">Personalizar</span>
-                </div>
-                <button class="btn-voltar-edicao" onclick="resetar()"><i class="material-icons">close</i></button>
-            </div>
-            <div class="conteudo-ocultavel">
-                <div class="carrossel" id="listaJoias"></div>
-                <div class="ferramentas-ajuste">
-                    <div class="slider-row">
-                        <div class="slider-label">Tamanho</div>
-                        <input type="range" min="30" max="400" value="120" id="rangeSize" oninput="ajustarStickerAtivo()">
-                    </div>
-                    <div class="slider-row">
-                        <div class="slider-label">Rotação</div>
-                        <input type="range" min="-180" max="180" value="0" id="rangeRotate" oninput="ajustarStickerAtivo()">
-                    </div>
-                    <button class="btn-trash" onclick="removerStickerAtivo()" title="Remover">
-                        <i class="material-icons">delete</i>
-                    </button>
-                </div>
-                <div class="acoes-finais">
-                    <button class="btn-final" id="btnSave" onclick="salvarSemMoldura()"><span>Baixar</span> <i class="material-icons">download</i></button>
-                    <button class="btn-final" id="btnShare" onclick="gerarPolaroideFinal()"><span>Compartilhar</span> <i class="material-icons">ios_share</i></button>
-                </div>
-            </div>
-        </div>
+            <a href="loja.html" class="btn-link">
+                <i class='bx bx-store-alt'></i> Loja
+            </a>
 
-        <div id="menu-footer" class="menu-footer">
-            <a href="agendamento.html" class="btn-menu-glow">Agendamento</a>
-            <a href="contato.html" class="btn-menu-glow">Contato</a>
-            <a href="joias.html" class="btn-menu-glow">Joias</a>
-            <a href="cuidados.html" class="btn-menu-glow">Cuidados</a>
-        </div>
+            <a href="cursos.html" class="btn-link">
+                <i class='bx bx-book-heart'></i> Cursos
+            </a>
+            
+            <a href="cuidados.html" class="btn-link">
+                <i class='bx bx-heart'></i> Cuidados
+            </a>
+
+            <a href="camera.html" class="btn-link">
+                <i class='bx bx-camera'></i> Câmera
+            </a>
+
+            <a href="https://www.tiktok.com/@vicserranoenf" target="_blank" class="btn-link">
+                <i class='bx bxl-tiktok'></i> TikTok
+            </a>
+
+            <a href="https://open.spotify.com/playlist/1PWwcBNaXJWImrPbjbiA2A?si=c1e661b8d15f4518" target="_blank" class="btn-link">
+                <i class='bx bxl-spotify'></i> Spotify
+            </a>
+
+            <div class="card-mapa">
+                <iframe class="mapa-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3729.0607683742663!2d-49.38719262495759!3d-20.83045968076735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94bdadbd45b981d7%3A0x6c8b9e1084721077!2sAv.%20Vera%20Cruz%2C%20639%20-%20Parque%20Estoril%2C%20S%C3%A3o%20Jos%C3%A9%20do%20Rio%20Preto%20-%20SP%2C%2015085-010!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="endereco-texto">
+                    <div class="endereco-titulo">Endereço</div>
+                    Av. Vera Cruz, 639<br>São José do Rio Preto - SP
+                </div>
+                <a href="https://www.google.com/maps/search/?api=1&query=Av.+Vera+Cruz,+639,+São+José+do+Rio+Preto+-+SP" target="_blank" class="btn-link">
+                    <i class='bx bx-map'></i> Abrir no GPS
+                </a>
+            </div>
+        </nav>
+
+        <footer>
+            © Orelha dos Sonhos | Victória Serrano, Coren-SP 662744
+        </footer>
     </div>
 
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="Mudar Tema">
+        <i class="material-icons">dark_mode</i>
+    </button>
+
     <script>
-        const video = document.getElementById('videoElement');
-        const preview = document.getElementById('previewImage');
-        const palco = document.getElementById('palco');
-        const listaJoias = document.getElementById('listaJoias');
-        const rangeSize = document.getElementById('rangeSize');
-        const rangeRotate = document.getElementById('rangeRotate');
-        const btnShare = document.getElementById('btnShare');
-        const btnSave = document.getElementById('btnSave');
-        const painel = document.getElementById('painel-edicao');
-        const iconToggle = document.getElementById('iconToggle');
-        const iosControls = document.getElementById('ios-controls');
-        const cropControls = document.getElementById('crop-controls');
-        const cropZoomSlider = document.getElementById('cropZoomSlider');
+        const themeBtn = document.getElementById('themeToggle');
+        const themeIcon = themeBtn.querySelector('i');
+        const body = document.body;
+        const logoImg = document.getElementById('logo-img');
+        const starsContainer = document.getElementById('stars-container');
+        const shootingStarContainer = document.getElementById('shooting-star-container');
 
-        let stickerAtivo = null;
-        let currentFacingMode = 'user'; 
-        let currentStream = null;
-        let isCroppingMode = false;
-        let cropScale = 1;
-        let cropTranslateX = 0;
-        let cropTranslateY = 0;
-        let isDraggingCrop = false;
-        let startDragCropX, startDragCropY;
+        const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+        let savedTheme = localStorage.getItem('selectedTheme');
+        let shootingStarInterval;
 
-        // RESOLUÇÃO DE TRABALHO FIXA (1080x1626)
-        const BASE_WIDTH = 1080;
-        const BASE_HEIGHT = 1626;
-
-        const backupJoias = [
-            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
-            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"
-        ];
-
-        window.onload = () => { startCamera(); carregarCatalogoHibrido(); }
-
-        async function startCamera() {
-            if (currentStream) currentStream.getTracks().forEach(track => track.stop());
-            const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } };
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                currentStream = stream; video.srcObject = stream;
-                if (currentFacingMode === 'user') video.classList.add('mirrored');
-                else video.classList.remove('mirrored');
-            } catch (err) {
-                try {
-                    const streamPC = await navigator.mediaDevices.getUserMedia({ video: true });
-                    currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); 
-                } catch(e) {}
-            }
-        }
-
-        function alternarCamera() {
-            currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
-            startCamera();
-        }
-
-        function capturarFoto() {
-            const canvas = document.createElement('canvas');
-            canvas.width = BASE_WIDTH;
-            canvas.height = BASE_HEIGHT;
-            const ctx = canvas.getContext('2d');
-            const vW = video.videoWidth;
-            const vH = video.videoHeight;
-            const rVid = vW / vH;
-            const rBase = BASE_WIDTH / BASE_HEIGHT;
-            let sW, sH, sX, sY;
-            if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } 
-            else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; }
-            ctx.save();
-            if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
-            ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT);
-            ctx.restore();
-            preview.src = canvas.toDataURL('image/png');
-            abrirEdicao();
-        }
-
-        function uploadGaleria(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => { 
-                    preview.src = e.target.result;
-                    iniciarModoCrop();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function iniciarModoCrop() {
-            isCroppingMode = true;
-            video.style.display = 'none';
-            preview.style.display = 'block';
-            iosControls.style.display = 'none';
-            cropControls.style.display = 'flex';
-            document.getElementById('menu-footer').style.display = 'none';
-            preview.classList.add('cropping-mode');
-            cropScale = 1; cropTranslateX = 0; cropTranslateY = 0;
-            cropZoomSlider.value = 1;
-            aplicarTransformCrop();
-            preview.addEventListener('mousedown', dragCropStart);
-            preview.addEventListener('touchstart', dragCropStart, {passive: false});
-        }
-
-        function atualizarZoomCrop(val) {
-            cropScale = parseFloat(val);
-            aplicarTransformCrop();
-        }
-
-        function aplicarTransformCrop() {
-            preview.style.transform = `translate(calc(0px + ${cropTranslateX}px), calc(0px + ${cropTranslateY}px)) scale(${cropScale})`;
-        }
-
-        function dragCropStart(e) {
-            if(!isCroppingMode) return;
-            e.preventDefault();
-            isDraggingCrop = true;
-            startDragCropX = e.touches ? e.touches[0].clientX : e.clientX;
-            startDragCropY = e.touches ? e.touches[0].clientY : e.clientY;
-        }
-
-        function dragCropMove(e) {
-            if(!isDraggingCrop || !isCroppingMode) return;
-            e.preventDefault();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            cropTranslateX += (clientX - startDragCropX);
-            cropTranslateY += (clientY - startDragCropY);
-            startDragCropX = clientX; startDragCropY = clientY;
-            aplicarTransformCrop();
-        }
-
-        function dragCropEnd() { isDraggingCrop = false; }
-
-        window.addEventListener('mousemove', dragCropMove);
-        window.addEventListener('touchmove', dragCropMove, {passive: false});
-        window.addEventListener('mouseup', dragCropEnd);
-        window.addEventListener('touchend', dragCropEnd);
-
-        function cancelarCrop() {
-            isCroppingMode = false;
-            preview.classList.remove('cropping-mode');
-            preview.style.transform = '';
-            resetar();
-        }
-
-        async function confirmarCrop() {
-            const canvas = document.createElement('canvas');
-            canvas.width = BASE_WIDTH;
-            canvas.height = BASE_HEIGHT;
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            img.src = preview.src;
-            await imgLoad(img);
-            const pW = palco.clientWidth;
-            const scaleFactor = canvas.width / pW;
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor);
-            ctx.scale(cropScale, cropScale);
-            const ratioImg = img.width / img.height;
-            const ratioCanvas = canvas.width / canvas.height;
-            let drawW, drawH;
-            if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } 
-            else { drawH = canvas.height; drawW = drawH * ratioImg; }
-            ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH);
-            ctx.restore();
-            preview.src = canvas.toDataURL('image/png');
-            isCroppingMode = false;
-            preview.classList.remove('cropping-mode');
-            preview.style.transform = '';
-            cropControls.style.display = 'none';
-            preview.removeEventListener('mousedown', dragCropStart);
-            preview.removeEventListener('touchstart', dragCropStart);
-            abrirEdicao();
-        }
-
-        function carregarCatalogoHibrido() {
-            listaJoias.innerHTML = '';
-            const pasta = 'joias/';
-            for (let i = 1; i <= 100; i++) { criarThumb(pasta + 'joia' + i + '.png'); }
-            backupJoias.forEach(url => criarThumb(url));
-        }
-
-        function criarThumb(url) {
-            const img = new Image(); img.src = url; img.crossOrigin = "anonymous";
-            img.onload = function() {
-                const div = document.createElement('div'); div.className = 'thumb-joia'; div.classList.add('loaded');
-                div.appendChild(img); div.onclick = () => adicionarSticker(url);
-                listaJoias.appendChild(div);
-            };
-        }
-
-        function abrirEdicao() {
-            video.style.display = 'none'; preview.style.display = 'block';
-            iosControls.style.display = 'none'; cropControls.style.display = 'none';
-            document.getElementById('menu-footer').style.display = 'none';
-            preview.classList.remove('cropping-mode');
-            painel.style.display = 'flex';
-            setTimeout(() => { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; }, 50);
-        }
-
-        function resetar() {
-            isCroppingMode = false;
-            video.style.display = 'block'; preview.style.display = 'none';
-            preview.classList.remove('cropping-mode'); preview.style.transform = '';
-            document.querySelectorAll('.sticker-joia').forEach(el => el.remove()); stickerAtivo = null;
-            iosControls.style.display = 'grid'; cropControls.style.display = 'none';
-            document.getElementById('menu-footer').style.display = 'flex';
-            painel.style.display = 'none';
-            document.getElementById('fileInput').value = "";
-            btnShare.classList.remove('loading'); btnSave.classList.remove('loading');
-        }
-
-        function togglePainel() {
-            if (painel.classList.contains('minimized')) { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; } 
-            else { painel.classList.add('minimized'); iconToggle.innerText = 'expand_less'; }
-        }
-
-        function adicionarSticker(url) {
-            const img = document.createElement('img'); img.src = url; img.className = 'sticker-joia'; img.crossOrigin = "anonymous";
-            img.dataset.scale = 120; img.dataset.rotation = 0;
-            img.style.left = (palco.clientWidth / 2) + 'px'; 
-            img.style.top = (palco.clientHeight / 2) + 'px';
-            img.style.transform = `translate(-50%, -50%) rotate(0deg)`;
-            img.style.width = '120px';
-            img.addEventListener('touchstart', dragStickerStart, {passive: false}); img.addEventListener('mousedown', dragStickerStart);
-            img.addEventListener('click', (e) => { e.stopPropagation(); definirAtivo(img); });
-            palco.appendChild(img); definirAtivo(img);
-        }
-
-        function definirAtivo(el) {
-            if(stickerAtivo) stickerAtivo.classList.remove('selected');
-            stickerAtivo = el; stickerAtivo.classList.add('selected');
-            rangeSize.value = stickerAtivo.dataset.scale; rangeRotate.value = stickerAtivo.dataset.rotation;
-        }
-
-        function removerStickerAtivo() { if(stickerAtivo) { stickerAtivo.remove(); stickerAtivo = null; } }
-
-        function ajustarStickerAtivo() {
-            if(!stickerAtivo) return;
-            const scale = rangeSize.value; const rotation = rangeRotate.value;
-            stickerAtivo.dataset.scale = scale; stickerAtivo.dataset.rotation = rotation;
-            stickerAtivo.style.width = `${scale}px`;
-            stickerAtivo.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
-        }
-
-        let isDraggingSticker = false; let dragStickerOffsetX, dragStickerOffsetY;
-        function dragStickerStart(e) {
-            if(!e.target.classList.contains('sticker-joia')) return;
-            e.preventDefault(); isDraggingSticker = true; definirAtivo(e.target);
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            const rect = palco.getBoundingClientRect();
-            const currentLeft = parseFloat(stickerAtivo.style.left || 0);
-            const currentTop = parseFloat(stickerAtivo.style.top || 0);
-            dragStickerOffsetX = clientX - (rect.left + currentLeft);
-            dragStickerOffsetY = clientY - (rect.top + currentTop);
-        }
-        function dragStickerMove(e) {
-            if (!isDraggingSticker || !stickerAtivo) return; e.preventDefault();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            const rect = palco.getBoundingClientRect();
-            let newLeft = clientX - rect.left - dragStickerOffsetX;
-            let newTop = clientY - rect.top - dragStickerOffsetY;
-            stickerAtivo.style.left = newLeft + 'px'; stickerAtivo.style.top = newTop + 'px';
-        }
-        function dragStickerEnd() { isDraggingSticker = false; }
-        
-        window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove);
-        window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
-
-        async function desenharCenaNoCanvas(canvas, comMoldura) {
-            const ctx = canvas.getContext('2d'); 
-            const CW = canvas.width; const CH = canvas.height;
-            let photoX, photoY, photoW, photoH;
-
-            if (comMoldura) {
-                const gradient = ctx.createLinearGradient(0, 0, CW, CH);
-                gradient.addColorStop(0, "#ffd1dc"); gradient.addColorStop(0.5, "#c8e6c9"); gradient.addColorStop(1, "#b2dfdb");
-                ctx.fillStyle = gradient; ctx.fillRect(0, 0, CW, CH);
-                
-                const margin = 80; const paperW = CW - margin*2; const paperH = 1600; 
-                const paperX = margin; const paperY = (CH - paperH)/2 - 50;
-                
-                ctx.fillStyle = "#fff"; ctx.shadowColor = "rgba(0,0,0,0.2)"; ctx.shadowBlur = 30;
-                ctx.fillRect(paperX, paperY, paperW, paperH); ctx.shadowColor = "transparent";
-                
-                const photoMargin = 50;
-                photoX = paperX + photoMargin; photoY = paperY + photoMargin;
-                photoW = paperW - photoMargin*2; 
-                // Adapta a altura da foto à proporção base
-                photoH = photoW * (BASE_HEIGHT / BASE_WIDTH);
+        function initTheme() {
+            if (savedTheme) {
+                if (savedTheme === 'dark') aplicarTemaDark();
+                else aplicarTemaLight();
             } else {
-                photoX = 0; photoY = 0; photoW = CW; photoH = CH;
-            }
-
-            const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
-            ctx.save();
-            ctx.beginPath(); ctx.rect(photoX, photoY, photoW, photoH); ctx.clip();
-            ctx.drawImage(imgBase, photoX, photoY, photoW, photoH);
-            ctx.restore();
-
-            const stickers = document.querySelectorAll('.sticker-joia');
-            const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
-            for(let s of stickers) {
-                const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
-                const left = parseFloat(s.style.left); const top = parseFloat(s.style.top);
-                const percX = left / palcoW; const percY = top / palcoH;
-                const canvasX = photoX + (percX * photoW); const canvasY = photoY + (percY * photoH);
-                const sScale = parseFloat(s.dataset.scale); const sRot = parseFloat(s.dataset.rotation);
-                const finalW = (sScale / palcoW) * photoW; const ratio = imgS.height / imgS.width;
-                ctx.save(); ctx.translate(canvasX, canvasY); ctx.rotate(sRot * Math.PI / 180);
-                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); ctx.restore();
-            }
-            ctx.restore();
-
-            if (comMoldura) {
-                try {
-                    const logo = new Image(); logo.src = "logo-branco-brilho.png"; await imgLoad(logo);
-                    const lW = 220; const lH = lW*(logo.height/logo.width); 
-                    const paperRight = (80 + (CW - 160)); const paperBottom = ((CH - 1600)/2 - 50) + 1600;
-                    const lX = paperRight - lW - 30; const lY = paperBottom - lH - 50; 
-                    ctx.shadowColor = "#333"; ctx.shadowBlur = 5; ctx.filter = "brightness(0.3)";
-                    ctx.drawImage(logo, lX, lY, lW, lH); ctx.filter = "none"; ctx.shadowColor = "transparent";
-                    ctx.font = "bold 20px Raleway"; ctx.fillStyle = "#666"; ctx.textAlign = "center"; 
-                    ctx.fillText("@orelhadossonhosrp", lX + (lW/2), lY + lH + 25);
-                } catch(e) {}
+                if (systemDarkMode.matches) aplicarTemaDark();
+                else aplicarTemaLight();
             }
         }
 
-        async function salvarSemMoldura() {
-            if(stickerAtivo) stickerAtivo.classList.remove('selected');
-            btnSave.classList.add('loading');
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; 
-                await desenharCenaNoCanvas(canvas, false);
-                const link = document.createElement('a'); link.download = 'minha-orelha.png';
-                link.href = canvas.toDataURL(); link.click();
-                btnSave.classList.remove('loading');
-            } catch (e) { alert("Erro ao salvar"); btnSave.classList.remove('loading'); }
+        systemDarkMode.addEventListener('change', (e) => {
+            if (!localStorage.getItem('selectedTheme')) {
+                if (e.matches) aplicarTemaDark();
+                else aplicarTemaLight();
+            }
+        });
+
+        themeBtn.addEventListener('click', () => {
+            if (body.classList.contains('dark-theme')) {
+                aplicarTemaLight();
+                localStorage.setItem('selectedTheme', 'light');
+            } else {
+                aplicarTemaDark();
+                localStorage.setItem('selectedTheme', 'dark');
+            }
+        });
+
+        function aplicarTemaDark() {
+            body.classList.add('dark-theme');
+            themeIcon.textContent = 'light_mode';
+            logoImg.src = 'logo-branco-light.png';
+            atualizarFundo();
+            criarEstrelasFixas(); 
+            iniciarEstrelaCadente();
         }
 
-        async function gerarPolaroideFinal() {
-            if(stickerAtivo) stickerAtivo.classList.remove('selected');
-            btnShare.classList.add('loading');
-            try {
-                const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1920;
-                await desenharCenaNoCanvas(canvas, true);
-                canvas.toBlob(async (blob) => {
-                    const file = new File([blob], "orelha-polaroid.png", { type: "image/png" });
-                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try { await navigator.share({ files: [file], title: 'Orelha dos Sonhos' }); } catch (err) {}
-                    } else {
-                        const link = document.createElement('a'); link.download = 'orelha-polaroid.png'; link.href = canvas.toDataURL(); link.click();
-                        alert("Salvo na galeria!");
-                    }
-                    btnShare.classList.remove('loading');
-                }, 'image/png');
-            } catch (error) { alert("Erro ao criar imagem."); btnShare.classList.remove('loading'); }
+        function aplicarTemaLight() {
+            body.classList.remove('dark-theme');
+            themeIcon.textContent = 'dark_mode';
+            logoImg.src = 'logo-preto-dark.png';
+            atualizarFundo();
+            pararEstrelaCadente();
         }
 
-        function imgLoad(img) { return new Promise((resolve) => { if (img.complete) return resolve(); img.onload = resolve; img.onerror = resolve; }); }
+        function atualizarFundo() {
+            const hora = new Date().getHours();
+            const bg = document.getElementById('dynamic-bg');
+            const isDark = body.classList.contains('dark-theme');
+            let cor;
+
+            if (!isDark) {
+                // LIGHT
+                if (hora >= 5 && hora < 12) cor = 'linear-gradient(to top, #81d4fa, #f0f2f5 80%)';
+                else if (hora >= 12 && hora < 18) cor = 'linear-gradient(to top, #ffcc80, #f48fb1, #f0f2f5 80%)';
+                else cor = 'linear-gradient(to top, #1a237e, #4a148c, #f0f2f5 80%)';
+            } else {
+                // DARK
+                if (hora >= 5 && hora < 12) cor = 'linear-gradient(to top, #311b92, #000000 80%)'; 
+                else if (hora >= 12 && hora < 18) cor = 'linear-gradient(to top, #880e4f, #1a237e, #000000 80%)';
+                else cor = 'linear-gradient(to top, #000000, #1a237e, #000000 80%)';
+            }
+            bg.style.background = cor;
+        }
+
+        function criarEstrelasFixas() {
+            if(starsContainer.children.length > 0) return; 
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 1.5 + 1 + 'px';
+                star.style.width = size;
+                star.style.height = size;
+                star.style.animationDelay = Math.random() * 5 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function iniciarEstrelaCadente() {
+            if(shootingStarInterval) clearInterval(shootingStarInterval);
+            criarEstrelaCadente(); 
+            shootingStarInterval = setInterval(criarEstrelaCadente, 10000); 
+        }
+
+        function pararEstrelaCadente() {
+            if(shootingStarInterval) clearInterval(shootingStarInterval);
+            shootingStarContainer.innerHTML = '';
+        }
+
+        function criarEstrelaCadente() {
+            const sStar = document.createElement('div');
+            sStar.className = 'shooting-star';
+            const startX = Math.random() * (window.innerWidth - 100); 
+            const startY = Math.random() * 200; 
+            sStar.style.left = startX + 'px';
+            sStar.style.top = startY + 'px';
+            shootingStarContainer.appendChild(sStar);
+            setTimeout(() => { sStar.remove(); }, 1200);
+        }
+
+        initTheme();
     </script>
+
 </body>
 </html>
