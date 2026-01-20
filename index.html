@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#f0f2f5" id="meta-theme-color">
+    <meta name="theme-color" content="#1F454B">
     
     <title>Orelha dos Sonhos | Victória Serrano</title>
     
@@ -14,30 +14,20 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        /* --- VARIÁVEIS DE CORES --- */
+        /* --- ESTILO ÚNICO (Sem variáveis de troca) --- */
         :root {
-            --text-color: #333;
-            /* Degradê Light: Cinza Claro Sutil */
-            --bg-gradient: linear-gradient(180deg, #f0f2f5 0%, #e2e4e8 100%);
+            --text-color: #f0f0f0; /* Texto claro */
             
-            --glass-bg-start: rgba(255, 255, 255, 0.6);
-            --glass-bg-end: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --glass-shadow: rgba(0, 0, 0, 0.05);
-        }
-
-        body.dark-theme {
-            --text-color: #f0f0f0;
-            /* Degradê Dark: Cor solicitada #1F454B descendo para um tom mais fechado */
+            /* Degradê Verde Petróleo Fixo */
             --bg-gradient: linear-gradient(180deg, #1F454B 0%, #0d1f22 100%);
             
-            --glass-bg-start: rgba(31, 69, 75, 0.6); /* Ajustado para combinar com o fundo */
+            /* Vidro escuro para contraste */
+            --glass-bg-start: rgba(31, 69, 75, 0.6);
             --glass-bg-end: rgba(20, 40, 45, 0.85);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: rgba(0, 0, 0, 0.5);
         }
 
-        /* RESET GERAL */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         html { width: 100%; height: 100%; }
@@ -49,17 +39,15 @@
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
             
-            /* BACKGROUND DEFINITIVO AQUI */
+            /* Fundo Fixo Definitivo */
             background: var(--bg-gradient);
-            background-attachment: fixed; /* Fixo para não rolar com a tela */
+            background-attachment: fixed;
             background-size: cover;
             
-            transition: background 0.5s ease, color 0.5s ease;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* LAYOUT PRINCIPAL */
         #app-container {
             width: 100%; max-width: 500px; 
             padding: 20px 15px;
@@ -72,10 +60,10 @@
         
         .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
         .logo-link:active { transform: scale(0.95); }
+        
         .logo-img { 
             max-height: 70px; display: block; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-            transition: opacity 0.3s ease; 
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
         /* PERFIL */
@@ -110,15 +98,13 @@
             text-align: center;
             font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
             
-            /* Fundo Glass Simples */
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
-            
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 18px;
             font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
             box-shadow: 0 4px 10px var(--glass-shadow);
-            transition: transform 0.2s ease, background 0.3s ease;
+            transition: transform 0.2s ease;
             gap: 12px;
         }
         .btn-link:hover { transform: translateY(-2px); box-shadow: 0 6px 15px var(--glass-shadow); }
@@ -146,26 +132,10 @@
             text-align: center; width: 100%;
         }
 
-        /* BOTÃO TEMA */
-        .theme-toggle-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 50px; height: 50px; border-radius: 50%;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg-end);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            color: var(--text-color);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 4px 15px var(--glass-shadow);
-            z-index: 100; transition: transform 0.2s;
-        }
-        .theme-toggle-btn:active { transform: scale(0.9); }
-        .theme-toggle-btn i { font-size: 26px; line-height: 0; }
-
         @media (max-width: 380px) {
             #app-container { padding: 15px 10px; }
             .btn-link { padding: 15px; font-size: 0.8rem; gap: 8px; }
         }
-
     </style>
 </head>
 <body>
@@ -174,7 +144,7 @@
         
         <header>
             <a href="index.html" class="logo-link">
-                <img src="logo-preto-dark.png" alt="Orelha dos Sonhos" class="logo-img" id="logo-img">
+                <img src="logo-branco-light.png" alt="Orelha dos Sonhos" class="logo-img">
             </a>
         </header>
 
@@ -213,7 +183,7 @@
                 <i class='bx bxl-tiktok'></i> TikTok
             </a>
 
-            <a href="https://open.spotify.com/playlist/1PWwcBNaXJWImrPbjbiA2A?si=41cdf2e7fd364c46&nd=1&dlsi=7c9e251240624330" target="_blank" class="btn-link">
+            <a href="https://open.spotify.com/playlist/1PWwcBNaXJWImrPbjbiA2A?si=41cdf2e7fd364c46" target="_blank" class="btn-link">
                 <i class='bx bxl-spotify'></i> Spotify
             </a>
 
@@ -234,63 +204,5 @@
         </footer>
     </div>
 
-    <button class="theme-toggle-btn" id="themeToggle" aria-label="Mudar Tema">
-        <i class="material-icons">dark_mode</i>
-    </button>
-
-    <script>
-        const themeBtn = document.getElementById('themeToggle');
-        const themeIcon = themeBtn.querySelector('i');
-        const body = document.body;
-        const logoImg = document.getElementById('logo-img');
-        const metaThemeColor = document.getElementById('meta-theme-color');
-
-        const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-        let savedTheme = localStorage.getItem('selectedTheme');
-
-        function initTheme() {
-            if (savedTheme) {
-                if (savedTheme === 'dark') aplicarTemaDark();
-                else aplicarTemaLight();
-            } else {
-                if (systemDarkMode.matches) aplicarTemaDark();
-                else aplicarTemaLight();
-            }
-        }
-
-        systemDarkMode.addEventListener('change', (e) => {
-            if (!localStorage.getItem('selectedTheme')) {
-                if (e.matches) aplicarTemaDark();
-                else aplicarTemaLight();
-            }
-        });
-
-        themeBtn.addEventListener('click', () => {
-            if (body.classList.contains('dark-theme')) {
-                aplicarTemaLight();
-                localStorage.setItem('selectedTheme', 'light');
-            } else {
-                aplicarTemaDark();
-                localStorage.setItem('selectedTheme', 'dark');
-            }
-        });
-
-        function aplicarTemaDark() {
-            body.classList.add('dark-theme');
-            themeIcon.textContent = 'light_mode';
-            logoImg.src = 'logo-branco-light.png';
-            metaThemeColor.setAttribute('content', '#1F454B'); // Ajusta a barra do navegador para o verde
-        }
-
-        function aplicarTemaLight() {
-            body.classList.remove('dark-theme');
-            themeIcon.textContent = 'dark_mode';
-            logoImg.src = 'logo-preto-dark.png';
-            metaThemeColor.setAttribute('content', '#f0f2f5');
-        }
-
-        initTheme();
-    </script>
-
-</body>
+    </body>
 </html>
