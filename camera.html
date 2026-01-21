@@ -46,29 +46,19 @@
         #app-container {
             width: 100%; max-width: 600px; height: 100%;
             display: flex; flex-direction: column; position: relative;
-            transition: opacity 0.8s ease-in-out; /* Transição mais suave */
+            transition: opacity 0.8s ease-in-out;
         }
 
-        /* HEADER & LOGO */
-        header { 
-            padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
-            background: transparent; height: auto;
-        }
+        /* HEADER */
+        header { padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0; background: transparent; height: auto; }
         .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
         .logo-link:active { transform: scale(0.95); }
-        .logo-img { 
-            height: 55px; width: auto; display: block; margin: 0 auto; 
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); 
-        }
+        .logo-img { height: 55px; width: auto; display: block; margin: 0 auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
 
-        /* PALCO (Câmera) */
-        #container-palco { 
-            flex: 1; display: flex; justify-content: center; align-items: center; 
-            padding: 5px 10px; position: relative; overflow: hidden;
-        }
+        /* PALCO */
+        #container-palco { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px 10px; position: relative; overflow: hidden; }
         #palco {
-            height: 100%; max-height: 100%;
-            aspect-ratio: 1080 / 1626; 
+            height: 100%; max-height: 100%; aspect-ratio: 1080 / 1626; 
             background: #000; border-radius: 18px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); 
             position: relative; touch-action: none; user-select: none;
@@ -78,25 +68,24 @@
         #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
         #previewImage.cropping-mode { object-fit: contain; cursor: move; }
-        .sticker-joia {
-            position: absolute; width: 100px; top: 50%; left: 50%; 
-            cursor: grab; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15;
-            touch-action: none;
-        }
+        
+        .sticker-joia { position: absolute; width: 100px; top: 50%; left: 50%; cursor: grab; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15; touch-action: none; }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* CONTROLES E PAINÉIS (Mantidos iguais para economizar espaço visual aqui, mas funcionais) */
+        /* UI CONTROLS */
         .ios-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 300px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 40px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; justify-items: center; z-index: 30; }
         .shutter-button { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; padding: 2px; cursor: pointer; }
         .shutter-button::after { content: ''; display: block; width: 100%; height: 100%; background: white; border-radius: 50%; }
         .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
         .mini-btn i { font-size: 24px; margin-bottom: 2px; }
+        
         #crop-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-radius: 20px; padding: 15px; z-index: 35; display: none; flex-direction: column; gap: 15px; color: #333; }
         .crop-header { text-align: center; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
         .crop-actions { display: flex; gap: 10px; }
         .btn-crop { flex: 1; padding: 12px; border: none; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; }
         .btn-cancel { background: #ff5252; color: white; }
         .btn-confirm { background: var(--texto-escuro); color: white; }
+        
         #painel-edicao { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(135deg, var(--glass-bg-start), var(--glass-bg-end)); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); border-radius: 25px 25px 0 0; padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; display: none; flex-direction: column; gap: 8px; z-index: 50; box-shadow: 0 -5px 30px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
         #painel-edicao.minimized { transform: translateY(78%); }
         .conteudo-ocultavel { opacity: 1; transition: opacity 0.2s; display: flex; flex-direction: column; gap: 8px; }
@@ -104,11 +93,13 @@
         .titulo-edicao { font-weight: 800; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-toggle { background: transparent; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; }
         .btn-voltar-edicao { background: rgba(255,255,255,0.1); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
+        
         .carrossel { display: flex; overflow-x: auto; gap: 8px; padding: 2px; min-height: 60px; }
         .thumb-joia { flex-shrink: 0; width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5); padding: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; display: none; }
         .thumb-joia.loaded { display: flex; }
         .thumb-joia.active { border-color: #81d4fa; background: rgba(255,255,255,0.4); transform: scale(1.1); }
         .thumb-joia img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+        
         .ferramentas-ajuste { display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; }
         .slider-row { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .slider-label { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #ddd; margin-bottom: 0; }
@@ -119,93 +110,90 @@
         .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.25); }
         .btn-final.loading::after { content: ""; width: 15px; height: 15px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
 
-        /* --- IMPRESSORA REALISTA & ANIMAÇÃO --- */
+        /* --- IMPRESSORA REALISTA (SKEUOMORPHISM) --- */
         #impressora-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 100;
             display: none;
             flex-direction: column; align-items: center; justify-content: flex-start;
-            background: rgba(11, 70, 76, 0.95); /* Fundo verde escuro cobrindo tudo */
+            background: rgba(11, 70, 76, 0.95);
         }
 
-        /* Corpo Metálico Realista */
         .printer-body {
-            width: 110%; /* Um pouco mais largo que a tela */
-            height: 140px;
-            /* Textura de metal escovado */
-            background: 
-                repeating-linear-gradient(90deg, #b0b0b0 0px, #b0b0b0 1px, #e0e0e0 1px, #e0e0e0 3px),
-                linear-gradient(to bottom, #d7d7d7 0%, #999 50%, #666 100%);
-            background-blend-mode: multiply;
-            
-            border-bottom: 8px solid #333;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-            position: relative; z-index: 102;
+            width: 105%; height: 150px;
+            /* Design Metálico com Reflexos */
+            background: linear-gradient(to bottom, #888 0%, #dcdcdc 20%, #999 50%, #666 90%, #333 100%);
+            border-bottom: 12px solid #222;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            position: relative; z-index: 105; /* Acima da foto */
             display: flex; justify-content: center; align-items: flex-end;
             padding-bottom: 25px;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 15px 15px;
         }
 
-        /* Parafusos/Rebites Metálicos */
-        .printer-body::before, .printer-body::after {
-            content: ''; position: absolute; bottom: 20px;
-            width: 15px; height: 15px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fff, #999);
+        /* Parafusos Phillips Realistas (CSS Only) */
+        .screw-phillips {
+            position: absolute; bottom: 20px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #eee, #888);
             border: 1px solid #555;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.8);
+            display: flex; align-items: center; justify-content: center;
         }
-        .printer-body::before { left: 30px; }
-        .printer-body::after { right: 30px; }
+        .screw-phillips::after {
+            content: '+'; font-family: sans-serif; font-weight: 300; font-size: 20px;
+            color: #444; text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+            line-height: 18px; margin-top: -2px; transform: rotate(45deg);
+        }
+        .screw-left { left: 25px; }
+        .screw-right { right: 25px; }
 
-        /* Luz de Power Realista */
-        .printer-light {
-            position: absolute; top: 40%; right: 60px;
-            width: 14px; height: 14px; border-radius: 50%;
+        /* LEDs de Status */
+        .led-group { position: absolute; top: 40%; right: 60px; display: flex; gap: 8px; }
+        .led { width: 10px; height: 10px; border-radius: 50%; border: 1px solid #444; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5); }
+        .led-red { background: #500; } /* Desligado/Standby */
+        .led-green { 
             background: #00ff00;
-            border: 2px solid #555; /* Moldura da luz */
-            box-shadow: 0 0 15px #00ff00, inset 0 0 5px #fff;
-            animation: pulseLight 1.5s infinite alternate ease-in-out;
+            box-shadow: 0 0 10px #00ff00, 0 0 5px #fff;
+            animation: pulseLight 1s infinite alternate;
         }
-        @keyframes pulseLight { from { opacity: 0.5; box-shadow: 0 0 5px #00ff00; } to { opacity: 1; box-shadow: 0 0 15px #00ff00; } }
+        @keyframes pulseLight { from { opacity: 0.7; } to { opacity: 1; box-shadow: 0 0 15px #00ff00; } }
 
-        /* Slot de Saída Realista */
+        /* Slot de Saída Profundo */
         .printer-slot {
-            width: 340px; height: 18px;
-            background: #0a0a0a;
-            border-radius: 4px;
-            /* Sombra interna profunda para parecer uma ranhura */
-            box-shadow: inset 0 5px 10px rgba(0,0,0,1), 0 1px 0 rgba(255,255,255,0.2);
-            border: 1px solid #222;
+            width: 340px; height: 12px;
+            background: linear-gradient(to bottom, #000 0%, #333 100%);
+            border-radius: 6px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,1), 0 1px 0 rgba(255,255,255,0.3);
+            border: 1px solid #111;
+            z-index: 106;
         }
 
-        /* Container da Foto (O Papel que sai) */
+        /* Foto Saindo */
         .photo-container {
             position: absolute;
-            top: 110px; /* Começa escondido na impressora */
-            z-index: 101;
+            top: 135px; /* Começa exatamente na boca do slot */
+            z-index: 100; /* Atrás da impressora */
             width: 300px; height: auto;
             opacity: 0;
-            /* Sombra forte para dar profundidade ao papel saindo */
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+            transform-origin: top center;
         }
-
         .photo-container img { width: 100%; display: block; border-radius: 2px; }
 
-        /* Animação de Impressão MAIS LENTA (5s) */
+        /* Animação Lenta e Realista */
         .printing-animation {
-            animation: printPhoto 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: printPhoto 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-
         @keyframes printPhoto {
-            0% { top: 90px; opacity: 0; }
-            5% { opacity: 1; }
-            100% { top: 180px; opacity: 1; } /* Posição final mais abaixo */
+            0% { top: 135px; opacity: 0; transform: scale(0.98); }
+            5% { opacity: 1; transform: scale(1); }
+            100% { top: 220px; opacity: 1; transform: scale(1); }
         }
 
-        /* Botão Compartilhar Final */
         .btn-share-final {
             margin-top: 20px; width: 280px; position: absolute; bottom: 50px;
-            opacity: 0; transition: opacity 1s ease; z-index: 105;
+            opacity: 0; transition: opacity 1s ease; z-index: 110;
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
             backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
             color: #fff; padding: 15px; border-radius: 50px;
@@ -222,7 +210,13 @@
 
     <div id="impressora-overlay">
         <div class="printer-body">
-            <div class="printer-light"></div>
+            <div class="screw-phillips screw-left"></div>
+            <div class="led-group">
+                <div class="led led-red"></div>
+                <div class="led led-green"></div>
+            </div>
+            <div class="screw-phillips screw-right"></div>
+            
             <div class="printer-slot"></div>
         </div>
         
@@ -234,7 +228,7 @@
             <i class="material-icons">ios_share</i> Compartilhar
         </button>
         
-        <button onclick="location.reload()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#fff; z-index:110; cursor:pointer;">
+        <button onclick="location.reload()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:#fff; z-index:120; cursor:pointer;">
             <i class="material-icons">close</i>
         </button>
     </div>
@@ -284,22 +278,40 @@
     </div>
 
     <script>
-        // --- VARIÁVEIS GLOBAIS ---
         const video = document.getElementById('videoElement'); const preview = document.getElementById('previewImage'); const palco = document.getElementById('palco'); const listaJoias = document.getElementById('listaJoias'); const rangeSize = document.getElementById('rangeSize'); const rangeRotate = document.getElementById('rangeRotate'); const btnFinalizar = document.getElementById('btnFinalizar'); const painel = document.getElementById('painel-edicao'); const iconToggle = document.getElementById('iconToggle'); const iosControls = document.getElementById('ios-controls'); const cropControls = document.getElementById('crop-controls'); const cropZoomSlider = document.getElementById('cropZoomSlider');
         const impressoraOverlay = document.getElementById('impressora-overlay'); const photoResult = document.getElementById('photoResult'); const finalPolaroidImage = document.getElementById('finalPolaroidImage'); const btnShareFinal = document.getElementById('btnShareFinal'); const appContainer = document.getElementById('app-container');
 
-        let stickerAtivo = null; let currentFacingMode = 'user'; let currentStream = null; let isCroppingMode = false; let cropScale = 1; let cropTranslateX = 0; let cropTranslateY = 0; let isDraggingCrop = false; let startDragCropX, startDragCropY; let blobFinal = null;
+        let stickerAtivo = null;
+        // Padrão Câmera Traseira (Environment)
+        let currentFacingMode = 'environment'; 
+        let currentStream = null; let isCroppingMode = false; let cropScale = 1; let cropTranslateX = 0; let cropTranslateY = 0; let isDraggingCrop = false; let startDragCropX, startDragCropY; let blobFinal = null;
 
         const BASE_WIDTH = 1080; const BASE_HEIGHT = 1626;
         const backupJoias = ["https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png", "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"];
 
         window.onload = () => { startCamera(); carregarCatalogoHibrido(); }
 
-        // --- FUNÇÕES BÁSICAS (Câmera, Crop, Stickers - Mantidas Compactas) ---
-        async function startCamera() { if (currentStream) currentStream.getTracks().forEach(track => track.stop()); const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } }; try { const stream = await navigator.mediaDevices.getUserMedia(constraints); currentStream = stream; video.srcObject = stream; if (currentFacingMode === 'user') video.classList.add('mirrored'); else video.classList.remove('mirrored'); } catch (err) { try { const streamPC = await navigator.mediaDevices.getUserMedia({ video: true }); currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); } catch(e) {} } }
+        async function startCamera() {
+            if (currentStream) currentStream.getTracks().forEach(track => track.stop());
+            const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } };
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                currentStream = stream; video.srcObject = stream;
+                // Ajuste de espelhamento: Traseira (não espelha), Frontal (espelha)
+                if (currentFacingMode === 'user') video.classList.add('mirrored'); else video.classList.remove('mirrored');
+            } catch (err) { try { const streamPC = await navigator.mediaDevices.getUserMedia({ video: true }); currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); } catch(e) {} }
+        }
         function alternarCamera() { currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user'; startCamera(); }
-        function capturarFoto() { const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d'); const vW = video.videoWidth; const vH = video.videoHeight; const rVid = vW / vH; const rBase = BASE_WIDTH / BASE_HEIGHT; let sW, sH, sX, sY; if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; } ctx.save(); if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); } ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT); ctx.restore(); preview.src = canvas.toDataURL('image/png'); abrirEdicao(); }
+        function capturarFoto() {
+            const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d');
+            const vW = video.videoWidth; const vH = video.videoHeight; const rVid = vW / vH; const rBase = BASE_WIDTH / BASE_HEIGHT;
+            let sW, sH, sX, sY; if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; }
+            ctx.save(); if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
+            ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT); ctx.restore();
+            preview.src = canvas.toDataURL('image/png'); abrirEdicao();
+        }
         function uploadGaleria(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = (e) => { preview.src = e.target.result; iniciarModoCrop(); }; reader.readAsDataURL(file); } }
+
         function iniciarModoCrop() { isCroppingMode = true; video.style.display = 'none'; preview.style.display = 'block'; iosControls.style.display = 'none'; cropControls.style.display = 'flex'; preview.classList.add('cropping-mode'); cropScale = 1; cropTranslateX = 0; cropTranslateY = 0; cropZoomSlider.value = 1; aplicarTransformCrop(); preview.addEventListener('mousedown', dragCropStart); preview.addEventListener('touchstart', dragCropStart, {passive: false}); }
         function atualizarZoomCrop(val) { cropScale = parseFloat(val); aplicarTransformCrop(); }
         function aplicarTransformCrop() { preview.style.transform = `translate(calc(0px + ${cropTranslateX}px), calc(0px + ${cropTranslateY}px)) scale(${cropScale})`; }
@@ -308,7 +320,17 @@
         function dragCropEnd() { isDraggingCrop = false; }
         window.addEventListener('mousemove', dragCropMove); window.addEventListener('touchmove', dragCropMove, {passive: false}); window.addEventListener('mouseup', dragCropEnd); window.addEventListener('touchend', dragCropEnd);
         function cancelarCrop() { isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; resetar(); }
-        async function confirmarCrop() { const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d'); const img = new Image(); img.src = preview.src; await imgLoad(img); const pW = palco.clientWidth; const scaleFactor = canvas.width / pW; const centerX = canvas.width / 2; const centerY = canvas.height / 2; ctx.save(); ctx.translate(centerX, centerY); ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor); ctx.scale(cropScale, cropScale); const ratioImg = img.width / img.height; const ratioCanvas = canvas.width / canvas.height; let drawW, drawH; if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } else { drawH = canvas.height; drawW = drawH * ratioImg; } ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH); ctx.restore(); preview.src = canvas.toDataURL('image/png'); isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; cropControls.style.display = 'none'; preview.removeEventListener('mousedown', dragCropStart); preview.removeEventListener('touchstart', dragCropStart); abrirEdicao(); }
+        async function confirmarCrop() {
+            const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d');
+            const img = new Image(); img.src = preview.src; await imgLoad(img);
+            const pW = palco.clientWidth; const scaleFactor = canvas.width / pW; const centerX = canvas.width / 2; const centerY = canvas.height / 2;
+            ctx.save(); ctx.translate(centerX, centerY); ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor); ctx.scale(cropScale, cropScale);
+            const ratioImg = img.width / img.height; const ratioCanvas = canvas.width / canvas.height; let drawW, drawH;
+            if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } else { drawH = canvas.height; drawW = drawH * ratioImg; }
+            ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH); ctx.restore();
+            preview.src = canvas.toDataURL('image/png'); isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; cropControls.style.display = 'none'; preview.removeEventListener('mousedown', dragCropStart); preview.removeEventListener('touchstart', dragCropStart); abrirEdicao();
+        }
+
         function carregarCatalogoHibrido() { listaJoias.innerHTML = ''; const pasta = 'joias/'; for (let i = 1; i <= 100; i++) { criarThumb(pasta + 'joia' + i + '.png'); } backupJoias.forEach(url => criarThumb(url)); }
         function criarThumb(url) { const img = new Image(); img.src = url; img.crossOrigin = "anonymous"; img.onload = function() { const div = document.createElement('div'); div.className = 'thumb-joia'; div.classList.add('loaded'); div.appendChild(img); div.onclick = () => adicionarSticker(url); listaJoias.appendChild(div); }; }
         function abrirEdicao() { video.style.display = 'none'; preview.style.display = 'block'; iosControls.style.display = 'none'; cropControls.style.display = 'none'; preview.classList.remove('cropping-mode'); painel.style.display = 'flex'; setTimeout(() => { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; }, 50); }
@@ -324,7 +346,7 @@
         function dragStickerEnd() { isDraggingSticker = false; }
         window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove); window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
 
-        // --- GERAÇÃO DA POLAROIDE (DESIGN NOVO) ---
+        // --- GERAÇÃO DA POLAROIDE ---
         async function desenharCenaNoCanvas(canvas) {
             const ctx = canvas.getContext('2d'); 
             const CW = canvas.width; const CH = canvas.height;
@@ -334,100 +356,82 @@
             ctx.fillRect(0, 0, CW, CH);
             
             // 2. Papel Branco da Polaroid com Sombra
-            const paperMarginSide = 50;
-            const paperMarginTop = 100;
-            const paperMarginBottom = 100;
-            const paperW = CW - (paperMarginSide * 2);
-            const paperH = CH - paperMarginTop - paperMarginBottom;
-            const paperX = paperMarginSide;
-            const paperY = paperMarginTop;
+            const paperMarginSide = 50; const paperMarginTop = 100; const paperMarginBottom = 100;
+            const paperW = CW - (paperMarginSide * 2); const paperH = CH - paperMarginTop - paperMarginBottom;
+            const paperX = paperMarginSide; const paperY = paperMarginTop;
 
             ctx.save();
             ctx.shadowColor = "rgba(0,0,0,0.4)"; ctx.shadowBlur = 25; ctx.shadowOffsetY = 10;
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(paperX, paperY, paperW, paperH);
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(paperX, paperY, paperW, paperH);
             ctx.restore();
 
-            // 3. Área da Foto (Dentro do papel branco)
-            const photoInnerMargin = 30;
-            const photoBottomArea = 350; // Espaço para logo/texto
-            const photoAreaW = paperW - (photoInnerMargin * 2);
-            const photoAreaH = paperH - photoInnerMargin - photoBottomArea;
-            const photoAreaX = paperX + photoInnerMargin;
-            const photoAreaY = paperY + photoInnerMargin;
+            // 3. Área da Foto
+            const photoInnerMargin = 30; const photoBottomArea = 350;
+            const photoAreaW = paperW - (photoInnerMargin * 2); const photoAreaH = paperH - photoInnerMargin - photoBottomArea;
+            const photoAreaX = paperX + photoInnerMargin; const photoAreaY = paperY + photoInnerMargin;
 
             const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
             
-            // Desenhar Foto do Usuário (Object-fit: Cover na área designada)
-            ctx.save();
-            ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
-            const imgRatio = imgBase.width / imgBase.height;
-            const targetRatio = photoAreaW / photoAreaH;
+            ctx.save(); ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
+            const imgRatio = imgBase.width / imgBase.height; const targetRatio = photoAreaW / photoAreaH;
             let drawW, drawH, drawX, drawY;
             if (imgRatio > targetRatio) { drawH = photoAreaH; drawW = photoAreaH * imgRatio; drawY = photoAreaY; drawX = photoAreaX + (photoAreaW - drawW)/2; } 
             else { drawW = photoAreaW; drawH = photoAreaW / imgRatio; drawX = photoAreaX; drawY = photoAreaY + (photoAreaH - drawH)/2; }
             ctx.drawImage(imgBase, drawX, drawY, drawW, drawH);
             ctx.restore();
 
-            // 4. Desenhar Stickers (Mapeando coordenadas do palco para o canvas)
+            // 4. Desenhar Stickers
             const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
             const stickers = document.querySelectorAll('.sticker-joia');
             for(let s of stickers) {
                 const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
-                // Posição relativa no palco (0.0 a 1.0)
                 const relX = parseFloat(s.style.left) / palcoW; const relY = parseFloat(s.style.top) / palcoH;
-                // Posição absoluta na imagem desenhada
                 const canvasX = drawX + (relX * drawW); const canvasY = drawY + (relY * drawH);
-                // Escala relativa
                 const sScale = parseFloat(s.dataset.scale); const scaleFactor = drawW / palcoW; 
                 const finalW = sScale * scaleFactor; const ratio = imgS.height / imgS.width;
-                ctx.save(); 
-                ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip(); // Clip na área da foto
-                ctx.translate(canvasX, canvasY); 
-                ctx.rotate(parseFloat(s.dataset.rotation) * Math.PI / 180);
-                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); 
-                ctx.restore();
+                ctx.save(); ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
+                ctx.translate(canvasX, canvasY); ctx.rotate(parseFloat(s.dataset.rotation) * Math.PI / 180);
+                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); ctx.restore();
             }
 
-            // 5. Desenhar Logo e Texto (Canto Inferior Direito, Inclinado)
+            // 5. Logo e Texto (Inclinados)
             try {
+                // Logo escura para contraste no branco
                 const logo = new Image(); logo.src = "logo-preto-dark.png"; await imgLoad(logo);
-                const lW = 180; // Tamanho menor
+                // Aumentado: 250px
+                const lW = 250; 
                 const lH = lW * (logo.height / logo.width);
-                // Ponto de ancoragem no canto inferior direito do papel branco
-                const anchorX = paperX + paperW - 40;
-                const anchorY = paperY + paperH - 40;
+                const anchorX = paperX + paperW - 40; const anchorY = paperY + paperH - 40;
 
                 ctx.save();
                 ctx.translate(anchorX, anchorY);
-                ctx.rotate(-6 * Math.PI / 180); // Inclinação sutil
-                // Desenha da direita para a esquerda a partir do ponto de ancoragem
-                ctx.drawImage(logo, -lW, -lH - 35, lW, lH);
-                ctx.font = "bold 24px Raleway"; ctx.fillStyle = "#333"; ctx.textAlign = "right"; 
+                ctx.rotate(-6 * Math.PI / 180);
+                // Ajuste fino para encaixar no canto
+                ctx.drawImage(logo, -lW, -lH - 45, lW, lH);
+                // Texto aumentado: 30px
+                ctx.font = "bold 30px Raleway"; ctx.fillStyle = "#333"; ctx.textAlign = "right"; 
                 ctx.fillText("@orelhadossonhosrp", 0, 0);
                 ctx.restore();
             } catch(e) { console.log(e); }
         }
 
-        // --- ANIMAÇÃO & COMPARTILHAMENTO ---
         async function animarImpressao() {
             if(stickerAtivo) stickerAtivo.classList.remove('selected');
             btnFinalizar.classList.add('loading');
             try {
-                const canvas = document.createElement('canvas'); 
-                canvas.width = 1080; canvas.height = 1920;
+                const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1920;
                 await desenharCenaNoCanvas(canvas);
                 canvas.toBlob((blob) => {
-                    blobFinal = blob;
-                    finalPolaroidImage.src = URL.createObjectURL(blob);
+                    blobFinal = blob; finalPolaroidImage.src = URL.createObjectURL(blob);
                     appContainer.style.opacity = '0';
                     setTimeout(() => {
                         appContainer.style.display = 'none'; impressoraOverlay.style.display = 'flex';
                         setTimeout(() => {
                             photoResult.classList.add('printing-animation');
-                            setTimeout(() => { btnShareFinal.classList.add('visible'); }, 5000); // Espera a animação de 5s
+                            // Espera 5.5s para garantir que animação acabou
+                            setTimeout(() => { btnShareFinal.classList.add('visible'); }, 5500); 
                         }, 100);
-                    }, 800); // Tempo para o fade out do app
+                    }, 800);
                 }, 'image/png');
             } catch (e) { alert("Erro ao processar imagem."); btnFinalizar.classList.remove('loading'); }
         }
