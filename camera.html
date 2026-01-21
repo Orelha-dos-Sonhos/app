@@ -49,30 +49,47 @@
             transition: opacity 0.8s ease-in-out;
         }
 
-        /* HEADER */
-        header { padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0; background: transparent; height: auto; }
+        /* HEADER & LOGO */
+        header { 
+            padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
+            background: transparent; height: auto;
+        }
         .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
         .logo-link:active { transform: scale(0.95); }
-        .logo-img { height: 55px; width: auto; display: block; margin: 0 auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+        .logo-img { 
+            height: 55px; width: auto; display: block; margin: 0 auto; 
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); 
+        }
 
-        /* PALCO */
-        #container-palco { flex: 1; display: flex; justify-content: center; align-items: center; padding: 5px 10px; position: relative; overflow: hidden; }
+        /* PALCO (Câmera) */
+        #container-palco { 
+            flex: 1; display: flex; justify-content: center; align-items: center; 
+            padding: 5px 10px; position: relative; overflow: hidden;
+        }
         #palco {
-            height: 100%; max-height: 100%; aspect-ratio: 1080 / 1626; 
+            height: 100%; max-height: 100%;
+            aspect-ratio: 1080 / 1626; 
             background: #000; border-radius: 18px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); 
             position: relative; touch-action: none; user-select: none;
         }
         @media (min-aspect-ratio: 1080/1626) { #palco { height: auto; width: 100%; } }
+        
         video, #previewImage { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
         #previewImage.cropping-mode { object-fit: contain; cursor: move; }
         
-        .sticker-joia { position: absolute; width: 100px; top: 50%; left: 50%; cursor: grab; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15; touch-action: none; }
+        /* STICKER SEM SOMBRA */
+        .sticker-joia {
+            position: absolute; width: 100px; top: 50%; left: 50%; 
+            cursor: grab; 
+            z-index: 15;
+            touch-action: none;
+        }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* UI CONTROLS */
+        /* CONTROLES E PAINÉIS */
         .ios-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 300px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 40px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; justify-items: center; z-index: 30; }
         .shutter-button { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; padding: 2px; cursor: pointer; }
         .shutter-button::after { content: ''; display: block; width: 100%; height: 100%; background: white; border-radius: 50%; }
@@ -110,7 +127,7 @@
         .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.25); }
         .btn-final.loading::after { content: ""; width: 15px; height: 15px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
 
-        /* --- IMPRESSORA REALISTA (SKEUOMORPHISM) --- */
+        /* --- IMPRESSORA REALISTA (SKEUOMORPHISM CLEAN) --- */
         #impressora-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 100;
@@ -121,8 +138,8 @@
 
         .printer-body {
             width: 105%; height: 150px;
-            /* Design Metálico com Reflexos */
-            background: linear-gradient(to bottom, #888 0%, #dcdcdc 20%, #999 50%, #666 90%, #333 100%);
+            /* Design Metálico Clean (Sem listras) */
+            background: linear-gradient(to bottom, #dcdcdc 0%, #999 40%, #666 100%);
             border-bottom: 12px solid #222;
             box-shadow: 0 15px 40px rgba(0,0,0,0.7);
             position: relative; z-index: 105; /* Acima da foto */
@@ -130,23 +147,6 @@
             padding-bottom: 25px;
             border-radius: 0 0 15px 15px;
         }
-
-        /* Parafusos Phillips Realistas (CSS Only) */
-        .screw-phillips {
-            position: absolute; bottom: 20px;
-            width: 18px; height: 18px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #eee, #888);
-            border: 1px solid #555;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.8);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .screw-phillips::after {
-            content: '+'; font-family: sans-serif; font-weight: 300; font-size: 20px;
-            color: #444; text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-            line-height: 18px; margin-top: -2px; transform: rotate(45deg);
-        }
-        .screw-left { left: 25px; }
-        .screw-right { right: 25px; }
 
         /* LEDs de Status */
         .led-group { position: absolute; top: 40%; right: 60px; display: flex; gap: 8px; }
@@ -169,10 +169,10 @@
             z-index: 106;
         }
 
-        /* Foto Saindo */
+        /* Foto Saindo - Ajuste de Posição (Mais perto do slot) */
         .photo-container {
             position: absolute;
-            top: 135px; /* Começa exatamente na boca do slot */
+            top: 125px; /* Ajustado para sair rente ao slot */
             z-index: 100; /* Atrás da impressora */
             width: 300px; height: auto;
             opacity: 0;
@@ -181,12 +181,12 @@
         }
         .photo-container img { width: 100%; display: block; border-radius: 2px; }
 
-        /* Animação Lenta e Realista */
+        /* Animação Lenta (5s) */
         .printing-animation {
             animation: printPhoto 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         @keyframes printPhoto {
-            0% { top: 135px; opacity: 0; transform: scale(0.98); }
+            0% { top: 125px; opacity: 0; transform: scale(0.98); }
             5% { opacity: 1; transform: scale(1); }
             100% { top: 220px; opacity: 1; transform: scale(1); }
         }
@@ -210,13 +210,10 @@
 
     <div id="impressora-overlay">
         <div class="printer-body">
-            <div class="screw-phillips screw-left"></div>
             <div class="led-group">
                 <div class="led led-red"></div>
                 <div class="led led-green"></div>
             </div>
-            <div class="screw-phillips screw-right"></div>
-            
             <div class="printer-slot"></div>
         </div>
         
@@ -282,7 +279,6 @@
         const impressoraOverlay = document.getElementById('impressora-overlay'); const photoResult = document.getElementById('photoResult'); const finalPolaroidImage = document.getElementById('finalPolaroidImage'); const btnShareFinal = document.getElementById('btnShareFinal'); const appContainer = document.getElementById('app-container');
 
         let stickerAtivo = null;
-        // Padrão Câmera Traseira (Environment)
         let currentFacingMode = 'environment'; 
         let currentStream = null; let isCroppingMode = false; let cropScale = 1; let cropTranslateX = 0; let cropTranslateY = 0; let isDraggingCrop = false; let startDragCropX, startDragCropY; let blobFinal = null;
 
@@ -291,13 +287,13 @@
 
         window.onload = () => { startCamera(); carregarCatalogoHibrido(); }
 
+        // --- FUNÇÕES BÁSICAS ---
         async function startCamera() {
             if (currentStream) currentStream.getTracks().forEach(track => track.stop());
             const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } };
             try {
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 currentStream = stream; video.srcObject = stream;
-                // Ajuste de espelhamento: Traseira (não espelha), Frontal (espelha)
                 if (currentFacingMode === 'user') video.classList.add('mirrored'); else video.classList.remove('mirrored');
             } catch (err) { try { const streamPC = await navigator.mediaDevices.getUserMedia({ video: true }); currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); } catch(e) {} }
         }
@@ -331,6 +327,7 @@
             preview.src = canvas.toDataURL('image/png'); isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; cropControls.style.display = 'none'; preview.removeEventListener('mousedown', dragCropStart); preview.removeEventListener('touchstart', dragCropStart); abrirEdicao();
         }
 
+        // --- STICKERS ---
         function carregarCatalogoHibrido() { listaJoias.innerHTML = ''; const pasta = 'joias/'; for (let i = 1; i <= 100; i++) { criarThumb(pasta + 'joia' + i + '.png'); } backupJoias.forEach(url => criarThumb(url)); }
         function criarThumb(url) { const img = new Image(); img.src = url; img.crossOrigin = "anonymous"; img.onload = function() { const div = document.createElement('div'); div.className = 'thumb-joia'; div.classList.add('loaded'); div.appendChild(img); div.onclick = () => adicionarSticker(url); listaJoias.appendChild(div); }; }
         function abrirEdicao() { video.style.display = 'none'; preview.style.display = 'block'; iosControls.style.display = 'none'; cropControls.style.display = 'none'; preview.classList.remove('cropping-mode'); painel.style.display = 'flex'; setTimeout(() => { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; }, 50); }
@@ -346,22 +343,24 @@
         function dragStickerEnd() { isDraggingSticker = false; }
         window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove); window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
 
-        // --- GERAÇÃO DA POLAROIDE ---
+        // --- GERAÇÃO DA POLAROIDE (DESIGN FINAL) ---
         async function desenharCenaNoCanvas(canvas) {
             const ctx = canvas.getContext('2d'); 
             const CW = canvas.width; const CH = canvas.height;
             
-            // 1. Fundo Verde Petróleo
-            ctx.fillStyle = "#0B464C"; 
+            // 1. Fundo Degradê Verde
+            const grad = ctx.createLinearGradient(0, 0, 0, CH);
+            grad.addColorStop(0, "#0B464C");
+            grad.addColorStop(1, "#206870");
+            ctx.fillStyle = grad;
             ctx.fillRect(0, 0, CW, CH);
             
-            // 2. Papel Branco da Polaroid com Sombra
+            // 2. Papel Branco da Polaroid (Sem Sombra de Fundo)
             const paperMarginSide = 50; const paperMarginTop = 100; const paperMarginBottom = 100;
             const paperW = CW - (paperMarginSide * 2); const paperH = CH - paperMarginTop - paperMarginBottom;
             const paperX = paperMarginSide; const paperY = paperMarginTop;
 
             ctx.save();
-            ctx.shadowColor = "rgba(0,0,0,0.4)"; ctx.shadowBlur = 25; ctx.shadowOffsetY = 10;
             ctx.fillStyle = "#ffffff"; ctx.fillRect(paperX, paperY, paperW, paperH);
             ctx.restore();
 
@@ -380,7 +379,7 @@
             ctx.drawImage(imgBase, drawX, drawY, drawW, drawH);
             ctx.restore();
 
-            // 4. Desenhar Stickers
+            // 4. Stickers
             const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
             const stickers = document.querySelectorAll('.sticker-joia');
             for(let s of stickers) {
@@ -389,26 +388,25 @@
                 const canvasX = drawX + (relX * drawW); const canvasY = drawY + (relY * drawH);
                 const sScale = parseFloat(s.dataset.scale); const scaleFactor = drawW / palcoW; 
                 const finalW = sScale * scaleFactor; const ratio = imgS.height / imgS.width;
-                ctx.save(); ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
-                ctx.translate(canvasX, canvasY); ctx.rotate(parseFloat(s.dataset.rotation) * Math.PI / 180);
-                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); ctx.restore();
+                ctx.save(); 
+                ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
+                ctx.translate(canvasX, canvasY); 
+                ctx.rotate(parseFloat(s.dataset.rotation) * Math.PI / 180);
+                ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); 
+                ctx.restore();
             }
 
-            // 5. Logo e Texto (Inclinados)
+            // 5. Logo e Texto Retos (Sem rotação)
             try {
-                // Logo escura para contraste no branco
                 const logo = new Image(); logo.src = "logo-preto-dark.png"; await imgLoad(logo);
-                // Aumentado: 250px
                 const lW = 250; 
                 const lH = lW * (logo.height / logo.width);
                 const anchorX = paperX + paperW - 40; const anchorY = paperY + paperH - 40;
 
                 ctx.save();
                 ctx.translate(anchorX, anchorY);
-                ctx.rotate(-6 * Math.PI / 180);
-                // Ajuste fino para encaixar no canto
+                // RETO (sem rotate)
                 ctx.drawImage(logo, -lW, -lH - 45, lW, lH);
-                // Texto aumentado: 30px
                 ctx.font = "bold 30px Raleway"; ctx.fillStyle = "#333"; ctx.textAlign = "right"; 
                 ctx.fillText("@orelhadossonhosrp", 0, 0);
                 ctx.restore();
@@ -428,7 +426,6 @@
                         appContainer.style.display = 'none'; impressoraOverlay.style.display = 'flex';
                         setTimeout(() => {
                             photoResult.classList.add('printing-animation');
-                            // Espera 5.5s para garantir que animação acabou
                             setTimeout(() => { btnShareFinal.classList.add('visible'); }, 5500); 
                         }, 100);
                     }, 800);
