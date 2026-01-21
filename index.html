@@ -2,8 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <meta name="theme-color" content="#0B464C">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <title>Orelha dos Sonhos | Victória Serrano</title>
     
@@ -14,7 +16,7 @@
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Orelha dos Sonhos | Victória Serrano">
-    <meta property="og:description" content="Estética e Saúde Auricular">
+    <meta property="og:description" content="Estética e Saúde Auricular, joias e muito mais. Toque para agendar!">
     <meta property="og:image" content="banner-orelha.webp">
     <meta property="og:image:type" content="image/webp">
     <meta property="og:image:width" content="1200">
@@ -25,7 +27,6 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        /* --- ESTILO PADRÃO (Verde Petróleo) --- */
         :root {
             --text-color: #f0f0f0; 
             --bg-gradient: linear-gradient(180deg, #0B464C 0%, #206870 100%);
@@ -34,9 +35,11 @@
             --glass-bg-end: rgba(15, 85, 90, 0.85);
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-shadow: rgba(0, 0, 0, 0.4);
+            
+            /* Variável para a área segura do iPhone (Notch) */
+            --safe-top: env(safe-area-inset-top, 20px);
         }
 
-        /* Animação Brilho Logo */
         @keyframes subtle-white-pulse {
             0%, 100% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.2)); }
             50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); }
@@ -52,16 +55,23 @@
             min-height: 100vh;
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
+            
+            /* Background Fixo */
             background: var(--bg-gradient);
             background-attachment: fixed;
             background-size: cover;
+            
             position: relative;
             overflow-x: hidden;
+            
+            /* ADICIONADO: Padding inteligente para respeitar o notch do iPhone */
+            padding-top: max(15px, var(--safe-top));
+            padding-bottom: 30px;
         }
 
         #app-container {
             width: 100%; max-width: 500px; 
-            padding: 20px 15px;
+            padding: 0 15px; /* Padding lateral apenas, vertical controlado pelo body */
             display: flex; flex-direction: column; align-items: center; 
             margin: 0 auto;
             z-index: 10;
@@ -98,7 +108,6 @@
         }
         .nome-texto { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
         
-        /* Texto Alterado Aqui */
         .desc-servico { 
             font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; 
             text-transform: uppercase; opacity: 0.9; margin-top: 8px; 
@@ -144,12 +153,12 @@
         .endereco-titulo { font-weight: 800; font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
 
         footer { 
-            margin-top: 50px; font-size: 0.7rem; opacity: 0.6; padding-bottom: 80px; 
+            margin-top: 50px; font-size: 0.7rem; opacity: 0.6; padding-bottom: 50px; 
             text-align: center; width: 100%;
         }
 
         @media (max-width: 380px) {
-            #app-container { padding: 15px 10px; }
+            #app-container { padding: 0 10px; }
             .btn-link { padding: 15px; font-size: 0.8rem; gap: 8px; }
         }
     </style>
