@@ -26,7 +26,6 @@
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
             
-            /* Tema Verde Petróleo */
             --bg-gradient: linear-gradient(180deg, #0B464C 0%, #206870 100%);
             --glass-bg-start: rgba(11, 70, 76, 0.5);
             --glass-bg-end: rgba(15, 85, 90, 0.85);
@@ -47,7 +46,7 @@
         #app-container {
             width: 100%; max-width: 600px; height: 100%;
             display: flex; flex-direction: column; position: relative;
-            transition: opacity 0.5s;
+            transition: opacity 0.8s ease-in-out; /* Transição mais suave */
         }
 
         /* HEADER & LOGO */
@@ -55,10 +54,8 @@
             padding: 10px; width: 100%; text-align: center; z-index: 10; flex-shrink: 0;
             background: transparent; height: auto;
         }
-        
         .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
         .logo-link:active { transform: scale(0.95); }
-
         .logo-img { 
             height: 55px; width: auto; display: block; margin: 0 auto; 
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); 
@@ -69,7 +66,6 @@
             flex: 1; display: flex; justify-content: center; align-items: center; 
             padding: 5px 10px; position: relative; overflow: hidden;
         }
-        
         #palco {
             height: 100%; max-height: 100%;
             aspect-ratio: 1080 / 1626; 
@@ -77,14 +73,11 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); 
             position: relative; touch-action: none; user-select: none;
         }
-        
         @media (min-aspect-ratio: 1080/1626) { #palco { height: auto; width: 100%; } }
-
         video, #previewImage { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         #previewImage { background: #000; }
         .mirrored { transform: scaleX(-1); }
         #previewImage.cropping-mode { object-fit: contain; cursor: move; }
-
         .sticker-joia {
             position: absolute; width: 100px; top: 50%; left: 50%; 
             cursor: grab; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.4)); z-index: 15;
@@ -92,169 +85,127 @@
         }
         .sticker-joia.selected { border: 1px dashed rgba(255,255,255,0.9); }
 
-        /* CONTROLES IOS */
-        .ios-controls {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 300px; 
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 20px; border-radius: 40px; 
-            display: grid; grid-template-columns: 1fr auto 1fr;
-            align-items: center; justify-items: center; z-index: 30;
-        }
+        /* CONTROLES E PAINÉIS (Mantidos iguais para economizar espaço visual aqui, mas funcionais) */
+        .ios-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 300px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 40px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; justify-items: center; z-index: 30; }
         .shutter-button { width: 60px; height: 60px; border-radius: 50%; border: 3px solid white; background: transparent; padding: 2px; cursor: pointer; }
         .shutter-button::after { content: ''; display: block; width: 100%; height: 100%; background: white; border-radius: 50%; }
         .mini-btn { color: #fff; background: transparent; border: none; font-size: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; opacity: 0.9; }
         .mini-btn i { font-size: 24px; margin-bottom: 2px; }
-
-        /* CROP CONTROLS */
-        #crop-controls {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 350px;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
-            border-radius: 20px; padding: 15px; z-index: 35;
-            display: none; flex-direction: column; gap: 15px;
-            color: #333;
-        }
+        #crop-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 350px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-radius: 20px; padding: 15px; z-index: 35; display: none; flex-direction: column; gap: 15px; color: #333; }
         .crop-header { text-align: center; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
         .crop-actions { display: flex; gap: 10px; }
         .btn-crop { flex: 1; padding: 12px; border: none; border-radius: 50px; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; }
         .btn-cancel { background: #ff5252; color: white; }
         .btn-confirm { background: var(--texto-escuro); color: white; }
-        
-        /* PAINEL EDIÇÃO */
-        #painel-edicao {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(135deg, var(--glass-bg-start), var(--glass-bg-end));
-            backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border);
-            border-radius: 25px 25px 0 0; 
-            padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; 
-            display: none; flex-direction: column; gap: 8px; z-index: 50; 
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+        #painel-edicao { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(135deg, var(--glass-bg-start), var(--glass-bg-end)); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); border-radius: 25px 25px 0 0; padding: 8px 15px calc(10px + var(--safe-bottom)) 15px; display: none; flex-direction: column; gap: 8px; z-index: 50; box-shadow: 0 -5px 30px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
         #painel-edicao.minimized { transform: translateY(78%); }
         .conteudo-ocultavel { opacity: 1; transition: opacity 0.2s; display: flex; flex-direction: column; gap: 8px; }
         .header-edicao { display: flex; justify-content: space-between; align-items: center; height: 35px; cursor: pointer; }
         .titulo-edicao { font-weight: 800; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-toggle { background: transparent; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; }
         .btn-voltar-edicao { background: rgba(255,255,255,0.1); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
-        
         .carrossel { display: flex; overflow-x: auto; gap: 8px; padding: 2px; min-height: 60px; }
         .thumb-joia { flex-shrink: 0; width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5); padding: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; display: none; }
         .thumb-joia.loaded { display: flex; }
         .thumb-joia.active { border-color: #81d4fa; background: rgba(255,255,255,0.4); transform: scale(1.1); }
         .thumb-joia img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-        
         .ferramentas-ajuste { display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; }
         .slider-row { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .slider-label { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #ddd; margin-bottom: 0; }
         input[type=range] { width: 100%; accent-color: #81d4fa; height: 3px; cursor: pointer; }
-        
         .btn-trash { width: 32px; height: 32px; border-radius: 50%; border: none; background: #ff5252; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-        /* Botão Finalizar (Liquid Glass) */
         .acoes-finais { width: 100%; margin-top: 5px; }
-        .btn-final { 
-            width: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fff;
-            border-radius: 50px; 
-            padding: 15px; 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; 
-            display: flex; align-items: center; justify-content: center; gap: 10px; 
-            cursor: pointer; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-            transition: transform 0.2s; 
-        }
+        .btn-final { width: 100%; background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.4); color: #fff; border-radius: 50px; padding: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; }
         .btn-final:active { transform: scale(0.98); background: rgba(255,255,255,0.25); }
         .btn-final.loading::after { content: ""; width: 15px; height: 15px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
 
-        /* --- IMPRESSORA & ANIMAÇÃO --- */
+        /* --- IMPRESSORA REALISTA & ANIMAÇÃO --- */
         #impressora-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 100;
-            display: none; /* Ativado via JS */
+            display: none;
             flex-direction: column; align-items: center; justify-content: flex-start;
-            background: rgba(0,0,0,0.7); /* Fundo escuro atrás da impressão */
+            background: rgba(11, 70, 76, 0.95); /* Fundo verde escuro cobrindo tudo */
         }
 
-        /* Corpo Metálico da Impressora */
+        /* Corpo Metálico Realista */
         .printer-body {
-            width: 100%; height: 120px;
-            background: linear-gradient(to bottom, #d7d7d7 0%, #999 50%, #666 100%);
-            border-bottom: 5px solid #444;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            width: 110%; /* Um pouco mais largo que a tela */
+            height: 140px;
+            /* Textura de metal escovado */
+            background: 
+                repeating-linear-gradient(90deg, #b0b0b0 0px, #b0b0b0 1px, #e0e0e0 1px, #e0e0e0 3px),
+                linear-gradient(to bottom, #d7d7d7 0%, #999 50%, #666 100%);
+            background-blend-mode: multiply;
+            
+            border-bottom: 8px solid #333;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
             position: relative; z-index: 102;
             display: flex; justify-content: center; align-items: flex-end;
-            padding-bottom: 20px;
+            padding-bottom: 25px;
+            border-radius: 0 0 10px 10px;
         }
-        /* Luz de Power */
+
+        /* Parafusos/Rebites Metálicos */
+        .printer-body::before, .printer-body::after {
+            content: ''; position: absolute; bottom: 20px;
+            width: 15px; height: 15px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #999);
+            border: 1px solid #555;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .printer-body::before { left: 30px; }
+        .printer-body::after { right: 30px; }
+
+        /* Luz de Power Realista */
         .printer-light {
-            position: absolute; top: 50%; right: 30px; transform: translateY(-50%);
-            width: 12px; height: 12px; border-radius: 50%;
+            position: absolute; top: 40%; right: 60px;
+            width: 14px; height: 14px; border-radius: 50%;
             background: #00ff00;
-            box-shadow: 0 0 10px #00ff00, 0 0 5px #fff;
-            animation: pulseLight 1s infinite alternate;
+            border: 2px solid #555; /* Moldura da luz */
+            box-shadow: 0 0 15px #00ff00, inset 0 0 5px #fff;
+            animation: pulseLight 1.5s infinite alternate ease-in-out;
         }
-        @keyframes pulseLight { from { opacity: 0.6; } to { opacity: 1; } }
+        @keyframes pulseLight { from { opacity: 0.5; box-shadow: 0 0 5px #00ff00; } to { opacity: 1; box-shadow: 0 0 15px #00ff00; } }
 
-        /* Slot de Saída */
+        /* Slot de Saída Realista */
         .printer-slot {
-            width: 320px; height: 15px;
-            background: #111;
-            border-radius: 10px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
-            border-bottom: 1px solid #555;
+            width: 340px; height: 18px;
+            background: #0a0a0a;
+            border-radius: 4px;
+            /* Sombra interna profunda para parecer uma ranhura */
+            box-shadow: inset 0 5px 10px rgba(0,0,0,1), 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid #222;
         }
 
-        /* Container da Foto (Papel) */
+        /* Container da Foto (O Papel que sai) */
         .photo-container {
             position: absolute;
-            top: 100px; /* Começa dentro da impressora */
-            z-index: 101; /* Embaixo da impressora, acima do fundo */
-            width: 300px; /* Largura da Polaroid na tela */
-            /* aspect ratio da polaroid + margem */
-            height: auto; 
-            opacity: 0; /* Invisivel até começar */
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            top: 110px; /* Começa escondido na impressora */
+            z-index: 101;
+            width: 300px; height: auto;
+            opacity: 0;
+            /* Sombra forte para dar profundidade ao papel saindo */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
         }
 
-        .photo-container img {
-            width: 100%; display: block;
-            border-radius: 4px;
-        }
+        .photo-container img { width: 100%; display: block; border-radius: 2px; }
 
-        /* Animação de Impressão */
+        /* Animação de Impressão MAIS LENTA (5s) */
         .printing-animation {
-            animation: printPhoto 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: printPhoto 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
         @keyframes printPhoto {
-            0% {
-                top: 80px; opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                top: 160px; /* Posição final centralizada */
-                opacity: 1;
-            }
+            0% { top: 90px; opacity: 0; }
+            5% { opacity: 1; }
+            100% { top: 180px; opacity: 1; } /* Posição final mais abaixo */
         }
 
         /* Botão Compartilhar Final */
         .btn-share-final {
-            margin-top: 20px;
-            width: 280px;
-            position: absolute;
-            bottom: 50px;
-            opacity: 0;
-            transition: opacity 1s ease;
-            z-index: 105;
-            /* Estilo Glass */
+            margin-top: 20px; width: 280px; position: absolute; bottom: 50px;
+            opacity: 0; transition: opacity 1s ease; z-index: 105;
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
             backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
             color: #fff; padding: 15px; border-radius: 50px;
@@ -263,9 +214,7 @@
             cursor: pointer; text-decoration: none;
         }
         .btn-share-final.visible { opacity: 1; }
-
         #fileInput { display: none; }
-        
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -301,128 +250,56 @@
             <div id="palco">
                 <video id="videoElement" autoplay playsinline class="mirrored"></video>
                 <img id="previewImage" style="display:none;" crossorigin="anonymous">
-                
                 <div id="ios-controls" class="ios-controls">
-                    <button class="mini-btn" onclick="document.getElementById('fileInput').click()" title="Galeria">
-                        <i class="material-icons">photo_library</i>
-                    </button>
+                    <button class="mini-btn" onclick="document.getElementById('fileInput').click()" title="Galeria"><i class="material-icons">photo_library</i></button>
                     <input type="file" id="fileInput" accept="image/*" onchange="uploadGaleria(event)">
                     <button class="shutter-button" onclick="capturarFoto()"></button>
-                    <button class="mini-btn" onclick="alternarCamera()" title="Trocar Câmera">
-                        <i class="material-icons">flip_camera_ios</i>
-                    </button>
+                    <button class="mini-btn" onclick="alternarCamera()" title="Trocar Câmera"><i class="material-icons">flip_camera_ios</i></button>
                 </div>
-
                 <div id="crop-controls">
                     <div class="crop-header">Ajuste a imagem</div>
-                     <div class="slider-row">
-                        <input type="range" min="0.5" max="3" step="0.01" value="1" id="cropZoomSlider" oninput="atualizarZoomCrop(this.value)">
-                    </div>
-                    <div class="crop-actions">
-                        <button class="btn-crop btn-cancel" onclick="cancelarCrop()">Cancelar</button>
-                        <button class="btn-crop btn-confirm" onclick="confirmarCrop()">Confirmar</button>
-                    </div>
+                     <div class="slider-row"><input type="range" min="0.5" max="3" step="0.01" value="1" id="cropZoomSlider" oninput="atualizarZoomCrop(this.value)"></div>
+                    <div class="crop-actions"><button class="btn-crop btn-cancel" onclick="cancelarCrop()">Cancelar</button><button class="btn-crop btn-confirm" onclick="confirmarCrop()">Confirmar</button></div>
                 </div>
             </div>
         </div>
 
         <div id="painel-edicao">
             <div class="header-edicao">
-                <div class="titulo-wrapper" onclick="togglePainel()">
-                    <button class="btn-toggle"><i class="material-icons" id="iconToggle">expand_more</i></button>
-                    <span class="titulo-edicao">Personalizar</span>
-                </div>
+                <div class="titulo-wrapper" onclick="togglePainel()"><button class="btn-toggle"><i class="material-icons" id="iconToggle">expand_more</i></button><span class="titulo-edicao">Personalizar</span></div>
                 <button class="btn-voltar-edicao" onclick="resetar()"><i class="material-icons">close</i></button>
             </div>
             <div class="conteudo-ocultavel">
                 <div class="carrossel" id="listaJoias"></div>
                 <div class="ferramentas-ajuste">
-                    <div class="slider-row">
-                        <div class="slider-label">Tamanho</div>
-                        <input type="range" min="30" max="400" value="120" id="rangeSize" oninput="ajustarStickerAtivo()">
-                    </div>
-                    <div class="slider-row">
-                        <div class="slider-label">Rotação</div>
-                        <input type="range" min="-180" max="180" value="0" id="rangeRotate" oninput="ajustarStickerAtivo()">
-                    </div>
-                    <button class="btn-trash" onclick="removerStickerAtivo()" title="Remover">
-                        <i class="material-icons">delete</i>
-                    </button>
+                    <div class="slider-row"><div class="slider-label">Tamanho</div><input type="range" min="30" max="400" value="120" id="rangeSize" oninput="ajustarStickerAtivo()"></div>
+                    <div class="slider-row"><div class="slider-label">Rotação</div><input type="range" min="-180" max="180" value="0" id="rangeRotate" oninput="ajustarStickerAtivo()"></div>
+                    <button class="btn-trash" onclick="removerStickerAtivo()" title="Remover"><i class="material-icons">delete</i></button>
                 </div>
-                
                 <div class="acoes-finais">
-                    <button class="btn-final" id="btnFinalizar" onclick="animarImpressao()">
-                        <span>Finalizar</span> <i class="material-icons">check_circle</i>
-                    </button>
+                    <button class="btn-final" id="btnFinalizar" onclick="animarImpressao()"><span>Finalizar</span> <i class="material-icons">check_circle</i></button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const video = document.getElementById('videoElement');
-        const preview = document.getElementById('previewImage');
-        const palco = document.getElementById('palco');
-        const listaJoias = document.getElementById('listaJoias');
-        const rangeSize = document.getElementById('rangeSize');
-        const rangeRotate = document.getElementById('rangeRotate');
-        const btnFinalizar = document.getElementById('btnFinalizar');
-        const painel = document.getElementById('painel-edicao');
-        const iconToggle = document.getElementById('iconToggle');
-        const iosControls = document.getElementById('ios-controls');
-        const cropControls = document.getElementById('crop-controls');
-        const cropZoomSlider = document.getElementById('cropZoomSlider');
-        
-        // Elementos da Impressora
-        const impressoraOverlay = document.getElementById('impressora-overlay');
-        const photoResult = document.getElementById('photoResult');
-        const finalPolaroidImage = document.getElementById('finalPolaroidImage');
-        const btnShareFinal = document.getElementById('btnShareFinal');
-        const appContainer = document.getElementById('app-container');
+        // --- VARIÁVEIS GLOBAIS ---
+        const video = document.getElementById('videoElement'); const preview = document.getElementById('previewImage'); const palco = document.getElementById('palco'); const listaJoias = document.getElementById('listaJoias'); const rangeSize = document.getElementById('rangeSize'); const rangeRotate = document.getElementById('rangeRotate'); const btnFinalizar = document.getElementById('btnFinalizar'); const painel = document.getElementById('painel-edicao'); const iconToggle = document.getElementById('iconToggle'); const iosControls = document.getElementById('ios-controls'); const cropControls = document.getElementById('crop-controls'); const cropZoomSlider = document.getElementById('cropZoomSlider');
+        const impressoraOverlay = document.getElementById('impressora-overlay'); const photoResult = document.getElementById('photoResult'); const finalPolaroidImage = document.getElementById('finalPolaroidImage'); const btnShareFinal = document.getElementById('btnShareFinal'); const appContainer = document.getElementById('app-container');
 
-        let stickerAtivo = null;
-        let currentFacingMode = 'user'; 
-        let currentStream = null;
-        let isCroppingMode = false;
-        let cropScale = 1;
-        let cropTranslateX = 0;
-        let cropTranslateY = 0;
-        let isDraggingCrop = false;
-        let startDragCropX, startDragCropY;
-        let blobFinal = null; // Armazena a imagem final para compartilhar
+        let stickerAtivo = null; let currentFacingMode = 'user'; let currentStream = null; let isCroppingMode = false; let cropScale = 1; let cropTranslateX = 0; let cropTranslateY = 0; let isDraggingCrop = false; let startDragCropX, startDragCropY; let blobFinal = null;
 
-        const BASE_WIDTH = 1080;
-        const BASE_HEIGHT = 1626;
-
-        const backupJoias = [
-            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png",
-            "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"
-        ];
+        const BASE_WIDTH = 1080; const BASE_HEIGHT = 1626;
+        const backupJoias = ["https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/logo-miniatura.png", "https://raw.githubusercontent.com/Orelha-dos-Sonhos/app/refs/heads/main/orelha-icon.png"];
 
         window.onload = () => { startCamera(); carregarCatalogoHibrido(); }
 
-        // --- FUNÇÕES DA CÂMERA (Mantidas) ---
-        async function startCamera() {
-            if (currentStream) currentStream.getTracks().forEach(track => track.stop());
-            const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } };
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                currentStream = stream; video.srcObject = stream;
-                if (currentFacingMode === 'user') video.classList.add('mirrored'); else video.classList.remove('mirrored');
-            } catch (err) { try { const streamPC = await navigator.mediaDevices.getUserMedia({ video: true }); currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); } catch(e) {} }
-        }
+        // --- FUNÇÕES BÁSICAS (Câmera, Crop, Stickers - Mantidas Compactas) ---
+        async function startCamera() { if (currentStream) currentStream.getTracks().forEach(track => track.stop()); const constraints = { video: { facingMode: currentFacingMode, width: { ideal: 1920 }, height: { ideal: 1080 } } }; try { const stream = await navigator.mediaDevices.getUserMedia(constraints); currentStream = stream; video.srcObject = stream; if (currentFacingMode === 'user') video.classList.add('mirrored'); else video.classList.remove('mirrored'); } catch (err) { try { const streamPC = await navigator.mediaDevices.getUserMedia({ video: true }); currentStream = streamPC; video.srcObject = streamPC; video.classList.add('mirrored'); } catch(e) {} } }
         function alternarCamera() { currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user'; startCamera(); }
-        function capturarFoto() {
-            const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d');
-            const vW = video.videoWidth; const vH = video.videoHeight; const rVid = vW / vH; const rBase = BASE_WIDTH / BASE_HEIGHT;
-            let sW, sH, sX, sY; if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; }
-            ctx.save(); if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
-            ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT); ctx.restore();
-            preview.src = canvas.toDataURL('image/png'); abrirEdicao();
-        }
+        function capturarFoto() { const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d'); const vW = video.videoWidth; const vH = video.videoHeight; const rVid = vW / vH; const rBase = BASE_WIDTH / BASE_HEIGHT; let sW, sH, sX, sY; if (rVid > rBase) { sH = vH; sW = vH * rBase; sX = (vW - sW) / 2; sY = 0; } else { sW = vW; sH = vW / rBase; sX = 0; sY = (vH - sH) / 2; } ctx.save(); if (currentFacingMode === 'user') { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); } ctx.drawImage(video, sX, sY, sW, sH, 0, 0, BASE_WIDTH, BASE_HEIGHT); ctx.restore(); preview.src = canvas.toDataURL('image/png'); abrirEdicao(); }
         function uploadGaleria(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = (e) => { preview.src = e.target.result; iniciarModoCrop(); }; reader.readAsDataURL(file); } }
-
-        // --- CROP & EDIÇÃO (Mantidos) ---
         function iniciarModoCrop() { isCroppingMode = true; video.style.display = 'none'; preview.style.display = 'block'; iosControls.style.display = 'none'; cropControls.style.display = 'flex'; preview.classList.add('cropping-mode'); cropScale = 1; cropTranslateX = 0; cropTranslateY = 0; cropZoomSlider.value = 1; aplicarTransformCrop(); preview.addEventListener('mousedown', dragCropStart); preview.addEventListener('touchstart', dragCropStart, {passive: false}); }
         function atualizarZoomCrop(val) { cropScale = parseFloat(val); aplicarTransformCrop(); }
         function aplicarTransformCrop() { preview.style.transform = `translate(calc(0px + ${cropTranslateX}px), calc(0px + ${cropTranslateY}px)) scale(${cropScale})`; }
@@ -431,18 +308,7 @@
         function dragCropEnd() { isDraggingCrop = false; }
         window.addEventListener('mousemove', dragCropMove); window.addEventListener('touchmove', dragCropMove, {passive: false}); window.addEventListener('mouseup', dragCropEnd); window.addEventListener('touchend', dragCropEnd);
         function cancelarCrop() { isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; resetar(); }
-        async function confirmarCrop() {
-            const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d');
-            const img = new Image(); img.src = preview.src; await imgLoad(img);
-            const pW = palco.clientWidth; const scaleFactor = canvas.width / pW; const centerX = canvas.width / 2; const centerY = canvas.height / 2;
-            ctx.save(); ctx.translate(centerX, centerY); ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor); ctx.scale(cropScale, cropScale);
-            const ratioImg = img.width / img.height; const ratioCanvas = canvas.width / canvas.height; let drawW, drawH;
-            if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } else { drawH = canvas.height; drawW = drawH * ratioImg; }
-            ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH); ctx.restore();
-            preview.src = canvas.toDataURL('image/png'); isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; cropControls.style.display = 'none'; preview.removeEventListener('mousedown', dragCropStart); preview.removeEventListener('touchstart', dragCropStart); abrirEdicao();
-        }
-
-        // --- STICKERS ---
+        async function confirmarCrop() { const canvas = document.createElement('canvas'); canvas.width = BASE_WIDTH; canvas.height = BASE_HEIGHT; const ctx = canvas.getContext('2d'); const img = new Image(); img.src = preview.src; await imgLoad(img); const pW = palco.clientWidth; const scaleFactor = canvas.width / pW; const centerX = canvas.width / 2; const centerY = canvas.height / 2; ctx.save(); ctx.translate(centerX, centerY); ctx.translate(cropTranslateX * scaleFactor, cropTranslateY * scaleFactor); ctx.scale(cropScale, cropScale); const ratioImg = img.width / img.height; const ratioCanvas = canvas.width / canvas.height; let drawW, drawH; if (ratioImg > ratioCanvas) { drawW = canvas.width; drawH = drawW / ratioImg; } else { drawH = canvas.height; drawW = drawH * ratioImg; } ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH); ctx.restore(); preview.src = canvas.toDataURL('image/png'); isCroppingMode = false; preview.classList.remove('cropping-mode'); preview.style.transform = ''; cropControls.style.display = 'none'; preview.removeEventListener('mousedown', dragCropStart); preview.removeEventListener('touchstart', dragCropStart); abrirEdicao(); }
         function carregarCatalogoHibrido() { listaJoias.innerHTML = ''; const pasta = 'joias/'; for (let i = 1; i <= 100; i++) { criarThumb(pasta + 'joia' + i + '.png'); } backupJoias.forEach(url => criarThumb(url)); }
         function criarThumb(url) { const img = new Image(); img.src = url; img.crossOrigin = "anonymous"; img.onload = function() { const div = document.createElement('div'); div.className = 'thumb-joia'; div.classList.add('loaded'); div.appendChild(img); div.onclick = () => adicionarSticker(url); listaJoias.appendChild(div); }; }
         function abrirEdicao() { video.style.display = 'none'; preview.style.display = 'block'; iosControls.style.display = 'none'; cropControls.style.display = 'none'; preview.classList.remove('cropping-mode'); painel.style.display = 'flex'; setTimeout(() => { painel.classList.remove('minimized'); iconToggle.innerText = 'expand_more'; }, 50); }
@@ -458,185 +324,123 @@
         function dragStickerEnd() { isDraggingSticker = false; }
         window.addEventListener('touchmove', dragStickerMove, {passive: false}); window.addEventListener('mousemove', dragStickerMove); window.addEventListener('touchend', dragStickerEnd); window.addEventListener('mouseup', dragStickerEnd);
 
-        // --- GERAÇÃO DA POLAROIDE ---
+        // --- GERAÇÃO DA POLAROIDE (DESIGN NOVO) ---
         async function desenharCenaNoCanvas(canvas) {
             const ctx = canvas.getContext('2d'); 
             const CW = canvas.width; const CH = canvas.height;
             
-            // Fundo Branco Polaroid
-            ctx.fillStyle = "#fff"; 
+            // 1. Fundo Verde Petróleo
+            ctx.fillStyle = "#0B464C"; 
             ctx.fillRect(0, 0, CW, CH);
             
-            // Área da Foto (Margens)
-            // Polaroid clássica: mais espaço embaixo
-            const sideMargin = 50;
-            const topMargin = 50;
-            const bottomArea = 350; // Espaço para logo/texto
-            
-            const photoW = CW - (sideMargin * 2);
-            // Altura da foto calculada proporcionalmente para caber na moldura
-            const photoH = CH - topMargin - bottomArea; 
+            // 2. Papel Branco da Polaroid com Sombra
+            const paperMarginSide = 50;
+            const paperMarginTop = 100;
+            const paperMarginBottom = 100;
+            const paperW = CW - (paperMarginSide * 2);
+            const paperH = CH - paperMarginTop - paperMarginBottom;
+            const paperX = paperMarginSide;
+            const paperY = paperMarginTop;
+
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,0.4)"; ctx.shadowBlur = 25; ctx.shadowOffsetY = 10;
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(paperX, paperY, paperW, paperH);
+            ctx.restore();
+
+            // 3. Área da Foto (Dentro do papel branco)
+            const photoInnerMargin = 30;
+            const photoBottomArea = 350; // Espaço para logo/texto
+            const photoAreaW = paperW - (photoInnerMargin * 2);
+            const photoAreaH = paperH - photoInnerMargin - photoBottomArea;
+            const photoAreaX = paperX + photoInnerMargin;
+            const photoAreaY = paperY + photoInnerMargin;
 
             const imgBase = new Image(); imgBase.src = preview.src; await imgLoad(imgBase);
             
-            // Desenhar Foto do Usuário Clipada
+            // Desenhar Foto do Usuário (Object-fit: Cover na área designada)
             ctx.save();
-            ctx.beginPath();
-            ctx.rect(sideMargin, topMargin, photoW, photoH);
-            ctx.clip();
-            // Centralizar a imagem no espaço da foto (cover)
+            ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip();
             const imgRatio = imgBase.width / imgBase.height;
-            const targetRatio = photoW / photoH;
+            const targetRatio = photoAreaW / photoAreaH;
             let drawW, drawH, drawX, drawY;
-            
-            if (imgRatio > targetRatio) {
-                drawH = photoH; drawW = photoH * imgRatio;
-                drawY = topMargin; drawX = sideMargin + (photoW - drawW)/2;
-            } else {
-                drawW = photoW; drawH = photoW / imgRatio;
-                drawX = sideMargin; drawY = topMargin + (photoH - drawH)/2;
-            }
-            
+            if (imgRatio > targetRatio) { drawH = photoAreaH; drawW = photoAreaH * imgRatio; drawY = photoAreaY; drawX = photoAreaX + (photoAreaW - drawW)/2; } 
+            else { drawW = photoAreaW; drawH = photoAreaW / imgRatio; drawX = photoAreaX; drawY = photoAreaY + (photoAreaH - drawH)/2; }
             ctx.drawImage(imgBase, drawX, drawY, drawW, drawH);
             ctx.restore();
 
-            // Desenhar Stickers em cima da área da foto
-            // Precisamos mapear coordenadas do Palco para coordenadas da Foto no Canvas
+            // 4. Desenhar Stickers (Mapeando coordenadas do palco para o canvas)
             const palcoW = palco.clientWidth; const palcoH = palco.clientHeight;
             const stickers = document.querySelectorAll('.sticker-joia');
-            
-            // Área de desenho no canvas (para referência relativa)
-            const areaDrawX = sideMargin; 
-            const areaDrawY = topMargin;
-            const areaDrawW = photoW;
-            const areaDrawH = photoH;
-
-            // O palco original tem aspect ratio da imagem base. 
-            // Precisamos saber como a imagem base foi desenhada no canvas para posicionar os stickers.
-            // (Simplificação: assumindo que o palco visual reflete a imagem base)
-            
             for(let s of stickers) {
                 const imgS = new Image(); imgS.crossOrigin = "anonymous"; imgS.src = s.src; await imgLoad(imgS);
-                
-                const sLeft = parseFloat(s.style.left); 
-                const sTop = parseFloat(s.style.top);
-                
                 // Posição relativa no palco (0.0 a 1.0)
-                const relX = sLeft / palcoW; 
-                const relY = sTop / palcoH;
-
-                // Converter para posição no canvas (dentro da área da foto)
-                // Nota: O preview no palco está "contain" ou "cover". 
-                // Para precisão total, teríamos que replicar a lógica do "object-fit: contain" aqui.
-                // Vou usar uma aproximação baseada na área da foto desenhada.
-                
-                // Calcular onde a imagem base realmente está no canvas (drawX, drawY, drawW, drawH acima)
-                // Recalculando...
-                let finalImgX = drawX; let finalImgY = drawY; let finalImgW = drawW; let finalImgH = drawH;
-
-                const canvasX = finalImgX + (relX * finalImgW);
-                const canvasY = finalImgY + (relY * finalImgH);
-
-                const sScale = parseFloat(s.dataset.scale); 
-                const sRot = parseFloat(s.dataset.rotation);
-                
+                const relX = parseFloat(s.style.left) / palcoW; const relY = parseFloat(s.style.top) / palcoH;
+                // Posição absoluta na imagem desenhada
+                const canvasX = drawX + (relX * drawW); const canvasY = drawY + (relY * drawH);
                 // Escala relativa
-                const scaleFactor = finalImgW / palcoW; 
-                const finalW = sScale * scaleFactor; 
-                const ratio = imgS.height / imgS.width;
-
+                const sScale = parseFloat(s.dataset.scale); const scaleFactor = drawW / palcoW; 
+                const finalW = sScale * scaleFactor; const ratio = imgS.height / imgS.width;
                 ctx.save(); 
-                // Clip novamente para garantir que o sticker não saia da borda da polaroid
-                ctx.beginPath(); ctx.rect(sideMargin, topMargin, photoW, photoH); ctx.clip();
-                
+                ctx.beginPath(); ctx.rect(photoAreaX, photoAreaY, photoAreaW, photoAreaH); ctx.clip(); // Clip na área da foto
                 ctx.translate(canvasX, canvasY); 
-                ctx.rotate(sRot * Math.PI / 180);
+                ctx.rotate(parseFloat(s.dataset.rotation) * Math.PI / 180);
                 ctx.drawImage(imgS, -finalW/2, -(finalW*ratio)/2, finalW, finalW*ratio); 
                 ctx.restore();
             }
 
-            // Desenhar Logo e Texto na parte inferior branca
+            // 5. Desenhar Logo e Texto (Canto Inferior Direito, Inclinado)
             try {
-                // Carregar Logo Escura para contraste no branco
                 const logo = new Image(); logo.src = "logo-preto-dark.png"; await imgLoad(logo);
-                const lW = 300; const lH = lW * (logo.height / logo.width);
-                const lX = (CW - lW) / 2;
-                const lY = topMargin + photoH + 50;
-                
-                ctx.drawImage(logo, lX, lY, lW, lH);
-                
-                ctx.font = "bold 35px Raleway"; 
-                ctx.fillStyle = "#333"; 
-                ctx.textAlign = "center"; 
-                ctx.fillText("@orelhadossonhosrp", CW/2, lY + lH + 50);
+                const lW = 180; // Tamanho menor
+                const lH = lW * (logo.height / logo.width);
+                // Ponto de ancoragem no canto inferior direito do papel branco
+                const anchorX = paperX + paperW - 40;
+                const anchorY = paperY + paperH - 40;
+
+                ctx.save();
+                ctx.translate(anchorX, anchorY);
+                ctx.rotate(-6 * Math.PI / 180); // Inclinação sutil
+                // Desenha da direita para a esquerda a partir do ponto de ancoragem
+                ctx.drawImage(logo, -lW, -lH - 35, lW, lH);
+                ctx.font = "bold 24px Raleway"; ctx.fillStyle = "#333"; ctx.textAlign = "right"; 
+                ctx.fillText("@orelhadossonhosrp", 0, 0);
+                ctx.restore();
             } catch(e) { console.log(e); }
         }
 
-        // --- NOVA FUNÇÃO: ANIMAR IMPRESSÃO ---
+        // --- ANIMAÇÃO & COMPARTILHAMENTO ---
         async function animarImpressao() {
             if(stickerAtivo) stickerAtivo.classList.remove('selected');
             btnFinalizar.classList.add('loading');
-
             try {
-                // 1. Gerar a imagem Polaroid em memória
                 const canvas = document.createElement('canvas'); 
-                canvas.width = 1080; canvas.height = 1920; // Formato Stories/Polaroid
+                canvas.width = 1080; canvas.height = 1920;
                 await desenharCenaNoCanvas(canvas);
-                
-                // 2. Converter para Blob/URL
                 canvas.toBlob((blob) => {
-                    blobFinal = blob; // Guardar para compartilhar depois
-                    const url = URL.createObjectURL(blob);
-                    finalPolaroidImage.src = url;
-
-                    // 3. Iniciar Transição de Interface
-                    appContainer.style.opacity = '0'; // Some com o app
+                    blobFinal = blob;
+                    finalPolaroidImage.src = URL.createObjectURL(blob);
+                    appContainer.style.opacity = '0';
                     setTimeout(() => {
-                        appContainer.style.display = 'none'; // Remove do fluxo
-                        impressoraOverlay.style.display = 'flex'; // Mostra overlay
-                        
-                        // 4. Disparar Animação CSS
+                        appContainer.style.display = 'none'; impressoraOverlay.style.display = 'flex';
                         setTimeout(() => {
                             photoResult.classList.add('printing-animation');
-                            
-                            // 5. Mostrar botão compartilhar ao final
-                            setTimeout(() => {
-                                btnShareFinal.classList.add('visible');
-                            }, 3500); // Tempo da animação
+                            setTimeout(() => { btnShareFinal.classList.add('visible'); }, 5000); // Espera a animação de 5s
                         }, 100);
-                    }, 500);
-                    
+                    }, 800); // Tempo para o fade out do app
                 }, 'image/png');
-
-            } catch (e) {
-                alert("Erro ao processar imagem.");
-                btnFinalizar.classList.remove('loading');
-            }
+            } catch (e) { alert("Erro ao processar imagem."); btnFinalizar.classList.remove('loading'); }
         }
 
         async function compartilharResultado() {
             if (!blobFinal) return;
-            
             const file = new File([blobFinal], "orelha-polaroid.png", { type: "image/png" });
-            
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Minha Orelha dos Sonhos',
-                        text: 'Olha como ficou meu teste virtual!'
-                    });
-                } catch (err) { console.log("Compartilhamento cancelado"); }
+                try { await navigator.share({ files: [file], title: 'Minha Orelha dos Sonhos', text: 'Olha meu teste virtual!' }); } catch (err) {}
             } else {
-                // Fallback: Download
-                const link = document.createElement('a');
-                link.download = 'orelha-polaroid.png';
-                link.href = URL.createObjectURL(blobFinal);
-                link.click();
-                alert("Imagem salva na galeria!");
+                const link = document.createElement('a'); link.download = 'orelha-polaroid.png'; link.href = URL.createObjectURL(blobFinal); link.click(); alert("Imagem salva na galeria!");
             }
         }
-
         function imgLoad(img) { return new Promise((resolve) => { if (img.complete) return resolve(); img.onload = resolve; img.onerror = resolve; }); }
     </script>
 </body>
