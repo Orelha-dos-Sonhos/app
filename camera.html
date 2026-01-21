@@ -138,7 +138,7 @@
 
         .printer-body {
             width: 105%; height: 150px;
-            /* Design Metálico Clean (Sem listras, sem parafusos) */
+            /* Design Metálico Clean */
             background: linear-gradient(to bottom, #dcdcdc 0%, #999 40%, #666 100%);
             border-bottom: 12px solid #222;
             box-shadow: 0 15px 40px rgba(0,0,0,0.7);
@@ -169,28 +169,25 @@
             z-index: 106;
         }
 
-        /* FOTO SAINDO - AJUSTE FINAL */
+        /* Foto Saindo - AJUSTE 90px */
         .photo-container {
             position: absolute;
-            /* Início mais acima (110px) para garantir que sai de dentro */
-            top: 110px; 
+            top: 90px; /* Mais perto da impressora (era 125px) */
             z-index: 100; /* Atrás da impressora */
             width: 300px; height: auto;
             opacity: 0;
-            /* SOMBRA REMOVIDA AQUI */
-            filter: none; 
+            filter: none; /* Sem sombra */
             transform-origin: top center;
         }
         .photo-container img { width: 100%; display: block; border-radius: 2px; }
 
-        /* Animação Lenta (5s) e Parando mais perto */
+        /* Animação Lenta (5s) */
         .printing-animation {
             animation: printPhoto 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         @keyframes printPhoto {
-            0% { top: 110px; opacity: 0; transform: scale(0.98); }
+            0% { top: 90px; opacity: 0; transform: scale(0.98); }
             5% { opacity: 1; transform: scale(1); }
-            /* Posição Final Ajustada para ficar perto da impressora (170px) */
             100% { top: 170px; opacity: 1; transform: scale(1); }
         }
 
