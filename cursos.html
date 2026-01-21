@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0B464C">
     
-    <title>Loja | Orelha dos Sonhos</title>
+    <title>Cursos | Orelha dos Sonhos</title>
     
     <link rel="icon" type="image/png" href="icon-web.png">
     
@@ -67,7 +67,7 @@
             width: 100%;
             min-height: 300px;
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Organiza texto e botão em coluna */
             align-items: center;
             justify-content: center;
             box-shadow: 0 8px 32px 0 var(--glass-shadow);
@@ -75,7 +75,7 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.2s;
-            gap: 30px;
+            gap: 30px; /* Espaço entre o texto e o botão */
         }
 
         .aviso-card:active { transform: scale(0.98); }
@@ -90,14 +90,16 @@
             margin: 0;
         }
 
-        /* --- BOTÃO ESTILO VIDRO --- */
+        /* --- BOTÃO PADRÃO (Igual Index.html) --- */
         .btn-link {
             display: flex; align-items: center; justify-content: center;
-            width: 80%;
+            width: 80%; /* Um pouco menor que o container */
             padding: 18px 20px;
             text-decoration: none; color: var(--text-color);
             text-align: center;
             font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
+            
+            /* O mesmo gradiente Glass do Index */
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
@@ -106,7 +108,7 @@
             box-shadow: 0 4px 10px var(--glass-shadow);
             transition: transform 0.2s ease;
             gap: 12px;
-            z-index: 20;
+            z-index: 20; /* Garante que fique sobre os emojis */
             position: relative;
         }
         

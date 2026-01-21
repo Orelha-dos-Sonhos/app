@@ -3,84 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#f0f2f5" id="meta-theme-color">
+    <meta name="theme-color" content="#0B464C">
+    
     <title>Cuidados | Orelha dos Sonhos</title>
+    
     <link rel="icon" type="image/png" href="icon-web.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        /* Copie aqui o mesmo CSS do index.html (variáveis e background) */
-        :root { --bg-body: #f0f2f5; --text-color: #333; --glass-bg: rgba(255,255,255,0.85); --glass-border: rgba(255,255,255,0.9); }
-        body.dark-theme { --bg-body: #121212; --text-color: #f0f0f0; --glass-bg: rgba(60,60,60,0.85); --glass-border: rgba(255,255,255,0.1); }
-        
+        /* --- ESTILO PADRÃO (Dark/Teal - Igual ao Index) --- */
+        :root {
+            --text-color: #f0f0f0;
+            --text-secondary: #cccccc;
+            
+            /* Degradê Verde Petróleo Fixo */
+            --bg-gradient: linear-gradient(180deg, #0B464C 0%, #206870 100%);
+            
+            /* Variáveis de Vidro (Glassmorphism Escuro) */
+            --glass-bg-start: rgba(11, 70, 76, 0.5);
+            --glass-bg-end: rgba(20, 40, 45, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html { width: 100%; overflow-x: hidden; }
-        body { font-family: 'Raleway', sans-serif; color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-color: transparent; position: relative; overflow-x: hidden; }
 
-        /* ELEMENTOS DE FUNDO (Igual Index) */
-        .dynamic-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -4; pointer-events: none; transition: background 1.5s ease; }
-        .sun-glow { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 30vh; background: radial-gradient(ellipse at top center, rgba(255, 215, 0, 0.65) 0%, rgba(255, 230, 80, 0.45) 40%, rgba(255, 255, 255, 0.2) 70%, transparent 90%); filter: blur(70px); z-index: -2; opacity: 1; pointer-events: none; transition: opacity 1s ease; animation: sunPulse 2s infinite alternate; }
-        @keyframes sunPulse { 0% { opacity: 0.85; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
-        body.dark-theme .sun-glow { opacity: 0; animation: none; }
-        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -3; overflow: hidden; opacity: 0; transition: opacity 1s ease; }
-        body.dark-theme .stars-container { opacity: 1; }
-        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 3px rgba(255, 255, 255, 0.9); animation: twinkle 4s infinite ease-in-out; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-        #shooting-star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; overflow: hidden; }
-        .shooting-star { position: absolute; height: 2px; background: linear-gradient(to right, rgba(255,255,255,1) 0%, transparent 100%); border-radius: 999px; filter: drop-shadow(0 0 6px white); animation: shoot 0.8s ease-out forwards; opacity: 0; }
-        @keyframes shoot { 0% { transform: translate(0, 0) rotate(-45deg) scaleX(0); opacity: 1; width: 0; } 30% { width: 150px; } 100% { transform: translate(-400px, 400px) rotate(-45deg) scaleX(1); opacity: 0; width: 150px; } }
+        html { width: 100%; height: 100%; }
 
-        /* LAYOUT PAGINA CUIDADOS */
-        #app-container { width: 100%; max-width: 600px; padding: 20px; display: flex; flex-direction: column; align-items: center; z-index: 10; margin: 0 auto; }
-        header { width: 100%; text-align: center; margin-bottom: 20px; }
-        .logo-img { max-height: 70px; display: block; margin: 0 auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
-        
-        .content-box {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
+        body {
+            font-family: 'Raleway', sans-serif; 
+            color: var(--text-color);
+            min-height: 100vh;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            
+            /* Background Fixo */
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            background-size: cover;
+            
+            padding-top: 10px;
+            padding-bottom: 30px;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        header { 
+            width: 100%; text-align: center; margin-bottom: 20px; 
+            flex-shrink: 0;
         }
         
-        h1 { font-family: 'Playfair Display', serif; margin-bottom: 15px; text-align: center; }
-        p { line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
+        .logo-link { display: inline-block; cursor: pointer; transition: transform 0.2s; }
+        .logo-link:active { transform: scale(0.95); }
+        
+        .logo-img { 
+            max-height: 70px; display: block; margin: 0 auto;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
 
-        .btn-back { display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: var(--text-color); font-weight: 600; margin-bottom: 20px; align-self: flex-start; }
+        /* CARD PRINCIPAL */
+        .card-cuidados {
+            /* Estilo Vidro Escuro */
+            background: linear-gradient(135deg, var(--glass-bg-start), var(--glass-bg-end));
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            
+            width: 90%; max-width: 500px;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+        }
 
-        .theme-toggle-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100; }
+        h1 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: #ffffff; margin-bottom: 5px; text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-family: 'Raleway', sans-serif; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--text-secondary); margin-bottom: 25px; font-weight: 600; text-align: center;
+        }
+
+        /* LISTA DE CUIDADOS */
+        .lista-cuidados {
+            list-style: none; display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .item-cuidado {
+            display: flex; align-items: flex-start; gap: 15px;
+            
+            /* Item com fundo levemente mais claro que o card */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px; border-radius: 15px;
+            transition: transform 0.2s;
+        }
+        
+        .item-cuidado:hover { transform: translateX(3px); background: rgba(255, 255, 255, 0.08); }
+
+        .icone-cuidado {
+            color: #81d4fa; /* Azul claro para destaque no escuro */
+            font-size: 24px; margin-top: 2px;
+        }
+
+        .texto-cuidado strong {
+            display: block; color: #fff;
+            font-size: 0.95rem; margin-bottom: 4px; font-weight: 700;
+        }
+
+        .texto-cuidado p {
+            font-size: 0.85rem; color: #ddd; line-height: 1.4; font-weight: 400;
+        }
+
+        /* BOTÃO VOLTAR */
+        .btn-voltar {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            
+            color: var(--text-color); text-decoration: none;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+            padding: 12px 35px; border-radius: 50px;
+            display: block; width: fit-content; margin: 30px auto 0 auto;
+            transition: transform 0.2s, background 0.3s;
+        }
+        .btn-voltar:hover { background: rgba(255, 255, 255, 0.2); }
+        .btn-voltar:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.05); }
+
     </style>
 </head>
 <body>
 
-    <div id="dynamic-bg" class="dynamic-glow"></div>
-    <div id="sun-glow" class="sun-glow"></div>
-    <div id="stars-container" class="stars-container"></div>
-    <div id="shooting-star-container"></div>
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="logo-branco-light.png" alt="Orelha dos Sonhos" class="logo-img">
+        </a>
+    </header>
 
-    <div id="app-container">
-        <a href="index.html" class="btn-back"><span class="material-icons">arrow_back</span> Voltar</a>
+    <div class="card-cuidados">
+        <h1>Cuidados Pós-Furo</h1>
+        <h2>Guia para uma cicatrização perfeita</h2>
+
+        <ul class="lista-cuidados">
+            <li class="item-cuidado">
+                <span class="material-icons icone-cuidado">water_drop</span>
+                <div class="texto-cuidado">
+                    <strong>Limpeza é Fundamental</strong>
+                    <p>Lave o furo 2x ao dia com soro fisiológico ou sabonete neutro. Seque bem com cuidado.</p>
+                </div>
+            </li>
+            <li class="item-cuidado">
+                <span class="material-icons icone-cuidado">do_not_touch</span>
+                <div class="texto-cuidado">
+                    <strong>Evite Tocar</strong>
+                    <p>Nunca toque no furo com as mãos sujas. O contato traz bactérias que causam infecções.</p>
+                </div>
+            </li>
+            <li class="item-cuidado">
+                <span class="material-icons icone-cuidado">sync_disabled</span>
+                <div class="texto-cuidado">
+                    <strong>Não Gire a Joia</strong>
+                    <p>Diferente do que diziam antigamente, girar a joia machuca a pele que está cicatrizando.</p>
+                </div>
+            </li>
+            <li class="item-cuidado">
+                <span class="material-icons icone-cuidado">bedtime</span>
+                <div class="texto-cuidado">
+                    <strong>Cuidado ao Dormir</strong>
+                    <p>Evite dormir em cima da orelha recém-furada para não causar pressão ou inflamação.</p>
+                </div>
+            </li>
+            <li class="item-cuidado">
+                <span class="material-icons icone-cuidado">pool</span>
+                <div class="texto-cuidado">
+                    <strong>Mar e Piscina</strong>
+                    <p>Evite mergulhos em mar ou piscina nos primeiros 30 dias para evitar contaminação.</p>
+                </div>
+            </li>
+        </ul>
         
-        <header>
-            <img src="logo-preto-dark.png" alt="Orelha dos Sonhos" class="logo-img" id="logo-img">
-        </header>
-
-        <main class="content-box">
-            <h1>Cuidados Pós-Furo</h1>
-            <p>Aqui você colocará o texto sobre os cuidados necessários com o furo da orelha.</p>
-            <p>• Mantenha o local limpo e seco.<br>• Gire o brinco delicadamente durante a limpeza.<br>• Evite trocar a joia antes do tempo recomendado.</p>
-        </main>
+        <a href="index.html" class="btn-voltar">Voltar</a>
     </div>
 
-    <button class="theme-toggle-btn" id="themeToggle"><i class="material-icons">dark_mode</i></button>
-
-    <script>
-        const themeBtn=document.getElementById('themeToggle'),themeIcon=themeBtn.querySelector('i'),body=document.body,html=document.documentElement,logoImg=document.getElementById('logo-img'),starsContainer=document.getElementById('stars-container'),shootingStarContainer=document.getElementById('shooting-star-container'),metaThemeColor=document.getElementById('meta-theme-color'),systemDarkMode=window.matchMedia('(prefers-color-scheme: dark)');let savedTheme=localStorage.getItem('selectedTheme'),shootingStarInterval;function initTheme(){savedTheme?savedTheme==='dark'?aplicarTemaDark():aplicarTemaLight():systemDarkMode.matches?aplicarTemaDark():aplicarTemaLight()}systemDarkMode.addEventListener('change',e=>{localStorage.getItem('selectedTheme')||(e.matches?aplicarTemaDark():aplicarTemaLight())});themeBtn.addEventListener('click',()=>{body.classList.contains('dark-theme')?(aplicarTemaLight(),localStorage.setItem('selectedTheme','light')):(aplicarTemaDark(),localStorage.setItem('selectedTheme','dark'))});function aplicarTemaDark(){body.classList.add('dark-theme');themeIcon.textContent='light_mode';logoImg.src='logo-branco-light.png';metaThemeColor.setAttribute('content','#121212');atualizarFundo();criarEstrelasFixas();iniciarEstrelaCadente()}function aplicarTemaLight(){body.classList.remove('dark-theme');themeIcon.textContent='dark_mode';logoImg.src='logo-preto-dark.png';metaThemeColor.setAttribute('content','#f0f2f5');atualizarFundo();pararEstrelaCadente()}function atualizarFundo(){const e=new Date().getHours(),t=document.getElementById('dynamic-bg'),a=body.classList.contains('dark-theme');let o,r;a?e>=5&&e<12?(o='linear-gradient(to top, #311b92, #000000 80%)',r='#000000'):e>=12&&e<18?(o='linear-gradient(to top, #880e4f, #1a237e, #000000 80%)',r='#000000'):(o='linear-gradient(to top, #000000, #1a237e, #000000 80%)',r='#000000'):e>=5&&e<12?(o='linear-gradient(to top, #81d4fa, #f0f2f5 80%)',r='#f0f2f5'):e>=12&&e<18?(o='linear-gradient(to top, #ffcc80, #f48fb1, #f0f2f5 80%)',r='#f0f2f5'):(o='linear-gradient(to top, #1a237e, #4a148c, #f0f2f5 80%)',r='#f0f2f5');t.style.background=o,html.style.backgroundColor=r}function criarEstrelasFixas(){if(!(starsContainer.children.length>0))for(let e=0;e<150;e++){const t=document.createElement('div');t.className='star',t.style.left=100*Math.random()+'%',t.style.top=100*Math.random()+'%';const a=1.5*Math.random()+1+'px';t.style.width=a,t.style.height=a,t.style.animationDelay=5*Math.random()+'s',starsContainer.appendChild(t)}}function iniciarEstrelaCadente(){shootingStarInterval&&clearInterval(shootingStarInterval),criarEstrelaCadente(),shootingStarInterval=setInterval(criarEstrelaCadente,1e4)}function pararEstrelaCadente(){shootingStarInterval&&clearInterval(shootingStarInterval),shootingStarContainer.innerHTML=''}function criarEstrelaCadente(){const e=document.createElement('div');e.className='shooting-star';const t=Math.random()*(window.innerWidth-100),a=200*Math.random();e.style.left=t+'px',e.style.top=a+'px',shootingStarContainer.appendChild(e),setTimeout(()=>{e.remove()},1200)}initTheme();
-    </script>
 </body>
 </html>
