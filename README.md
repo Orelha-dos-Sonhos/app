@@ -1,5 +1,5 @@
 👂 Orelha dos Sonhos - Web App
-Este projeto é uma aplicação web Mobile-First O objetivo é oferecer uma experiência interativa onde clientes podem agendar serviços, visualizar cuidados pós-furo e, principalmente, experimentar joias virtualmente através de realidade aumentada simples.
+Este projeto é uma aplicação web Mobile-First o objetivo é oferecer uma experiência interativa onde clientes podem agendar serviços, visualizar cuidados pós-furo e, principalmente, experimentar joias virtualmente através de realidade aumentada simples.
 
 🚀 Funcionalidades Principais
 1. 🏠 Página Inicial (Hub Central)
