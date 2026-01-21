@@ -3,29 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1F454B">
+    <meta name="theme-color" content="#0B464C">
     
     <title>Orelha dos Sonhos | Victória Serrano</title>
     
-    <link rel="icon" type="image/png" href="icon-web.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-web.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-web.png">
+    <link rel="shortcut icon" href="icon-web.png">
+    <link rel="apple-touch-icon" href="icon-web.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Orelha dos Sonhos | Victória Serrano">
+    <meta property="og:description" content="Furo de orelha humanizado, joias e cuidados. Toque para agendar!">
+    <meta property="og:image" content="banner-orelha.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        /* --- ESTILO ÚNICO (Sem variáveis de troca) --- */
+        /* --- ESTILO ÚNICO --- */
         :root {
-            --text-color: #f0f0f0; /* Texto claro */
+            --text-color: #f0f0f0; 
+            --bg-gradient: linear-gradient(180deg, #0B464C 0%, #206870 100%);
             
-            /* Degradê Verde Petróleo Fixo */
-            --bg-gradient: linear-gradient(180deg, #1F454B 0%, #0d1f22 100%);
-            
-            /* Vidro escuro para contraste */
-            --glass-bg-start: rgba(31, 69, 75, 0.6);
-            --glass-bg-end: rgba(20, 40, 45, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --glass-bg-start: rgba(11, 70, 76, 0.5);
+            --glass-bg-end: rgba(15, 85, 90, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Animação Brilho Logo */
+        @keyframes subtle-white-pulse {
+            0%, 100% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.2)); }
+            50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); }
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -38,12 +52,9 @@
             min-height: 100vh;
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            
-            /* Fundo Fixo Definitivo */
             background: var(--bg-gradient);
             background-attachment: fixed;
             background-size: cover;
-            
             position: relative;
             overflow-x: hidden;
         }
@@ -63,7 +74,7 @@
         
         .logo-img { 
             max-height: 70px; display: block; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            animation: subtle-white-pulse 3s ease-in-out infinite;
         }
 
         /* PERFIL */
@@ -97,7 +108,6 @@
             text-decoration: none; color: var(--text-color);
             text-align: center;
             font-family: 'Avenir', 'Avenir Next', 'Segoe UI', sans-serif;
-            
             background: linear-gradient(90deg, var(--glass-bg-start), var(--glass-bg-end));
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
@@ -204,5 +214,5 @@
         </footer>
     </div>
 
-    </body>
+</body>
 </html>
