@@ -14,7 +14,7 @@
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Orelha dos Sonhos | Victória Serrano">
-    <meta property="og:description" content="Furo de orelha humanizado, joias e cuidados. Toque para agendar!">
+    <meta property="og:description" content="Estética e Saúde Auricular, joias e muito mais. Toque para agendar!">
     <meta property="og:image" content="banner-orelha.webp">
     <meta property="og:image:type" content="image/webp">
     <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        /* --- ESTILO ÚNICO --- */
+        /* --- ESTILO PADRÃO (Verde Petróleo) --- */
         :root {
             --text-color: #f0f0f0; 
             --bg-gradient: linear-gradient(180deg, #0B464C 0%, #206870 100%);
@@ -97,7 +97,13 @@
             text-align: center;
         }
         .nome-texto { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.5px; }
-        .desc-servico { font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9; margin-top: 8px; text-align: center; color: var(--text-color); }
+        
+        /* Texto Alterado Aqui */
+        .desc-servico { 
+            font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; 
+            text-transform: uppercase; opacity: 0.9; margin-top: 8px; 
+            text-align: center; color: var(--text-color); 
+        }
 
         /* BOTÕES */
         .menu-links { width: 100%; display: flex; flex-direction: column; gap: 15px; }
@@ -161,7 +167,7 @@
         <main class="perfil-wrapper">
             <img src="foto-vic.png" alt="Victória Serrano" class="foto-vic" onerror="this.src='https://via.placeholder.com/150?text=Vic'">
             <div class="nome-box"><span class="nome-texto">Victória Serrano</span></div>
-            <div class="desc-servico">Furo de Orelha Humanizado</div>
+            <div class="desc-servico">Estética e Saúde Auricular</div>
         </main>
 
         <nav class="menu-links">
@@ -181,10 +187,6 @@
                 <i class='bx bx-book-heart'></i> Cursos
             </a>
             
-            <a href="cuidados.html" class="btn-link">
-                <i class='bx bx-heart'></i> Cuidados
-            </a>
-
             <a href="camera.html" class="btn-link">
                 <i class='bx bx-camera'></i> Câmera
             </a>
